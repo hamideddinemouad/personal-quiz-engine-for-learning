@@ -1,0 +1,5 @@
+export const QUIZ_STATUS = {
+  UNATTEMPTED: 'UNATTEMPTED',
+  PARTIAL: 'PARTIAL',
+  MASTERED: 'MASTERED'
+} as const;

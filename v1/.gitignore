@@ -23,3 +23,4 @@ TestResults.xml
 node_modules
 notes.md
 dist
+.DS_Store

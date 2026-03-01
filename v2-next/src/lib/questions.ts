@@ -1,4 +1,6 @@
-export const questions = [
+import type { QuizQuestion } from '@/types/quiz';
+
+export const questions: QuizQuestion[] = [
   {
     id: 'q1',
     type: 'mcq',
