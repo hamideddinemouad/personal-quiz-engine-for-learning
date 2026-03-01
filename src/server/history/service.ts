@@ -14,6 +14,7 @@ export function createAndStoreTodayQuiz(
   questions: QuizQuestion[],
   quizTransform?: (questions: QuizQuestion[]) => QuizQuestion[]
 ): QuizQuestion[] {
+  // Goal: Create an isolated daily snapshot and persist it as today's canonical quiz.
   const baseQuestions = Array.isArray(questions) ? cloneQuestions(questions) : [];
   const transformedQuestions =
     typeof quizTransform === 'function' ? quizTransform(baseQuestions) : baseQuestions;
@@ -25,6 +26,7 @@ export function createAndStoreTodayQuiz(
 }
 
 export function getOrCreateTodayQuizSnapshot(): QuizQuestion[] {
+  // Goal: Match v1 behavior: every page load gets a freshly shuffled daily snapshot.
   return createAndStoreTodayQuiz(sourceQuestions, shuffleQuestionChoices);
 }
 
@@ -45,6 +47,7 @@ export function buildMegaQuizFromDates(dates: string[]): QuizQuestion[] {
 }
 
 export function buildShuffledMegaQuizFromPast(): QuizQuestion[] {
+  // Goal: Build a 35-question mega quiz from past days only (exclude today).
   const historyEntries = listDailyQuizHistoryEntries();
 
   return buildShuffledMegaQuizFromHistory(historyEntries, {
@@ -55,6 +58,8 @@ export function buildShuffledMegaQuizFromPast(): QuizQuestion[] {
 }
 
 export function getStudyStreakStats(today: Date = new Date()): StudyStreakStats {
+  // Goal: Compute current consecutive-day streak ending today.
+  // We walk backward day-by-day until the first missing date.
   const historyEntries = listDailyQuizHistoryEntries();
   const uniqueDates = [...new Set(historyEntries.map((entry) => entry.date).filter(Boolean))];
   const dateSet = new Set(uniqueDates);

@@ -8,6 +8,8 @@ declare global {
   var __quizDb: SqliteDatabase | undefined;
 }
 
+// Goal: Resolve a stable data path whether the app runs from repo root
+// or from an older nested `v2-next` directory layout.
 const PROJECT_ROOT = path.basename(process.cwd()) === 'v2-next'
   ? process.cwd()
   : path.join(process.cwd(), 'v2-next');
@@ -22,15 +24,18 @@ CREATE TABLE IF NOT EXISTS daily_quiz_history (
 `;
 
 function ensureDataDirectoryExists(): void {
+  // Goal: Guarantee sqlite file creation does not fail on missing parent folder.
   fs.mkdirSync(path.dirname(DATABASE_PATH), { recursive: true });
 }
 
 function initializeDatabase(database: SqliteDatabase): void {
+  // Goal: Configure sqlite once and ensure required schema exists.
   database.pragma('journal_mode = WAL');
   database.exec(CREATE_DAILY_QUIZ_HISTORY_TABLE_SQL);
 }
 
 export function getDatabase(): SqliteDatabase {
+  // Goal: Reuse one process-wide connection to avoid duplicate handles.
   if (!global.__quizDb) {
     ensureDataDirectoryExists();
     const database = new Database(DATABASE_PATH);

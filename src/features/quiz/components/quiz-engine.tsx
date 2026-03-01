@@ -1,6 +1,7 @@
 'use client';
 
 import { useQuizContext } from '@/features/quiz/context/quiz-context';
+import type { ChoiceUiMode } from '@/features/quiz/types';
 import { AlertCircleIcon } from './icons';
 import QuestionCard from './question-card';
 import SidebarNavigation from './sidebar-navigation';
@@ -11,6 +12,7 @@ interface QuizEngineProps {
   isShufflingMegaQuiz: boolean;
   shuffleError: string | null;
   onShuffleMegaQuiz: () => Promise<void>;
+  choiceUi: ChoiceUiMode;
 }
 
 export default function QuizEngine({
@@ -18,8 +20,10 @@ export default function QuizEngine({
   dailyMasteredGoal,
   isShufflingMegaQuiz,
   shuffleError,
-  onShuffleMegaQuiz
+  onShuffleMegaQuiz,
+  choiceUi
 }: QuizEngineProps): JSX.Element {
+  // Goal: Compose quiz content + sidebar controls from shared context state.
   const { currentQuestion, currentAnswer } = useQuizContext();
 
   if (!currentQuestion || !currentAnswer) {
@@ -37,7 +41,7 @@ export default function QuizEngine({
     <main className="quiz-page">
       <div className="quiz-grid">
         <section aria-label="Quiz content" className="quiz-content">
-          <QuestionCard key={currentQuestion.id} question={currentQuestion} />
+          <QuestionCard choiceUi={choiceUi} key={currentQuestion.id} question={currentQuestion} />
         </section>
         <SidebarNavigation
           dailyMasteredGoal={dailyMasteredGoal}

@@ -40,6 +40,8 @@ interface QuizProviderProps extends PropsWithChildren {
 const QuizContext = createContext<QuizContextValue | null>(null);
 
 function createInitialAnswersById(questions: QuizQuestion[]): AnswersById {
+  // Goal: Create a predictable answer bucket for every question id.
+  // This avoids null checks spread across the UI and status logic.
   return questions.reduce<AnswersById>((accumulator, question) => {
     accumulator[question.id] = createInitialAnswerState();
     return accumulator;
@@ -47,6 +49,8 @@ function createInitialAnswersById(questions: QuizQuestion[]): AnswersById {
 }
 
 export function QuizProvider({ children, questions }: QuizProviderProps): JSX.Element {
+  // Goal: Keep all interactive quiz behavior in one state container:
+  // timer, navigation, answer updates, and derived progress/status.
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answersById, setAnswersById] = useState<AnswersById>(() =>
@@ -57,6 +61,8 @@ export function QuizProvider({ children, questions }: QuizProviderProps): JSX.El
   const currentAnswer = currentQuestion ? answersById[currentQuestion.id] : null;
 
   useEffect(() => {
+    // Goal: Start a simple stopwatch for user pacing feedback.
+    // We derive elapsed time from wall-clock start to avoid drift.
     const startTime = Date.now();
     const intervalId = setInterval(() => {
       const totalElapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
@@ -72,6 +78,11 @@ export function QuizProvider({ children, questions }: QuizProviderProps): JSX.El
     questionId: string,
     optionIndex: number
   ): { result: QuizSelectionResult } => {
+    // Goal: Enforce phase-1 rules:
+    // - incorrect answers stay retryable
+    // - correct answer locks the main phase
+
+    // Step 1: Validate question and current answer bucket.
     const question = questions.find((entry) => entry.id === questionId);
     if (!question) {
       return { result: 'invalid' };
@@ -88,6 +99,8 @@ export function QuizProvider({ children, questions }: QuizProviderProps): JSX.El
     }
 
     if (selected.isCorrect) {
+      // Step 2a: Correct answer -> lock phase 1.
+      // We guard twice (before + inside setter) for consistency under rapid clicks.
       setAnswersById((previous) => {
         const existing = previous[questionId];
         if (!existing || existing.mainLocked) {
@@ -108,6 +121,7 @@ export function QuizProvider({ children, questions }: QuizProviderProps): JSX.El
       return { result: 'correct' };
     }
 
+    // Step 2b: Incorrect answer -> record selection but keep phase open.
     setAnswersById((previous) => {
       const existing = previous[questionId];
       if (!existing || existing.mainLocked) {
@@ -130,6 +144,12 @@ export function QuizProvider({ children, questions }: QuizProviderProps): JSX.El
     questionId: string,
     optionIndex: number
   ): { result: QuizSelectionResult } => {
+    // Goal: Enforce phase-2 rules:
+    // - only available when main answer is correct
+    // - correct answer locks why phase
+    // - incorrect answer remains retryable
+
+    // Step 1: Validate that this question supports a why phase.
     const question = questions.find((entry) => entry.id === questionId);
     if (!question || !question.requiresWhy || !question.whyOptions) {
       return { result: 'invalid' };
@@ -146,6 +166,7 @@ export function QuizProvider({ children, questions }: QuizProviderProps): JSX.El
     }
 
     if (selected.isCorrect) {
+      // Step 2a: Correct why answer -> finalize conceptual mastery.
       setAnswersById((previous) => {
         const existing = previous[questionId];
         if (!existing || !existing.mainCorrect || existing.whyLocked) {
@@ -166,6 +187,7 @@ export function QuizProvider({ children, questions }: QuizProviderProps): JSX.El
       return { result: 'correct' };
     }
 
+    // Step 2b: Incorrect why answer -> keep retry path active.
     setAnswersById((previous) => {
       const existing = previous[questionId];
       if (!existing || !existing.mainCorrect || existing.whyLocked) {
@@ -185,6 +207,7 @@ export function QuizProvider({ children, questions }: QuizProviderProps): JSX.El
   };
 
   const goToQuestion = (index: number): void => {
+    // Goal: Keep navigation safe by clamping to valid indexes.
     if (index < 0 || index >= questions.length) {
       return;
     }
@@ -193,6 +216,7 @@ export function QuizProvider({ children, questions }: QuizProviderProps): JSX.El
   };
 
   const statusesById = useMemo<Record<string, QuizStatus>>(
+    // Goal: Derive status from state, not from UI feedback strings.
     () =>
       questions.reduce<Record<string, QuizStatus>>((accumulator, question) => {
         const answer = answersById[question.id] ?? createInitialAnswerState();
@@ -203,6 +227,7 @@ export function QuizProvider({ children, questions }: QuizProviderProps): JSX.El
   );
 
   const progress = useMemo<QuizProgress>(() => {
+    // Goal: Build compact progress metrics for the header/sidebar.
     const statuses = Object.values(statusesById);
 
     return {
@@ -213,6 +238,7 @@ export function QuizProvider({ children, questions }: QuizProviderProps): JSX.El
   }, [questions.length, statusesById]);
 
   const value: QuizContextValue = {
+    // Goal: Expose a stable contract to all quiz components.
     questions,
     currentQuestionIndex,
     currentQuestion,

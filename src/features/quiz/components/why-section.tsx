@@ -1,31 +1,41 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import type { FeedbackState } from '@/features/quiz/types';
+import type { ChoiceUiMode, FeedbackState } from '@/features/quiz/types';
 import type { QuizAnswerState, QuizQuestion } from '@/types/quiz';
 import { AlertCircleIcon, CheckCircleIcon, SparklesIcon } from './icons';
+import FlashOptionList from './flash-option-list';
 
 interface WhySectionProps {
   question: QuizQuestion;
   answer: QuizAnswerState;
   feedback: FeedbackState;
   onSelect: (optionIndex: number) => void;
+  choiceUi: ChoiceUiMode;
 }
 
 export default function WhySection({
   question,
   answer,
   feedback,
-  onSelect
+  onSelect,
+  choiceUi
 }: WhySectionProps): JSX.Element | null {
-  const firstOptionRef = useRef<HTMLInputElement | null>(null);
+  // Goal: Reveal and focus the conceptual phase only after main answer is correct.
+  const firstOptionInputRef = useRef<HTMLInputElement | null>(null);
+  const firstOptionCardRef = useRef<HTMLButtonElement | null>(null);
   const shouldReveal = question.requiresWhy && answer.mainCorrect;
 
   useEffect(() => {
+    // Goal: Move keyboard flow naturally into the newly revealed section.
     if (shouldReveal) {
-      firstOptionRef.current?.focus({ preventScroll: true });
+      if (choiceUi === 'flashcards') {
+        firstOptionCardRef.current?.focus({ preventScroll: true });
+      } else {
+        firstOptionInputRef.current?.focus({ preventScroll: true });
+      }
     }
-  }, [shouldReveal, question.id]);
+  }, [choiceUi, shouldReveal, question.id]);
 
   if (!question.requiresWhy || !question.whyOptions || !question.whyQuestion) {
     return null;
@@ -35,11 +45,37 @@ export default function WhySection({
     return null;
   }
 
-  const resolvedFeedbackText =
-    feedback.text ||
-    (answer.whyCorrect
-      ? 'Concept mastered.'
-      : 'Select the best explanation to complete mastery.');
+  const resolvedFeedbackState: FeedbackState = feedback.text
+    ? feedback
+    : answer.whyCorrect
+      ? { text: 'Concept mastered.', tone: 'success' }
+      : { text: 'Select the best explanation to complete mastery.', tone: 'neutral' };
+
+  if (choiceUi === 'flashcards') {
+    return (
+      <section aria-label="Why section" className="question-section why-section">
+        <header>
+          <p className="section-label section-label--with-icon">
+            <SparklesIcon className="inline-icon" />
+            <span>Why This Is Correct</span>
+          </p>
+          <h3 className="question-subtitle">{question.whyQuestion}</h3>
+        </header>
+        <FlashOptionList
+          feedback={resolvedFeedbackState}
+          firstOptionRef={firstOptionCardRef}
+          isCorrectSelection={answer.whyCorrect}
+          isLocked={answer.whyLocked}
+          legend="Select the best conceptual explanation"
+          onSelect={onSelect}
+          options={question.whyOptions}
+          phaseKey="why"
+          questionId={question.id}
+          selectedIndex={answer.whySelection}
+        />
+      </section>
+    );
+  }
 
   return (
     <section aria-label="Why section" className="question-section why-section">
@@ -55,6 +91,7 @@ export default function WhySection({
         <legend className="sr-only">Select the best conceptual explanation</legend>
 
         {question.whyOptions.map((option, index) => {
+          // Goal: Mirror main question marker rules for consistency.
           const isSelected = answer.whySelection === index;
           const showCorrect = answer.whyCorrect && option.isCorrect;
           const showIncorrect = !answer.whyCorrect && isSelected && !option.isCorrect;
@@ -73,6 +110,7 @@ export default function WhySection({
               className={optionClassName}
               key={`${question.id}-why-${index}`}
               onClick={() => {
+                // Goal: Preserve full-row click affordance while respecting lock state.
                 if (!answer.whyLocked) {
                   onSelect(index);
                 }
@@ -85,7 +123,7 @@ export default function WhySection({
                 disabled={answer.whyLocked}
                 name={`why-${question.id}`}
                 onChange={() => onSelect(index)}
-                ref={index === 0 ? firstOptionRef : null}
+                ref={index === 0 ? firstOptionInputRef : null}
                 type="radio"
               />
 
@@ -97,13 +135,16 @@ export default function WhySection({
               </span>
 
               {isSelected ? (
-                <p aria-live="polite" className={`feedback feedback--${feedback.tone} feedback--with-icon`}>
-                  {feedback.tone === 'success' ? (
+                <p
+                  aria-live="polite"
+                  className={`feedback feedback--${resolvedFeedbackState.tone} feedback--with-icon`}
+                >
+                  {resolvedFeedbackState.tone === 'success' ? (
                     <CheckCircleIcon className="inline-icon" />
                   ) : (
                     <AlertCircleIcon className="inline-icon" />
                   )}
-                  {resolvedFeedbackText}
+                  {resolvedFeedbackState.text}
                 </p>
               ) : null}
             </label>

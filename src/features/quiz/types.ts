@@ -1,4 +1,5 @@
 export type FeedbackTone = 'neutral' | 'success' | 'error';
+export type ChoiceUiMode = 'standard' | 'flashcards';
 
 export interface FeedbackState {
   text: string;

@@ -11,6 +11,8 @@ type HistoryRow = {
 };
 
 function mapRowToEntry(row: HistoryRow): DailyQuizHistoryEntry | null {
+  // Goal: Convert raw SQL row into validated app shape.
+  // Invalid JSON or wrong structure is treated as corrupt data and ignored.
   try {
     const parsedQuestions = JSON.parse(row.questions_json) as QuizQuestion[];
     if (!Array.isArray(parsedQuestions)) {
@@ -28,6 +30,7 @@ function mapRowToEntry(row: HistoryRow): DailyQuizHistoryEntry | null {
 }
 
 function trimHistoryToMaxDays(maxDays: number = MAX_DAYS_STORED): void {
+  // Goal: Keep storage bounded by deleting oldest dates first.
   const database = getDatabase();
   const totalCount = database
     .prepare('SELECT COUNT(1) as count FROM daily_quiz_history')
@@ -58,6 +61,7 @@ export function upsertDailyQuizHistoryEntry(
   date: string,
   questionsSnapshot: QuizQuestion[]
 ): DailyQuizHistoryEntry {
+  // Goal: Store one canonical snapshot per date (insert new / replace existing).
   const database = getDatabase();
   const snapshot = cloneQuestions(questionsSnapshot);
   const savedAt = new Date().toISOString();
@@ -84,6 +88,7 @@ export function upsertDailyQuizHistoryEntry(
 }
 
 export function listDailyQuizHistoryEntries(): DailyQuizHistoryEntry[] {
+  // Goal: Return ascending date history and silently skip corrupt rows.
   const database = getDatabase();
   const rows = database
     .prepare('SELECT date, saved_at, questions_json FROM daily_quiz_history ORDER BY date ASC')
@@ -95,6 +100,7 @@ export function listDailyQuizHistoryEntries(): DailyQuizHistoryEntry[] {
 }
 
 export function findDailyQuizHistoryEntryByDate(date: string): DailyQuizHistoryEntry | null {
+  // Goal: Fetch exactly one day snapshot when available.
   const database = getDatabase();
   const row = database
     .prepare('SELECT date, saved_at, questions_json FROM daily_quiz_history WHERE date = ? LIMIT 1')
@@ -108,6 +114,8 @@ export function findDailyQuizHistoryEntryByDate(date: string): DailyQuizHistoryE
 }
 
 export function buildMegaQuizFromDates(dates: string[]): QuizQuestion[] {
+  // Goal: Build deterministic mega quiz input from caller-selected dates.
+  // We dedupe dates and clone questions to protect DB snapshots from mutation.
   if (!Array.isArray(dates) || dates.length === 0) {
     return [];
   }

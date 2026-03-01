@@ -2,16 +2,18 @@
 
 import { useEffect, useState } from 'react';
 import { useQuizContext } from '@/features/quiz/context/quiz-context';
-import { EMPTY_FEEDBACK, type FeedbackState } from '@/features/quiz/types';
+import { EMPTY_FEEDBACK, type ChoiceUiMode, type FeedbackState } from '@/features/quiz/types';
 import type { QuizQuestion } from '@/types/quiz';
 import MainQuestion from './main-question';
 import WhySection from './why-section';
 
 interface QuestionCardProps {
   question: QuizQuestion;
+  choiceUi: ChoiceUiMode;
 }
 
-export default function QuestionCard({ question }: QuestionCardProps): JSX.Element {
+export default function QuestionCard({ question, choiceUi }: QuestionCardProps): JSX.Element {
+  // Goal: Bridge global quiz state (correctness/locks) with local UI feedback copy.
   const { answersById, selectMainOption, selectWhyOption } = useQuizContext();
   const answer = answersById[question.id];
 
@@ -19,6 +21,7 @@ export default function QuestionCard({ question }: QuestionCardProps): JSX.Eleme
   const [whyFeedback, setWhyFeedback] = useState<FeedbackState>(EMPTY_FEEDBACK);
 
   useEffect(() => {
+    // Goal: Reset visual feedback when user navigates to a different question.
     setMainFeedback(EMPTY_FEEDBACK);
     setWhyFeedback(EMPTY_FEEDBACK);
   }, [question.id]);
@@ -28,6 +31,7 @@ export default function QuestionCard({ question }: QuestionCardProps): JSX.Eleme
   }
 
   const handleMainSelect = (optionIndex: number): void => {
+    // Goal: Translate state-machine result into user-facing feedback text.
     const { result } = selectMainOption(question.id, optionIndex);
     const selectedOption = question.options[optionIndex];
 
@@ -60,6 +64,7 @@ export default function QuestionCard({ question }: QuestionCardProps): JSX.Eleme
   };
 
   const handleWhySelect = (optionIndex: number): void => {
+    // Goal: Same as main phase, but for conceptual "why" mastery.
     const { result } = selectWhyOption(question.id, optionIndex);
     const selectedOption = question.whyOptions?.[optionIndex];
 
@@ -86,12 +91,14 @@ export default function QuestionCard({ question }: QuestionCardProps): JSX.Eleme
       <MainQuestion
         question={question}
         answer={answer}
+        choiceUi={choiceUi}
         feedback={mainFeedback}
         onSelect={handleMainSelect}
       />
       <WhySection
         question={question}
         answer={answer}
+        choiceUi={choiceUi}
         feedback={whyFeedback}
         onSelect={handleWhySelect}
       />

@@ -9,10 +9,14 @@ interface MegaQuizRequestBody {
 }
 
 function isValidDateArray(value: unknown): value is string[] {
+  // Goal: Narrow unknown request payload into a safe list of date keys.
   return Array.isArray(value) && value.every((entry) => typeof entry === 'string' && entry.length > 0);
 }
 
 export async function POST(request: Request): Promise<Response> {
+  // Goal: Support two mega quiz modes from one endpoint:
+  // 1) mode: "shuffle" => random 35-question mega quiz from past history
+  // 2) dates: string[] => deterministic mega quiz from explicit dates
   try {
     const body = (await request.json()) as MegaQuizRequestBody;
 
