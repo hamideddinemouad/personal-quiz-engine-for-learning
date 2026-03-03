@@ -48,5 +48,455 @@
         "feedback": "The note describes JSON-backed domain entities, not view-cache architecture."
       }
     ]
+  },
+  {
+    "id": "q2",
+    "question": "Which statement is most accurate: Why does the CMS note store content definitions as JSON schema/config objects?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "To let tenants add content types without running database migrations.",
+        "isCorrect": true,
+        "feedback": "Correct: schema flexibility moves model evolution into tenant-level configuration."
+      },
+      {
+        "text": "To guarantee strict compile-time typing directly inside PostgreSQL rows.",
+        "isCorrect": false,
+        "feedback": "JSONB is flexible runtime data, not compile-time static typing enforcement."
+      },
+      {
+        "text": "To remove the need for relational links between entries and definitions.",
+        "isCorrect": false,
+        "feedback": "Entries still reference definitions through identifiers to maintain structure mapping."
+      },
+      {
+        "text": "To force every tenant to share one immutable global content model.",
+        "isCorrect": false,
+        "feedback": "The design exists to support tenant-specific models, not one rigid schema."
+      }
+    ],
+    "whyQuestion": "Why is that answer the strongest technically? How do `content_definitions` and `content_entries` work together in this design?",
+    "whyOptions": [
+      {
+        "text": "Definitions store field blueprint; entries store item data referencing that blueprint.",
+        "isCorrect": true,
+        "feedback": "Exactly: one defines structure, the other stores actual records and values."
+      },
+      {
+        "text": "Definitions store published posts, while entries only store tenant membership roles.",
+        "isCorrect": false,
+        "feedback": "Membership is separate; entries hold content items tied to definitions."
+      },
+      {
+        "text": "Definitions and entries are duplicates kept for backup and rollback only.",
+        "isCorrect": false,
+        "feedback": "They represent distinct responsibilities, not redundant backup copies."
+      },
+      {
+        "text": "Definitions are static SQL views, while entries are temporary cache rows.",
+        "isCorrect": false,
+        "feedback": "The note describes JSON-backed domain entities, not view-cache architecture."
+      }
+    ]
+  },
+  {
+    "id": "q3",
+    "question": "Choose the best technical interpretation: Why does the CMS note store content definitions as JSON schema/config objects?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "To let tenants add content types without running database migrations.",
+        "isCorrect": true,
+        "feedback": "Correct: schema flexibility moves model evolution into tenant-level configuration."
+      },
+      {
+        "text": "To guarantee strict compile-time typing directly inside PostgreSQL rows.",
+        "isCorrect": false,
+        "feedback": "JSONB is flexible runtime data, not compile-time static typing enforcement."
+      },
+      {
+        "text": "To remove the need for relational links between entries and definitions.",
+        "isCorrect": false,
+        "feedback": "Entries still reference definitions through identifiers to maintain structure mapping."
+      },
+      {
+        "text": "To force every tenant to share one immutable global content model.",
+        "isCorrect": false,
+        "feedback": "The design exists to support tenant-specific models, not one rigid schema."
+      }
+    ],
+    "whyQuestion": "Why does this option hold in real usage? How do `content_definitions` and `content_entries` work together in this design?",
+    "whyOptions": [
+      {
+        "text": "Definitions store field blueprint; entries store item data referencing that blueprint.",
+        "isCorrect": true,
+        "feedback": "Exactly: one defines structure, the other stores actual records and values."
+      },
+      {
+        "text": "Definitions store published posts, while entries only store tenant membership roles.",
+        "isCorrect": false,
+        "feedback": "Membership is separate; entries hold content items tied to definitions."
+      },
+      {
+        "text": "Definitions and entries are duplicates kept for backup and rollback only.",
+        "isCorrect": false,
+        "feedback": "They represent distinct responsibilities, not redundant backup copies."
+      },
+      {
+        "text": "Definitions are static SQL views, while entries are temporary cache rows.",
+        "isCorrect": false,
+        "feedback": "The note describes JSON-backed domain entities, not view-cache architecture."
+      }
+    ]
+  },
+  {
+    "id": "q4",
+    "question": "For practical use, which claim is correct: Why does the CMS note store content definitions as JSON schema/config objects?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "To let tenants add content types without running database migrations.",
+        "isCorrect": true,
+        "feedback": "Correct: schema flexibility moves model evolution into tenant-level configuration."
+      },
+      {
+        "text": "To guarantee strict compile-time typing directly inside PostgreSQL rows.",
+        "isCorrect": false,
+        "feedback": "JSONB is flexible runtime data, not compile-time static typing enforcement."
+      },
+      {
+        "text": "To remove the need for relational links between entries and definitions.",
+        "isCorrect": false,
+        "feedback": "Entries still reference definitions through identifiers to maintain structure mapping."
+      },
+      {
+        "text": "To force every tenant to share one immutable global content model.",
+        "isCorrect": false,
+        "feedback": "The design exists to support tenant-specific models, not one rigid schema."
+      }
+    ],
+    "whyQuestion": "Why is this interpretation more reliable? How do `content_definitions` and `content_entries` work together in this design?",
+    "whyOptions": [
+      {
+        "text": "Definitions store field blueprint; entries store item data referencing that blueprint.",
+        "isCorrect": true,
+        "feedback": "Exactly: one defines structure, the other stores actual records and values."
+      },
+      {
+        "text": "Definitions store published posts, while entries only store tenant membership roles.",
+        "isCorrect": false,
+        "feedback": "Membership is separate; entries hold content items tied to definitions."
+      },
+      {
+        "text": "Definitions and entries are duplicates kept for backup and rollback only.",
+        "isCorrect": false,
+        "feedback": "They represent distinct responsibilities, not redundant backup copies."
+      },
+      {
+        "text": "Definitions are static SQL views, while entries are temporary cache rows.",
+        "isCorrect": false,
+        "feedback": "The note describes JSON-backed domain entities, not view-cache architecture."
+      }
+    ]
+  },
+  {
+    "id": "q5",
+    "question": "Identify the option aligned with this note: Why does the CMS note store content definitions as JSON schema/config objects?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "To let tenants add content types without running database migrations.",
+        "isCorrect": true,
+        "feedback": "Correct: schema flexibility moves model evolution into tenant-level configuration."
+      },
+      {
+        "text": "To guarantee strict compile-time typing directly inside PostgreSQL rows.",
+        "isCorrect": false,
+        "feedback": "JSONB is flexible runtime data, not compile-time static typing enforcement."
+      },
+      {
+        "text": "To remove the need for relational links between entries and definitions.",
+        "isCorrect": false,
+        "feedback": "Entries still reference definitions through identifiers to maintain structure mapping."
+      },
+      {
+        "text": "To force every tenant to share one immutable global content model.",
+        "isCorrect": false,
+        "feedback": "The design exists to support tenant-specific models, not one rigid schema."
+      }
+    ],
+    "whyQuestion": "Why is this rule preferred in practice? How do `content_definitions` and `content_entries` work together in this design?",
+    "whyOptions": [
+      {
+        "text": "Definitions store field blueprint; entries store item data referencing that blueprint.",
+        "isCorrect": true,
+        "feedback": "Exactly: one defines structure, the other stores actual records and values."
+      },
+      {
+        "text": "Definitions store published posts, while entries only store tenant membership roles.",
+        "isCorrect": false,
+        "feedback": "Membership is separate; entries hold content items tied to definitions."
+      },
+      {
+        "text": "Definitions and entries are duplicates kept for backup and rollback only.",
+        "isCorrect": false,
+        "feedback": "They represent distinct responsibilities, not redundant backup copies."
+      },
+      {
+        "text": "Definitions are static SQL views, while entries are temporary cache rows.",
+        "isCorrect": false,
+        "feedback": "The note describes JSON-backed domain entities, not view-cache architecture."
+      }
+    ]
+  },
+  {
+    "id": "q6",
+    "question": "In a code review, which statement holds: Why does the CMS note store content definitions as JSON schema/config objects?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "To let tenants add content types without running database migrations.",
+        "isCorrect": true,
+        "feedback": "Correct: schema flexibility moves model evolution into tenant-level configuration."
+      },
+      {
+        "text": "To guarantee strict compile-time typing directly inside PostgreSQL rows.",
+        "isCorrect": false,
+        "feedback": "JSONB is flexible runtime data, not compile-time static typing enforcement."
+      },
+      {
+        "text": "To remove the need for relational links between entries and definitions.",
+        "isCorrect": false,
+        "feedback": "Entries still reference definitions through identifiers to maintain structure mapping."
+      },
+      {
+        "text": "To force every tenant to share one immutable global content model.",
+        "isCorrect": false,
+        "feedback": "The design exists to support tenant-specific models, not one rigid schema."
+      }
+    ],
+    "whyQuestion": "Why does this avoid the common misconception? How do `content_definitions` and `content_entries` work together in this design?",
+    "whyOptions": [
+      {
+        "text": "Definitions store field blueprint; entries store item data referencing that blueprint.",
+        "isCorrect": true,
+        "feedback": "Exactly: one defines structure, the other stores actual records and values."
+      },
+      {
+        "text": "Definitions store published posts, while entries only store tenant membership roles.",
+        "isCorrect": false,
+        "feedback": "Membership is separate; entries hold content items tied to definitions."
+      },
+      {
+        "text": "Definitions and entries are duplicates kept for backup and rollback only.",
+        "isCorrect": false,
+        "feedback": "They represent distinct responsibilities, not redundant backup copies."
+      },
+      {
+        "text": "Definitions are static SQL views, while entries are temporary cache rows.",
+        "isCorrect": false,
+        "feedback": "The note describes JSON-backed domain entities, not view-cache architecture."
+      }
+    ]
+  },
+  {
+    "id": "q7",
+    "question": "Which choice avoids the common misunderstanding: Why does the CMS note store content definitions as JSON schema/config objects?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "To let tenants add content types without running database migrations.",
+        "isCorrect": true,
+        "feedback": "Correct: schema flexibility moves model evolution into tenant-level configuration."
+      },
+      {
+        "text": "To guarantee strict compile-time typing directly inside PostgreSQL rows.",
+        "isCorrect": false,
+        "feedback": "JSONB is flexible runtime data, not compile-time static typing enforcement."
+      },
+      {
+        "text": "To remove the need for relational links between entries and definitions.",
+        "isCorrect": false,
+        "feedback": "Entries still reference definitions through identifiers to maintain structure mapping."
+      },
+      {
+        "text": "To force every tenant to share one immutable global content model.",
+        "isCorrect": false,
+        "feedback": "The design exists to support tenant-specific models, not one rigid schema."
+      }
+    ],
+    "whyQuestion": "Why is this the most defensible reasoning? How do `content_definitions` and `content_entries` work together in this design?",
+    "whyOptions": [
+      {
+        "text": "Definitions store field blueprint; entries store item data referencing that blueprint.",
+        "isCorrect": true,
+        "feedback": "Exactly: one defines structure, the other stores actual records and values."
+      },
+      {
+        "text": "Definitions store published posts, while entries only store tenant membership roles.",
+        "isCorrect": false,
+        "feedback": "Membership is separate; entries hold content items tied to definitions."
+      },
+      {
+        "text": "Definitions and entries are duplicates kept for backup and rollback only.",
+        "isCorrect": false,
+        "feedback": "They represent distinct responsibilities, not redundant backup copies."
+      },
+      {
+        "text": "Definitions are static SQL views, while entries are temporary cache rows.",
+        "isCorrect": false,
+        "feedback": "The note describes JSON-backed domain entities, not view-cache architecture."
+      }
+    ]
+  },
+  {
+    "id": "q8",
+    "question": "Select the strongest rule from this topic: Why does the CMS note store content definitions as JSON schema/config objects?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "To let tenants add content types without running database migrations.",
+        "isCorrect": true,
+        "feedback": "Correct: schema flexibility moves model evolution into tenant-level configuration."
+      },
+      {
+        "text": "To guarantee strict compile-time typing directly inside PostgreSQL rows.",
+        "isCorrect": false,
+        "feedback": "JSONB is flexible runtime data, not compile-time static typing enforcement."
+      },
+      {
+        "text": "To remove the need for relational links between entries and definitions.",
+        "isCorrect": false,
+        "feedback": "Entries still reference definitions through identifiers to maintain structure mapping."
+      },
+      {
+        "text": "To force every tenant to share one immutable global content model.",
+        "isCorrect": false,
+        "feedback": "The design exists to support tenant-specific models, not one rigid schema."
+      }
+    ],
+    "whyQuestion": "Why does this align with the note intent? How do `content_definitions` and `content_entries` work together in this design?",
+    "whyOptions": [
+      {
+        "text": "Definitions store field blueprint; entries store item data referencing that blueprint.",
+        "isCorrect": true,
+        "feedback": "Exactly: one defines structure, the other stores actual records and values."
+      },
+      {
+        "text": "Definitions store published posts, while entries only store tenant membership roles.",
+        "isCorrect": false,
+        "feedback": "Membership is separate; entries hold content items tied to definitions."
+      },
+      {
+        "text": "Definitions and entries are duplicates kept for backup and rollback only.",
+        "isCorrect": false,
+        "feedback": "They represent distinct responsibilities, not redundant backup copies."
+      },
+      {
+        "text": "Definitions are static SQL views, while entries are temporary cache rows.",
+        "isCorrect": false,
+        "feedback": "The note describes JSON-backed domain entities, not view-cache architecture."
+      }
+    ]
+  },
+  {
+    "id": "q9",
+    "question": "Which option should be applied in real projects: Why does the CMS note store content definitions as JSON schema/config objects?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "To let tenants add content types without running database migrations.",
+        "isCorrect": true,
+        "feedback": "Correct: schema flexibility moves model evolution into tenant-level configuration."
+      },
+      {
+        "text": "To guarantee strict compile-time typing directly inside PostgreSQL rows.",
+        "isCorrect": false,
+        "feedback": "JSONB is flexible runtime data, not compile-time static typing enforcement."
+      },
+      {
+        "text": "To remove the need for relational links between entries and definitions.",
+        "isCorrect": false,
+        "feedback": "Entries still reference definitions through identifiers to maintain structure mapping."
+      },
+      {
+        "text": "To force every tenant to share one immutable global content model.",
+        "isCorrect": false,
+        "feedback": "The design exists to support tenant-specific models, not one rigid schema."
+      }
+    ],
+    "whyQuestion": "Why should engineers trust this explanation? How do `content_definitions` and `content_entries` work together in this design?",
+    "whyOptions": [
+      {
+        "text": "Definitions store field blueprint; entries store item data referencing that blueprint.",
+        "isCorrect": true,
+        "feedback": "Exactly: one defines structure, the other stores actual records and values."
+      },
+      {
+        "text": "Definitions store published posts, while entries only store tenant membership roles.",
+        "isCorrect": false,
+        "feedback": "Membership is separate; entries hold content items tied to definitions."
+      },
+      {
+        "text": "Definitions and entries are duplicates kept for backup and rollback only.",
+        "isCorrect": false,
+        "feedback": "They represent distinct responsibilities, not redundant backup copies."
+      },
+      {
+        "text": "Definitions are static SQL views, while entries are temporary cache rows.",
+        "isCorrect": false,
+        "feedback": "The note describes JSON-backed domain entities, not view-cache architecture."
+      }
+    ]
+  },
+  {
+    "id": "q10",
+    "question": "Confirm the core concept: Why does the CMS note store content definitions as JSON schema/config objects?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "To let tenants add content types without running database migrations.",
+        "isCorrect": true,
+        "feedback": "Correct: schema flexibility moves model evolution into tenant-level configuration."
+      },
+      {
+        "text": "To guarantee strict compile-time typing directly inside PostgreSQL rows.",
+        "isCorrect": false,
+        "feedback": "JSONB is flexible runtime data, not compile-time static typing enforcement."
+      },
+      {
+        "text": "To remove the need for relational links between entries and definitions.",
+        "isCorrect": false,
+        "feedback": "Entries still reference definitions through identifiers to maintain structure mapping."
+      },
+      {
+        "text": "To force every tenant to share one immutable global content model.",
+        "isCorrect": false,
+        "feedback": "The design exists to support tenant-specific models, not one rigid schema."
+      }
+    ],
+    "whyQuestion": "Why is this the correct conceptual takeaway? How do `content_definitions` and `content_entries` work together in this design?",
+    "whyOptions": [
+      {
+        "text": "Definitions store field blueprint; entries store item data referencing that blueprint.",
+        "isCorrect": true,
+        "feedback": "Exactly: one defines structure, the other stores actual records and values."
+      },
+      {
+        "text": "Definitions store published posts, while entries only store tenant membership roles.",
+        "isCorrect": false,
+        "feedback": "Membership is separate; entries hold content items tied to definitions."
+      },
+      {
+        "text": "Definitions and entries are duplicates kept for backup and rollback only.",
+        "isCorrect": false,
+        "feedback": "They represent distinct responsibilities, not redundant backup copies."
+      },
+      {
+        "text": "Definitions are static SQL views, while entries are temporary cache rows.",
+        "isCorrect": false,
+        "feedback": "The note describes JSON-backed domain entities, not view-cache architecture."
+      }
+    ]
   }
 ]

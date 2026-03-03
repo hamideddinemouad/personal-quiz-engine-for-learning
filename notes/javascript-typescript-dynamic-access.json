@@ -49,5 +49,464 @@
         "feedback": "Garbage collection is unrelated to this return contract and method semantics."
       }
     ]
+  },
+  {
+    "id": "q2",
+    "question": "Which statement is most accurate: In JavaScript, what does `array.push(item)` return?",
+    "hint": "It is not the modified array object.",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "The new length of the array after insertion.",
+        "isCorrect": true,
+        "feedback": "Correct: push mutates the array and returns the updated element count."
+      },
+      {
+        "text": "A new array containing only the pushed item.",
+        "isCorrect": false,
+        "feedback": "Push mutates in place; creating a separate array is not its behavior."
+      },
+      {
+        "text": "The array itself, so methods can always be chained.",
+        "isCorrect": false,
+        "feedback": "This confuses push with fluent APIs; push returns a number, not array."
+      },
+      {
+        "text": "The element that was previously at the last index.",
+        "isCorrect": false,
+        "feedback": "Push does not expose prior tail values; it reports resulting array length."
+      }
+    ],
+    "whyQuestion": "Why is that answer the strongest technically? Why does `push` return length instead of the array value?",
+    "whyOptions": [
+      {
+        "text": "Because the operation's primary immediate result is the updated array size.",
+        "isCorrect": true,
+        "feedback": "Exactly: the method signals post-mutation size, which callers often need immediately."
+      },
+      {
+        "text": "Because JavaScript forbids returning reference types from mutating methods.",
+        "isCorrect": false,
+        "feedback": "JavaScript allows returning references; this is a specific API design choice."
+      },
+      {
+        "text": "Because `push` internally clones arrays and hides the original reference.",
+        "isCorrect": false,
+        "feedback": "Push does not clone by default; it mutates the same array instance."
+      },
+      {
+        "text": "Because returning arrays would break garbage collection in V8.",
+        "isCorrect": false,
+        "feedback": "Garbage collection is unrelated to this return contract and method semantics."
+      }
+    ]
+  },
+  {
+    "id": "q3",
+    "question": "Choose the best technical interpretation: In JavaScript, what does `array.push(item)` return?",
+    "hint": "It is not the modified array object.",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "The new length of the array after insertion.",
+        "isCorrect": true,
+        "feedback": "Correct: push mutates the array and returns the updated element count."
+      },
+      {
+        "text": "A new array containing only the pushed item.",
+        "isCorrect": false,
+        "feedback": "Push mutates in place; creating a separate array is not its behavior."
+      },
+      {
+        "text": "The array itself, so methods can always be chained.",
+        "isCorrect": false,
+        "feedback": "This confuses push with fluent APIs; push returns a number, not array."
+      },
+      {
+        "text": "The element that was previously at the last index.",
+        "isCorrect": false,
+        "feedback": "Push does not expose prior tail values; it reports resulting array length."
+      }
+    ],
+    "whyQuestion": "Why does this option hold in real usage? Why does `push` return length instead of the array value?",
+    "whyOptions": [
+      {
+        "text": "Because the operation's primary immediate result is the updated array size.",
+        "isCorrect": true,
+        "feedback": "Exactly: the method signals post-mutation size, which callers often need immediately."
+      },
+      {
+        "text": "Because JavaScript forbids returning reference types from mutating methods.",
+        "isCorrect": false,
+        "feedback": "JavaScript allows returning references; this is a specific API design choice."
+      },
+      {
+        "text": "Because `push` internally clones arrays and hides the original reference.",
+        "isCorrect": false,
+        "feedback": "Push does not clone by default; it mutates the same array instance."
+      },
+      {
+        "text": "Because returning arrays would break garbage collection in V8.",
+        "isCorrect": false,
+        "feedback": "Garbage collection is unrelated to this return contract and method semantics."
+      }
+    ]
+  },
+  {
+    "id": "q4",
+    "question": "For practical use, which claim is correct: In JavaScript, what does `array.push(item)` return?",
+    "hint": "It is not the modified array object.",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "The new length of the array after insertion.",
+        "isCorrect": true,
+        "feedback": "Correct: push mutates the array and returns the updated element count."
+      },
+      {
+        "text": "A new array containing only the pushed item.",
+        "isCorrect": false,
+        "feedback": "Push mutates in place; creating a separate array is not its behavior."
+      },
+      {
+        "text": "The array itself, so methods can always be chained.",
+        "isCorrect": false,
+        "feedback": "This confuses push with fluent APIs; push returns a number, not array."
+      },
+      {
+        "text": "The element that was previously at the last index.",
+        "isCorrect": false,
+        "feedback": "Push does not expose prior tail values; it reports resulting array length."
+      }
+    ],
+    "whyQuestion": "Why is this interpretation more reliable? Why does `push` return length instead of the array value?",
+    "whyOptions": [
+      {
+        "text": "Because the operation's primary immediate result is the updated array size.",
+        "isCorrect": true,
+        "feedback": "Exactly: the method signals post-mutation size, which callers often need immediately."
+      },
+      {
+        "text": "Because JavaScript forbids returning reference types from mutating methods.",
+        "isCorrect": false,
+        "feedback": "JavaScript allows returning references; this is a specific API design choice."
+      },
+      {
+        "text": "Because `push` internally clones arrays and hides the original reference.",
+        "isCorrect": false,
+        "feedback": "Push does not clone by default; it mutates the same array instance."
+      },
+      {
+        "text": "Because returning arrays would break garbage collection in V8.",
+        "isCorrect": false,
+        "feedback": "Garbage collection is unrelated to this return contract and method semantics."
+      }
+    ]
+  },
+  {
+    "id": "q5",
+    "question": "Identify the option aligned with this note: In JavaScript, what does `array.push(item)` return?",
+    "hint": "It is not the modified array object.",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "The new length of the array after insertion.",
+        "isCorrect": true,
+        "feedback": "Correct: push mutates the array and returns the updated element count."
+      },
+      {
+        "text": "A new array containing only the pushed item.",
+        "isCorrect": false,
+        "feedback": "Push mutates in place; creating a separate array is not its behavior."
+      },
+      {
+        "text": "The array itself, so methods can always be chained.",
+        "isCorrect": false,
+        "feedback": "This confuses push with fluent APIs; push returns a number, not array."
+      },
+      {
+        "text": "The element that was previously at the last index.",
+        "isCorrect": false,
+        "feedback": "Push does not expose prior tail values; it reports resulting array length."
+      }
+    ],
+    "whyQuestion": "Why is this rule preferred in practice? Why does `push` return length instead of the array value?",
+    "whyOptions": [
+      {
+        "text": "Because the operation's primary immediate result is the updated array size.",
+        "isCorrect": true,
+        "feedback": "Exactly: the method signals post-mutation size, which callers often need immediately."
+      },
+      {
+        "text": "Because JavaScript forbids returning reference types from mutating methods.",
+        "isCorrect": false,
+        "feedback": "JavaScript allows returning references; this is a specific API design choice."
+      },
+      {
+        "text": "Because `push` internally clones arrays and hides the original reference.",
+        "isCorrect": false,
+        "feedback": "Push does not clone by default; it mutates the same array instance."
+      },
+      {
+        "text": "Because returning arrays would break garbage collection in V8.",
+        "isCorrect": false,
+        "feedback": "Garbage collection is unrelated to this return contract and method semantics."
+      }
+    ]
+  },
+  {
+    "id": "q6",
+    "question": "In a code review, which statement holds: In JavaScript, what does `array.push(item)` return?",
+    "hint": "It is not the modified array object.",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "The new length of the array after insertion.",
+        "isCorrect": true,
+        "feedback": "Correct: push mutates the array and returns the updated element count."
+      },
+      {
+        "text": "A new array containing only the pushed item.",
+        "isCorrect": false,
+        "feedback": "Push mutates in place; creating a separate array is not its behavior."
+      },
+      {
+        "text": "The array itself, so methods can always be chained.",
+        "isCorrect": false,
+        "feedback": "This confuses push with fluent APIs; push returns a number, not array."
+      },
+      {
+        "text": "The element that was previously at the last index.",
+        "isCorrect": false,
+        "feedback": "Push does not expose prior tail values; it reports resulting array length."
+      }
+    ],
+    "whyQuestion": "Why does this avoid the common misconception? Why does `push` return length instead of the array value?",
+    "whyOptions": [
+      {
+        "text": "Because the operation's primary immediate result is the updated array size.",
+        "isCorrect": true,
+        "feedback": "Exactly: the method signals post-mutation size, which callers often need immediately."
+      },
+      {
+        "text": "Because JavaScript forbids returning reference types from mutating methods.",
+        "isCorrect": false,
+        "feedback": "JavaScript allows returning references; this is a specific API design choice."
+      },
+      {
+        "text": "Because `push` internally clones arrays and hides the original reference.",
+        "isCorrect": false,
+        "feedback": "Push does not clone by default; it mutates the same array instance."
+      },
+      {
+        "text": "Because returning arrays would break garbage collection in V8.",
+        "isCorrect": false,
+        "feedback": "Garbage collection is unrelated to this return contract and method semantics."
+      }
+    ]
+  },
+  {
+    "id": "q7",
+    "question": "Which choice avoids the common misunderstanding: In JavaScript, what does `array.push(item)` return?",
+    "hint": "It is not the modified array object.",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "The new length of the array after insertion.",
+        "isCorrect": true,
+        "feedback": "Correct: push mutates the array and returns the updated element count."
+      },
+      {
+        "text": "A new array containing only the pushed item.",
+        "isCorrect": false,
+        "feedback": "Push mutates in place; creating a separate array is not its behavior."
+      },
+      {
+        "text": "The array itself, so methods can always be chained.",
+        "isCorrect": false,
+        "feedback": "This confuses push with fluent APIs; push returns a number, not array."
+      },
+      {
+        "text": "The element that was previously at the last index.",
+        "isCorrect": false,
+        "feedback": "Push does not expose prior tail values; it reports resulting array length."
+      }
+    ],
+    "whyQuestion": "Why is this the most defensible reasoning? Why does `push` return length instead of the array value?",
+    "whyOptions": [
+      {
+        "text": "Because the operation's primary immediate result is the updated array size.",
+        "isCorrect": true,
+        "feedback": "Exactly: the method signals post-mutation size, which callers often need immediately."
+      },
+      {
+        "text": "Because JavaScript forbids returning reference types from mutating methods.",
+        "isCorrect": false,
+        "feedback": "JavaScript allows returning references; this is a specific API design choice."
+      },
+      {
+        "text": "Because `push` internally clones arrays and hides the original reference.",
+        "isCorrect": false,
+        "feedback": "Push does not clone by default; it mutates the same array instance."
+      },
+      {
+        "text": "Because returning arrays would break garbage collection in V8.",
+        "isCorrect": false,
+        "feedback": "Garbage collection is unrelated to this return contract and method semantics."
+      }
+    ]
+  },
+  {
+    "id": "q8",
+    "question": "Select the strongest rule from this topic: In JavaScript, what does `array.push(item)` return?",
+    "hint": "It is not the modified array object.",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "The new length of the array after insertion.",
+        "isCorrect": true,
+        "feedback": "Correct: push mutates the array and returns the updated element count."
+      },
+      {
+        "text": "A new array containing only the pushed item.",
+        "isCorrect": false,
+        "feedback": "Push mutates in place; creating a separate array is not its behavior."
+      },
+      {
+        "text": "The array itself, so methods can always be chained.",
+        "isCorrect": false,
+        "feedback": "This confuses push with fluent APIs; push returns a number, not array."
+      },
+      {
+        "text": "The element that was previously at the last index.",
+        "isCorrect": false,
+        "feedback": "Push does not expose prior tail values; it reports resulting array length."
+      }
+    ],
+    "whyQuestion": "Why does this align with the note intent? Why does `push` return length instead of the array value?",
+    "whyOptions": [
+      {
+        "text": "Because the operation's primary immediate result is the updated array size.",
+        "isCorrect": true,
+        "feedback": "Exactly: the method signals post-mutation size, which callers often need immediately."
+      },
+      {
+        "text": "Because JavaScript forbids returning reference types from mutating methods.",
+        "isCorrect": false,
+        "feedback": "JavaScript allows returning references; this is a specific API design choice."
+      },
+      {
+        "text": "Because `push` internally clones arrays and hides the original reference.",
+        "isCorrect": false,
+        "feedback": "Push does not clone by default; it mutates the same array instance."
+      },
+      {
+        "text": "Because returning arrays would break garbage collection in V8.",
+        "isCorrect": false,
+        "feedback": "Garbage collection is unrelated to this return contract and method semantics."
+      }
+    ]
+  },
+  {
+    "id": "q9",
+    "question": "Which option should be applied in real projects: In JavaScript, what does `array.push(item)` return?",
+    "hint": "It is not the modified array object.",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "The new length of the array after insertion.",
+        "isCorrect": true,
+        "feedback": "Correct: push mutates the array and returns the updated element count."
+      },
+      {
+        "text": "A new array containing only the pushed item.",
+        "isCorrect": false,
+        "feedback": "Push mutates in place; creating a separate array is not its behavior."
+      },
+      {
+        "text": "The array itself, so methods can always be chained.",
+        "isCorrect": false,
+        "feedback": "This confuses push with fluent APIs; push returns a number, not array."
+      },
+      {
+        "text": "The element that was previously at the last index.",
+        "isCorrect": false,
+        "feedback": "Push does not expose prior tail values; it reports resulting array length."
+      }
+    ],
+    "whyQuestion": "Why should engineers trust this explanation? Why does `push` return length instead of the array value?",
+    "whyOptions": [
+      {
+        "text": "Because the operation's primary immediate result is the updated array size.",
+        "isCorrect": true,
+        "feedback": "Exactly: the method signals post-mutation size, which callers often need immediately."
+      },
+      {
+        "text": "Because JavaScript forbids returning reference types from mutating methods.",
+        "isCorrect": false,
+        "feedback": "JavaScript allows returning references; this is a specific API design choice."
+      },
+      {
+        "text": "Because `push` internally clones arrays and hides the original reference.",
+        "isCorrect": false,
+        "feedback": "Push does not clone by default; it mutates the same array instance."
+      },
+      {
+        "text": "Because returning arrays would break garbage collection in V8.",
+        "isCorrect": false,
+        "feedback": "Garbage collection is unrelated to this return contract and method semantics."
+      }
+    ]
+  },
+  {
+    "id": "q10",
+    "question": "Confirm the core concept: In JavaScript, what does `array.push(item)` return?",
+    "hint": "It is not the modified array object.",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "The new length of the array after insertion.",
+        "isCorrect": true,
+        "feedback": "Correct: push mutates the array and returns the updated element count."
+      },
+      {
+        "text": "A new array containing only the pushed item.",
+        "isCorrect": false,
+        "feedback": "Push mutates in place; creating a separate array is not its behavior."
+      },
+      {
+        "text": "The array itself, so methods can always be chained.",
+        "isCorrect": false,
+        "feedback": "This confuses push with fluent APIs; push returns a number, not array."
+      },
+      {
+        "text": "The element that was previously at the last index.",
+        "isCorrect": false,
+        "feedback": "Push does not expose prior tail values; it reports resulting array length."
+      }
+    ],
+    "whyQuestion": "Why is this the correct conceptual takeaway? Why does `push` return length instead of the array value?",
+    "whyOptions": [
+      {
+        "text": "Because the operation's primary immediate result is the updated array size.",
+        "isCorrect": true,
+        "feedback": "Exactly: the method signals post-mutation size, which callers often need immediately."
+      },
+      {
+        "text": "Because JavaScript forbids returning reference types from mutating methods.",
+        "isCorrect": false,
+        "feedback": "JavaScript allows returning references; this is a specific API design choice."
+      },
+      {
+        "text": "Because `push` internally clones arrays and hides the original reference.",
+        "isCorrect": false,
+        "feedback": "Push does not clone by default; it mutates the same array instance."
+      },
+      {
+        "text": "Because returning arrays would break garbage collection in V8.",
+        "isCorrect": false,
+        "feedback": "Garbage collection is unrelated to this return contract and method semantics."
+      }
+    ]
   }
 ]

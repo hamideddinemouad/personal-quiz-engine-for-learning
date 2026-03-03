@@ -48,5 +48,455 @@
         "feedback": "Abstractions still reduce duplication and improve maintainability across suites."
       }
     ]
+  },
+  {
+    "id": "q2",
+    "question": "Which statement is most accurate: What is the primary purpose of smoke tests in a Cypress suite?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Quickly verify critical user journeys before running deeper test coverage.",
+        "isCorrect": true,
+        "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
+      },
+      {
+        "text": "Replace all regression tests so full suites become unnecessary.",
+        "isCorrect": false,
+        "feedback": "Smoke tests are minimal checks and cannot replace comprehensive behavior coverage."
+      },
+      {
+        "text": "Benchmark frontend performance metrics with statistically significant confidence.",
+        "isCorrect": false,
+        "feedback": "Performance benchmarking requires dedicated tooling, not basic smoke scenarios."
+      },
+      {
+        "text": "Validate only fixture file schemas and ignore UI interactions entirely.",
+        "isCorrect": false,
+        "feedback": "Smoke tests focus on user-critical flows, not schema-only fixture validation."
+      }
+    ],
+    "whyQuestion": "Why is that answer the strongest technically? Why run smoke tests before full end-to-end suites?",
+    "whyOptions": [
+      {
+        "text": "They fail fast on major outages, saving time and debugging effort.",
+        "isCorrect": true,
+        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites."
+      },
+      {
+        "text": "They automatically fix flaky tests by rerunning failing commands silently.",
+        "isCorrect": false,
+        "feedback": "Smoke strategy improves sequencing, but does not auto-heal flaky test logic."
+      },
+      {
+        "text": "They guarantee every edge case is covered before release.",
+        "isCorrect": false,
+        "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage."
+      },
+      {
+        "text": "They remove the need for reusable commands and page objects.",
+        "isCorrect": false,
+        "feedback": "Abstractions still reduce duplication and improve maintainability across suites."
+      }
+    ]
+  },
+  {
+    "id": "q3",
+    "question": "Choose the best technical interpretation: What is the primary purpose of smoke tests in a Cypress suite?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Quickly verify critical user journeys before running deeper test coverage.",
+        "isCorrect": true,
+        "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
+      },
+      {
+        "text": "Replace all regression tests so full suites become unnecessary.",
+        "isCorrect": false,
+        "feedback": "Smoke tests are minimal checks and cannot replace comprehensive behavior coverage."
+      },
+      {
+        "text": "Benchmark frontend performance metrics with statistically significant confidence.",
+        "isCorrect": false,
+        "feedback": "Performance benchmarking requires dedicated tooling, not basic smoke scenarios."
+      },
+      {
+        "text": "Validate only fixture file schemas and ignore UI interactions entirely.",
+        "isCorrect": false,
+        "feedback": "Smoke tests focus on user-critical flows, not schema-only fixture validation."
+      }
+    ],
+    "whyQuestion": "Why does this option hold in real usage? Why run smoke tests before full end-to-end suites?",
+    "whyOptions": [
+      {
+        "text": "They fail fast on major outages, saving time and debugging effort.",
+        "isCorrect": true,
+        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites."
+      },
+      {
+        "text": "They automatically fix flaky tests by rerunning failing commands silently.",
+        "isCorrect": false,
+        "feedback": "Smoke strategy improves sequencing, but does not auto-heal flaky test logic."
+      },
+      {
+        "text": "They guarantee every edge case is covered before release.",
+        "isCorrect": false,
+        "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage."
+      },
+      {
+        "text": "They remove the need for reusable commands and page objects.",
+        "isCorrect": false,
+        "feedback": "Abstractions still reduce duplication and improve maintainability across suites."
+      }
+    ]
+  },
+  {
+    "id": "q4",
+    "question": "For practical use, which claim is correct: What is the primary purpose of smoke tests in a Cypress suite?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Quickly verify critical user journeys before running deeper test coverage.",
+        "isCorrect": true,
+        "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
+      },
+      {
+        "text": "Replace all regression tests so full suites become unnecessary.",
+        "isCorrect": false,
+        "feedback": "Smoke tests are minimal checks and cannot replace comprehensive behavior coverage."
+      },
+      {
+        "text": "Benchmark frontend performance metrics with statistically significant confidence.",
+        "isCorrect": false,
+        "feedback": "Performance benchmarking requires dedicated tooling, not basic smoke scenarios."
+      },
+      {
+        "text": "Validate only fixture file schemas and ignore UI interactions entirely.",
+        "isCorrect": false,
+        "feedback": "Smoke tests focus on user-critical flows, not schema-only fixture validation."
+      }
+    ],
+    "whyQuestion": "Why is this interpretation more reliable? Why run smoke tests before full end-to-end suites?",
+    "whyOptions": [
+      {
+        "text": "They fail fast on major outages, saving time and debugging effort.",
+        "isCorrect": true,
+        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites."
+      },
+      {
+        "text": "They automatically fix flaky tests by rerunning failing commands silently.",
+        "isCorrect": false,
+        "feedback": "Smoke strategy improves sequencing, but does not auto-heal flaky test logic."
+      },
+      {
+        "text": "They guarantee every edge case is covered before release.",
+        "isCorrect": false,
+        "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage."
+      },
+      {
+        "text": "They remove the need for reusable commands and page objects.",
+        "isCorrect": false,
+        "feedback": "Abstractions still reduce duplication and improve maintainability across suites."
+      }
+    ]
+  },
+  {
+    "id": "q5",
+    "question": "Identify the option aligned with this note: What is the primary purpose of smoke tests in a Cypress suite?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Quickly verify critical user journeys before running deeper test coverage.",
+        "isCorrect": true,
+        "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
+      },
+      {
+        "text": "Replace all regression tests so full suites become unnecessary.",
+        "isCorrect": false,
+        "feedback": "Smoke tests are minimal checks and cannot replace comprehensive behavior coverage."
+      },
+      {
+        "text": "Benchmark frontend performance metrics with statistically significant confidence.",
+        "isCorrect": false,
+        "feedback": "Performance benchmarking requires dedicated tooling, not basic smoke scenarios."
+      },
+      {
+        "text": "Validate only fixture file schemas and ignore UI interactions entirely.",
+        "isCorrect": false,
+        "feedback": "Smoke tests focus on user-critical flows, not schema-only fixture validation."
+      }
+    ],
+    "whyQuestion": "Why is this rule preferred in practice? Why run smoke tests before full end-to-end suites?",
+    "whyOptions": [
+      {
+        "text": "They fail fast on major outages, saving time and debugging effort.",
+        "isCorrect": true,
+        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites."
+      },
+      {
+        "text": "They automatically fix flaky tests by rerunning failing commands silently.",
+        "isCorrect": false,
+        "feedback": "Smoke strategy improves sequencing, but does not auto-heal flaky test logic."
+      },
+      {
+        "text": "They guarantee every edge case is covered before release.",
+        "isCorrect": false,
+        "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage."
+      },
+      {
+        "text": "They remove the need for reusable commands and page objects.",
+        "isCorrect": false,
+        "feedback": "Abstractions still reduce duplication and improve maintainability across suites."
+      }
+    ]
+  },
+  {
+    "id": "q6",
+    "question": "In a code review, which statement holds: What is the primary purpose of smoke tests in a Cypress suite?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Quickly verify critical user journeys before running deeper test coverage.",
+        "isCorrect": true,
+        "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
+      },
+      {
+        "text": "Replace all regression tests so full suites become unnecessary.",
+        "isCorrect": false,
+        "feedback": "Smoke tests are minimal checks and cannot replace comprehensive behavior coverage."
+      },
+      {
+        "text": "Benchmark frontend performance metrics with statistically significant confidence.",
+        "isCorrect": false,
+        "feedback": "Performance benchmarking requires dedicated tooling, not basic smoke scenarios."
+      },
+      {
+        "text": "Validate only fixture file schemas and ignore UI interactions entirely.",
+        "isCorrect": false,
+        "feedback": "Smoke tests focus on user-critical flows, not schema-only fixture validation."
+      }
+    ],
+    "whyQuestion": "Why does this avoid the common misconception? Why run smoke tests before full end-to-end suites?",
+    "whyOptions": [
+      {
+        "text": "They fail fast on major outages, saving time and debugging effort.",
+        "isCorrect": true,
+        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites."
+      },
+      {
+        "text": "They automatically fix flaky tests by rerunning failing commands silently.",
+        "isCorrect": false,
+        "feedback": "Smoke strategy improves sequencing, but does not auto-heal flaky test logic."
+      },
+      {
+        "text": "They guarantee every edge case is covered before release.",
+        "isCorrect": false,
+        "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage."
+      },
+      {
+        "text": "They remove the need for reusable commands and page objects.",
+        "isCorrect": false,
+        "feedback": "Abstractions still reduce duplication and improve maintainability across suites."
+      }
+    ]
+  },
+  {
+    "id": "q7",
+    "question": "Which choice avoids the common misunderstanding: What is the primary purpose of smoke tests in a Cypress suite?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Quickly verify critical user journeys before running deeper test coverage.",
+        "isCorrect": true,
+        "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
+      },
+      {
+        "text": "Replace all regression tests so full suites become unnecessary.",
+        "isCorrect": false,
+        "feedback": "Smoke tests are minimal checks and cannot replace comprehensive behavior coverage."
+      },
+      {
+        "text": "Benchmark frontend performance metrics with statistically significant confidence.",
+        "isCorrect": false,
+        "feedback": "Performance benchmarking requires dedicated tooling, not basic smoke scenarios."
+      },
+      {
+        "text": "Validate only fixture file schemas and ignore UI interactions entirely.",
+        "isCorrect": false,
+        "feedback": "Smoke tests focus on user-critical flows, not schema-only fixture validation."
+      }
+    ],
+    "whyQuestion": "Why is this the most defensible reasoning? Why run smoke tests before full end-to-end suites?",
+    "whyOptions": [
+      {
+        "text": "They fail fast on major outages, saving time and debugging effort.",
+        "isCorrect": true,
+        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites."
+      },
+      {
+        "text": "They automatically fix flaky tests by rerunning failing commands silently.",
+        "isCorrect": false,
+        "feedback": "Smoke strategy improves sequencing, but does not auto-heal flaky test logic."
+      },
+      {
+        "text": "They guarantee every edge case is covered before release.",
+        "isCorrect": false,
+        "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage."
+      },
+      {
+        "text": "They remove the need for reusable commands and page objects.",
+        "isCorrect": false,
+        "feedback": "Abstractions still reduce duplication and improve maintainability across suites."
+      }
+    ]
+  },
+  {
+    "id": "q8",
+    "question": "Select the strongest rule from this topic: What is the primary purpose of smoke tests in a Cypress suite?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Quickly verify critical user journeys before running deeper test coverage.",
+        "isCorrect": true,
+        "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
+      },
+      {
+        "text": "Replace all regression tests so full suites become unnecessary.",
+        "isCorrect": false,
+        "feedback": "Smoke tests are minimal checks and cannot replace comprehensive behavior coverage."
+      },
+      {
+        "text": "Benchmark frontend performance metrics with statistically significant confidence.",
+        "isCorrect": false,
+        "feedback": "Performance benchmarking requires dedicated tooling, not basic smoke scenarios."
+      },
+      {
+        "text": "Validate only fixture file schemas and ignore UI interactions entirely.",
+        "isCorrect": false,
+        "feedback": "Smoke tests focus on user-critical flows, not schema-only fixture validation."
+      }
+    ],
+    "whyQuestion": "Why does this align with the note intent? Why run smoke tests before full end-to-end suites?",
+    "whyOptions": [
+      {
+        "text": "They fail fast on major outages, saving time and debugging effort.",
+        "isCorrect": true,
+        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites."
+      },
+      {
+        "text": "They automatically fix flaky tests by rerunning failing commands silently.",
+        "isCorrect": false,
+        "feedback": "Smoke strategy improves sequencing, but does not auto-heal flaky test logic."
+      },
+      {
+        "text": "They guarantee every edge case is covered before release.",
+        "isCorrect": false,
+        "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage."
+      },
+      {
+        "text": "They remove the need for reusable commands and page objects.",
+        "isCorrect": false,
+        "feedback": "Abstractions still reduce duplication and improve maintainability across suites."
+      }
+    ]
+  },
+  {
+    "id": "q9",
+    "question": "Which option should be applied in real projects: What is the primary purpose of smoke tests in a Cypress suite?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Quickly verify critical user journeys before running deeper test coverage.",
+        "isCorrect": true,
+        "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
+      },
+      {
+        "text": "Replace all regression tests so full suites become unnecessary.",
+        "isCorrect": false,
+        "feedback": "Smoke tests are minimal checks and cannot replace comprehensive behavior coverage."
+      },
+      {
+        "text": "Benchmark frontend performance metrics with statistically significant confidence.",
+        "isCorrect": false,
+        "feedback": "Performance benchmarking requires dedicated tooling, not basic smoke scenarios."
+      },
+      {
+        "text": "Validate only fixture file schemas and ignore UI interactions entirely.",
+        "isCorrect": false,
+        "feedback": "Smoke tests focus on user-critical flows, not schema-only fixture validation."
+      }
+    ],
+    "whyQuestion": "Why should engineers trust this explanation? Why run smoke tests before full end-to-end suites?",
+    "whyOptions": [
+      {
+        "text": "They fail fast on major outages, saving time and debugging effort.",
+        "isCorrect": true,
+        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites."
+      },
+      {
+        "text": "They automatically fix flaky tests by rerunning failing commands silently.",
+        "isCorrect": false,
+        "feedback": "Smoke strategy improves sequencing, but does not auto-heal flaky test logic."
+      },
+      {
+        "text": "They guarantee every edge case is covered before release.",
+        "isCorrect": false,
+        "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage."
+      },
+      {
+        "text": "They remove the need for reusable commands and page objects.",
+        "isCorrect": false,
+        "feedback": "Abstractions still reduce duplication and improve maintainability across suites."
+      }
+    ]
+  },
+  {
+    "id": "q10",
+    "question": "Confirm the core concept: What is the primary purpose of smoke tests in a Cypress suite?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Quickly verify critical user journeys before running deeper test coverage.",
+        "isCorrect": true,
+        "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
+      },
+      {
+        "text": "Replace all regression tests so full suites become unnecessary.",
+        "isCorrect": false,
+        "feedback": "Smoke tests are minimal checks and cannot replace comprehensive behavior coverage."
+      },
+      {
+        "text": "Benchmark frontend performance metrics with statistically significant confidence.",
+        "isCorrect": false,
+        "feedback": "Performance benchmarking requires dedicated tooling, not basic smoke scenarios."
+      },
+      {
+        "text": "Validate only fixture file schemas and ignore UI interactions entirely.",
+        "isCorrect": false,
+        "feedback": "Smoke tests focus on user-critical flows, not schema-only fixture validation."
+      }
+    ],
+    "whyQuestion": "Why is this the correct conceptual takeaway? Why run smoke tests before full end-to-end suites?",
+    "whyOptions": [
+      {
+        "text": "They fail fast on major outages, saving time and debugging effort.",
+        "isCorrect": true,
+        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites."
+      },
+      {
+        "text": "They automatically fix flaky tests by rerunning failing commands silently.",
+        "isCorrect": false,
+        "feedback": "Smoke strategy improves sequencing, but does not auto-heal flaky test logic."
+      },
+      {
+        "text": "They guarantee every edge case is covered before release.",
+        "isCorrect": false,
+        "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage."
+      },
+      {
+        "text": "They remove the need for reusable commands and page objects.",
+        "isCorrect": false,
+        "feedback": "Abstractions still reduce duplication and improve maintainability across suites."
+      }
+    ]
   }
 ]

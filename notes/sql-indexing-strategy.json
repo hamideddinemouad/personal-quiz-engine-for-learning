@@ -48,5 +48,455 @@
         "feedback": "Indexes often speed filtering and joins, not just sort operations."
       }
     ]
+  },
+  {
+    "id": "q2",
+    "question": "Which statement is most accurate: When is indexing a column usually a bad tradeoff according to the notes?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "When writes dominate and the column is rarely filtered or joined.",
+        "isCorrect": true,
+        "feedback": "Correct: index maintenance adds write overhead without enough query benefit."
+      },
+      {
+        "text": "When queries frequently use selective `WHERE` conditions on that column.",
+        "isCorrect": false,
+        "feedback": "That is a strong indexing case because selective reads gain speed."
+      },
+      {
+        "text": "When the column appears in join predicates across large tables.",
+        "isCorrect": false,
+        "feedback": "Join keys are common index targets to reduce expensive table scans."
+      },
+      {
+        "text": "When reads heavily outnumber writes and latency is query-bound.",
+        "isCorrect": false,
+        "feedback": "Read-heavy selective workloads typically benefit from proper indexing."
+      }
+    ],
+    "whyQuestion": "Why is that answer the strongest technically? Why can an index hurt write-heavy workloads?",
+    "whyOptions": [
+      {
+        "text": "Because inserts and updates must also maintain index structures on each write.",
+        "isCorrect": true,
+        "feedback": "Exactly: every write now updates extra data structures, increasing total cost."
+      },
+      {
+        "text": "Because indexes disable transaction commits until manual vacuum runs.",
+        "isCorrect": false,
+        "feedback": "Transactions commit normally; index cost is maintenance, not commit disabling."
+      },
+      {
+        "text": "Because query planners ignore indexed columns for equality comparisons.",
+        "isCorrect": false,
+        "feedback": "Planners often prefer indexes for selective equality predicates, not ignore them."
+      },
+      {
+        "text": "Because indexes only accelerate sorting and never help filtering operations.",
+        "isCorrect": false,
+        "feedback": "Indexes often speed filtering and joins, not just sort operations."
+      }
+    ]
+  },
+  {
+    "id": "q3",
+    "question": "Choose the best technical interpretation: When is indexing a column usually a bad tradeoff according to the notes?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "When writes dominate and the column is rarely filtered or joined.",
+        "isCorrect": true,
+        "feedback": "Correct: index maintenance adds write overhead without enough query benefit."
+      },
+      {
+        "text": "When queries frequently use selective `WHERE` conditions on that column.",
+        "isCorrect": false,
+        "feedback": "That is a strong indexing case because selective reads gain speed."
+      },
+      {
+        "text": "When the column appears in join predicates across large tables.",
+        "isCorrect": false,
+        "feedback": "Join keys are common index targets to reduce expensive table scans."
+      },
+      {
+        "text": "When reads heavily outnumber writes and latency is query-bound.",
+        "isCorrect": false,
+        "feedback": "Read-heavy selective workloads typically benefit from proper indexing."
+      }
+    ],
+    "whyQuestion": "Why does this option hold in real usage? Why can an index hurt write-heavy workloads?",
+    "whyOptions": [
+      {
+        "text": "Because inserts and updates must also maintain index structures on each write.",
+        "isCorrect": true,
+        "feedback": "Exactly: every write now updates extra data structures, increasing total cost."
+      },
+      {
+        "text": "Because indexes disable transaction commits until manual vacuum runs.",
+        "isCorrect": false,
+        "feedback": "Transactions commit normally; index cost is maintenance, not commit disabling."
+      },
+      {
+        "text": "Because query planners ignore indexed columns for equality comparisons.",
+        "isCorrect": false,
+        "feedback": "Planners often prefer indexes for selective equality predicates, not ignore them."
+      },
+      {
+        "text": "Because indexes only accelerate sorting and never help filtering operations.",
+        "isCorrect": false,
+        "feedback": "Indexes often speed filtering and joins, not just sort operations."
+      }
+    ]
+  },
+  {
+    "id": "q4",
+    "question": "For practical use, which claim is correct: When is indexing a column usually a bad tradeoff according to the notes?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "When writes dominate and the column is rarely filtered or joined.",
+        "isCorrect": true,
+        "feedback": "Correct: index maintenance adds write overhead without enough query benefit."
+      },
+      {
+        "text": "When queries frequently use selective `WHERE` conditions on that column.",
+        "isCorrect": false,
+        "feedback": "That is a strong indexing case because selective reads gain speed."
+      },
+      {
+        "text": "When the column appears in join predicates across large tables.",
+        "isCorrect": false,
+        "feedback": "Join keys are common index targets to reduce expensive table scans."
+      },
+      {
+        "text": "When reads heavily outnumber writes and latency is query-bound.",
+        "isCorrect": false,
+        "feedback": "Read-heavy selective workloads typically benefit from proper indexing."
+      }
+    ],
+    "whyQuestion": "Why is this interpretation more reliable? Why can an index hurt write-heavy workloads?",
+    "whyOptions": [
+      {
+        "text": "Because inserts and updates must also maintain index structures on each write.",
+        "isCorrect": true,
+        "feedback": "Exactly: every write now updates extra data structures, increasing total cost."
+      },
+      {
+        "text": "Because indexes disable transaction commits until manual vacuum runs.",
+        "isCorrect": false,
+        "feedback": "Transactions commit normally; index cost is maintenance, not commit disabling."
+      },
+      {
+        "text": "Because query planners ignore indexed columns for equality comparisons.",
+        "isCorrect": false,
+        "feedback": "Planners often prefer indexes for selective equality predicates, not ignore them."
+      },
+      {
+        "text": "Because indexes only accelerate sorting and never help filtering operations.",
+        "isCorrect": false,
+        "feedback": "Indexes often speed filtering and joins, not just sort operations."
+      }
+    ]
+  },
+  {
+    "id": "q5",
+    "question": "Identify the option aligned with this note: When is indexing a column usually a bad tradeoff according to the notes?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "When writes dominate and the column is rarely filtered or joined.",
+        "isCorrect": true,
+        "feedback": "Correct: index maintenance adds write overhead without enough query benefit."
+      },
+      {
+        "text": "When queries frequently use selective `WHERE` conditions on that column.",
+        "isCorrect": false,
+        "feedback": "That is a strong indexing case because selective reads gain speed."
+      },
+      {
+        "text": "When the column appears in join predicates across large tables.",
+        "isCorrect": false,
+        "feedback": "Join keys are common index targets to reduce expensive table scans."
+      },
+      {
+        "text": "When reads heavily outnumber writes and latency is query-bound.",
+        "isCorrect": false,
+        "feedback": "Read-heavy selective workloads typically benefit from proper indexing."
+      }
+    ],
+    "whyQuestion": "Why is this rule preferred in practice? Why can an index hurt write-heavy workloads?",
+    "whyOptions": [
+      {
+        "text": "Because inserts and updates must also maintain index structures on each write.",
+        "isCorrect": true,
+        "feedback": "Exactly: every write now updates extra data structures, increasing total cost."
+      },
+      {
+        "text": "Because indexes disable transaction commits until manual vacuum runs.",
+        "isCorrect": false,
+        "feedback": "Transactions commit normally; index cost is maintenance, not commit disabling."
+      },
+      {
+        "text": "Because query planners ignore indexed columns for equality comparisons.",
+        "isCorrect": false,
+        "feedback": "Planners often prefer indexes for selective equality predicates, not ignore them."
+      },
+      {
+        "text": "Because indexes only accelerate sorting and never help filtering operations.",
+        "isCorrect": false,
+        "feedback": "Indexes often speed filtering and joins, not just sort operations."
+      }
+    ]
+  },
+  {
+    "id": "q6",
+    "question": "In a code review, which statement holds: When is indexing a column usually a bad tradeoff according to the notes?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "When writes dominate and the column is rarely filtered or joined.",
+        "isCorrect": true,
+        "feedback": "Correct: index maintenance adds write overhead without enough query benefit."
+      },
+      {
+        "text": "When queries frequently use selective `WHERE` conditions on that column.",
+        "isCorrect": false,
+        "feedback": "That is a strong indexing case because selective reads gain speed."
+      },
+      {
+        "text": "When the column appears in join predicates across large tables.",
+        "isCorrect": false,
+        "feedback": "Join keys are common index targets to reduce expensive table scans."
+      },
+      {
+        "text": "When reads heavily outnumber writes and latency is query-bound.",
+        "isCorrect": false,
+        "feedback": "Read-heavy selective workloads typically benefit from proper indexing."
+      }
+    ],
+    "whyQuestion": "Why does this avoid the common misconception? Why can an index hurt write-heavy workloads?",
+    "whyOptions": [
+      {
+        "text": "Because inserts and updates must also maintain index structures on each write.",
+        "isCorrect": true,
+        "feedback": "Exactly: every write now updates extra data structures, increasing total cost."
+      },
+      {
+        "text": "Because indexes disable transaction commits until manual vacuum runs.",
+        "isCorrect": false,
+        "feedback": "Transactions commit normally; index cost is maintenance, not commit disabling."
+      },
+      {
+        "text": "Because query planners ignore indexed columns for equality comparisons.",
+        "isCorrect": false,
+        "feedback": "Planners often prefer indexes for selective equality predicates, not ignore them."
+      },
+      {
+        "text": "Because indexes only accelerate sorting and never help filtering operations.",
+        "isCorrect": false,
+        "feedback": "Indexes often speed filtering and joins, not just sort operations."
+      }
+    ]
+  },
+  {
+    "id": "q7",
+    "question": "Which choice avoids the common misunderstanding: When is indexing a column usually a bad tradeoff according to the notes?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "When writes dominate and the column is rarely filtered or joined.",
+        "isCorrect": true,
+        "feedback": "Correct: index maintenance adds write overhead without enough query benefit."
+      },
+      {
+        "text": "When queries frequently use selective `WHERE` conditions on that column.",
+        "isCorrect": false,
+        "feedback": "That is a strong indexing case because selective reads gain speed."
+      },
+      {
+        "text": "When the column appears in join predicates across large tables.",
+        "isCorrect": false,
+        "feedback": "Join keys are common index targets to reduce expensive table scans."
+      },
+      {
+        "text": "When reads heavily outnumber writes and latency is query-bound.",
+        "isCorrect": false,
+        "feedback": "Read-heavy selective workloads typically benefit from proper indexing."
+      }
+    ],
+    "whyQuestion": "Why is this the most defensible reasoning? Why can an index hurt write-heavy workloads?",
+    "whyOptions": [
+      {
+        "text": "Because inserts and updates must also maintain index structures on each write.",
+        "isCorrect": true,
+        "feedback": "Exactly: every write now updates extra data structures, increasing total cost."
+      },
+      {
+        "text": "Because indexes disable transaction commits until manual vacuum runs.",
+        "isCorrect": false,
+        "feedback": "Transactions commit normally; index cost is maintenance, not commit disabling."
+      },
+      {
+        "text": "Because query planners ignore indexed columns for equality comparisons.",
+        "isCorrect": false,
+        "feedback": "Planners often prefer indexes for selective equality predicates, not ignore them."
+      },
+      {
+        "text": "Because indexes only accelerate sorting and never help filtering operations.",
+        "isCorrect": false,
+        "feedback": "Indexes often speed filtering and joins, not just sort operations."
+      }
+    ]
+  },
+  {
+    "id": "q8",
+    "question": "Select the strongest rule from this topic: When is indexing a column usually a bad tradeoff according to the notes?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "When writes dominate and the column is rarely filtered or joined.",
+        "isCorrect": true,
+        "feedback": "Correct: index maintenance adds write overhead without enough query benefit."
+      },
+      {
+        "text": "When queries frequently use selective `WHERE` conditions on that column.",
+        "isCorrect": false,
+        "feedback": "That is a strong indexing case because selective reads gain speed."
+      },
+      {
+        "text": "When the column appears in join predicates across large tables.",
+        "isCorrect": false,
+        "feedback": "Join keys are common index targets to reduce expensive table scans."
+      },
+      {
+        "text": "When reads heavily outnumber writes and latency is query-bound.",
+        "isCorrect": false,
+        "feedback": "Read-heavy selective workloads typically benefit from proper indexing."
+      }
+    ],
+    "whyQuestion": "Why does this align with the note intent? Why can an index hurt write-heavy workloads?",
+    "whyOptions": [
+      {
+        "text": "Because inserts and updates must also maintain index structures on each write.",
+        "isCorrect": true,
+        "feedback": "Exactly: every write now updates extra data structures, increasing total cost."
+      },
+      {
+        "text": "Because indexes disable transaction commits until manual vacuum runs.",
+        "isCorrect": false,
+        "feedback": "Transactions commit normally; index cost is maintenance, not commit disabling."
+      },
+      {
+        "text": "Because query planners ignore indexed columns for equality comparisons.",
+        "isCorrect": false,
+        "feedback": "Planners often prefer indexes for selective equality predicates, not ignore them."
+      },
+      {
+        "text": "Because indexes only accelerate sorting and never help filtering operations.",
+        "isCorrect": false,
+        "feedback": "Indexes often speed filtering and joins, not just sort operations."
+      }
+    ]
+  },
+  {
+    "id": "q9",
+    "question": "Which option should be applied in real projects: When is indexing a column usually a bad tradeoff according to the notes?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "When writes dominate and the column is rarely filtered or joined.",
+        "isCorrect": true,
+        "feedback": "Correct: index maintenance adds write overhead without enough query benefit."
+      },
+      {
+        "text": "When queries frequently use selective `WHERE` conditions on that column.",
+        "isCorrect": false,
+        "feedback": "That is a strong indexing case because selective reads gain speed."
+      },
+      {
+        "text": "When the column appears in join predicates across large tables.",
+        "isCorrect": false,
+        "feedback": "Join keys are common index targets to reduce expensive table scans."
+      },
+      {
+        "text": "When reads heavily outnumber writes and latency is query-bound.",
+        "isCorrect": false,
+        "feedback": "Read-heavy selective workloads typically benefit from proper indexing."
+      }
+    ],
+    "whyQuestion": "Why should engineers trust this explanation? Why can an index hurt write-heavy workloads?",
+    "whyOptions": [
+      {
+        "text": "Because inserts and updates must also maintain index structures on each write.",
+        "isCorrect": true,
+        "feedback": "Exactly: every write now updates extra data structures, increasing total cost."
+      },
+      {
+        "text": "Because indexes disable transaction commits until manual vacuum runs.",
+        "isCorrect": false,
+        "feedback": "Transactions commit normally; index cost is maintenance, not commit disabling."
+      },
+      {
+        "text": "Because query planners ignore indexed columns for equality comparisons.",
+        "isCorrect": false,
+        "feedback": "Planners often prefer indexes for selective equality predicates, not ignore them."
+      },
+      {
+        "text": "Because indexes only accelerate sorting and never help filtering operations.",
+        "isCorrect": false,
+        "feedback": "Indexes often speed filtering and joins, not just sort operations."
+      }
+    ]
+  },
+  {
+    "id": "q10",
+    "question": "Confirm the core concept: When is indexing a column usually a bad tradeoff according to the notes?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "When writes dominate and the column is rarely filtered or joined.",
+        "isCorrect": true,
+        "feedback": "Correct: index maintenance adds write overhead without enough query benefit."
+      },
+      {
+        "text": "When queries frequently use selective `WHERE` conditions on that column.",
+        "isCorrect": false,
+        "feedback": "That is a strong indexing case because selective reads gain speed."
+      },
+      {
+        "text": "When the column appears in join predicates across large tables.",
+        "isCorrect": false,
+        "feedback": "Join keys are common index targets to reduce expensive table scans."
+      },
+      {
+        "text": "When reads heavily outnumber writes and latency is query-bound.",
+        "isCorrect": false,
+        "feedback": "Read-heavy selective workloads typically benefit from proper indexing."
+      }
+    ],
+    "whyQuestion": "Why is this the correct conceptual takeaway? Why can an index hurt write-heavy workloads?",
+    "whyOptions": [
+      {
+        "text": "Because inserts and updates must also maintain index structures on each write.",
+        "isCorrect": true,
+        "feedback": "Exactly: every write now updates extra data structures, increasing total cost."
+      },
+      {
+        "text": "Because indexes disable transaction commits until manual vacuum runs.",
+        "isCorrect": false,
+        "feedback": "Transactions commit normally; index cost is maintenance, not commit disabling."
+      },
+      {
+        "text": "Because query planners ignore indexed columns for equality comparisons.",
+        "isCorrect": false,
+        "feedback": "Planners often prefer indexes for selective equality predicates, not ignore them."
+      },
+      {
+        "text": "Because indexes only accelerate sorting and never help filtering operations.",
+        "isCorrect": false,
+        "feedback": "Indexes often speed filtering and joins, not just sort operations."
+      }
+    ]
   }
 ]

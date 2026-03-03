@@ -48,5 +48,455 @@
         "feedback": "Validation semantics are separate from authorization outcomes and status codes."
       }
     ]
+  },
+  {
+    "id": "q2",
+    "question": "Which statement is most accurate: A user is authenticated but lacks permission for the action. Which Nest exception fits?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "`ForbiddenException` with HTTP 403.",
+        "isCorrect": true,
+        "feedback": "Correct: user identity is valid, but policy denies requested resource access."
+      },
+      {
+        "text": "`UnauthorizedException` with HTTP 401.",
+        "isCorrect": false,
+        "feedback": "401 means missing or invalid authentication credentials, not denied authorization."
+      },
+      {
+        "text": "`NotFoundException` with HTTP 404.",
+        "isCorrect": false,
+        "feedback": "404 indicates missing resource, not insufficient permission for existing resource."
+      },
+      {
+        "text": "`ConflictException` with HTTP 409.",
+        "isCorrect": false,
+        "feedback": "409 represents state conflicts, such as duplicate records, not access control."
+      }
+    ],
+    "whyQuestion": "Why is that answer the strongest technically? Why is 403 distinct from 401 in access-control flows?",
+    "whyOptions": [
+      {
+        "text": "403 means authenticated identity exists, but allowed action checks failed.",
+        "isCorrect": true,
+        "feedback": "Exactly: authentication succeeded, yet authorization policy blocks the operation."
+      },
+      {
+        "text": "403 means token is malformed and cannot be decoded by server.",
+        "isCorrect": false,
+        "feedback": "Malformed or missing credentials map to 401 authentication failures instead."
+      },
+      {
+        "text": "403 means requested route does not exist in controller mapping.",
+        "isCorrect": false,
+        "feedback": "Missing routes typically return 404, unrelated to permissions."
+      },
+      {
+        "text": "403 means request body failed semantic validation and needs 422.",
+        "isCorrect": false,
+        "feedback": "Validation semantics are separate from authorization outcomes and status codes."
+      }
+    ]
+  },
+  {
+    "id": "q3",
+    "question": "Choose the best technical interpretation: A user is authenticated but lacks permission for the action. Which Nest exception fits?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "`ForbiddenException` with HTTP 403.",
+        "isCorrect": true,
+        "feedback": "Correct: user identity is valid, but policy denies requested resource access."
+      },
+      {
+        "text": "`UnauthorizedException` with HTTP 401.",
+        "isCorrect": false,
+        "feedback": "401 means missing or invalid authentication credentials, not denied authorization."
+      },
+      {
+        "text": "`NotFoundException` with HTTP 404.",
+        "isCorrect": false,
+        "feedback": "404 indicates missing resource, not insufficient permission for existing resource."
+      },
+      {
+        "text": "`ConflictException` with HTTP 409.",
+        "isCorrect": false,
+        "feedback": "409 represents state conflicts, such as duplicate records, not access control."
+      }
+    ],
+    "whyQuestion": "Why does this option hold in real usage? Why is 403 distinct from 401 in access-control flows?",
+    "whyOptions": [
+      {
+        "text": "403 means authenticated identity exists, but allowed action checks failed.",
+        "isCorrect": true,
+        "feedback": "Exactly: authentication succeeded, yet authorization policy blocks the operation."
+      },
+      {
+        "text": "403 means token is malformed and cannot be decoded by server.",
+        "isCorrect": false,
+        "feedback": "Malformed or missing credentials map to 401 authentication failures instead."
+      },
+      {
+        "text": "403 means requested route does not exist in controller mapping.",
+        "isCorrect": false,
+        "feedback": "Missing routes typically return 404, unrelated to permissions."
+      },
+      {
+        "text": "403 means request body failed semantic validation and needs 422.",
+        "isCorrect": false,
+        "feedback": "Validation semantics are separate from authorization outcomes and status codes."
+      }
+    ]
+  },
+  {
+    "id": "q4",
+    "question": "For practical use, which claim is correct: A user is authenticated but lacks permission for the action. Which Nest exception fits?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "`ForbiddenException` with HTTP 403.",
+        "isCorrect": true,
+        "feedback": "Correct: user identity is valid, but policy denies requested resource access."
+      },
+      {
+        "text": "`UnauthorizedException` with HTTP 401.",
+        "isCorrect": false,
+        "feedback": "401 means missing or invalid authentication credentials, not denied authorization."
+      },
+      {
+        "text": "`NotFoundException` with HTTP 404.",
+        "isCorrect": false,
+        "feedback": "404 indicates missing resource, not insufficient permission for existing resource."
+      },
+      {
+        "text": "`ConflictException` with HTTP 409.",
+        "isCorrect": false,
+        "feedback": "409 represents state conflicts, such as duplicate records, not access control."
+      }
+    ],
+    "whyQuestion": "Why is this interpretation more reliable? Why is 403 distinct from 401 in access-control flows?",
+    "whyOptions": [
+      {
+        "text": "403 means authenticated identity exists, but allowed action checks failed.",
+        "isCorrect": true,
+        "feedback": "Exactly: authentication succeeded, yet authorization policy blocks the operation."
+      },
+      {
+        "text": "403 means token is malformed and cannot be decoded by server.",
+        "isCorrect": false,
+        "feedback": "Malformed or missing credentials map to 401 authentication failures instead."
+      },
+      {
+        "text": "403 means requested route does not exist in controller mapping.",
+        "isCorrect": false,
+        "feedback": "Missing routes typically return 404, unrelated to permissions."
+      },
+      {
+        "text": "403 means request body failed semantic validation and needs 422.",
+        "isCorrect": false,
+        "feedback": "Validation semantics are separate from authorization outcomes and status codes."
+      }
+    ]
+  },
+  {
+    "id": "q5",
+    "question": "Identify the option aligned with this note: A user is authenticated but lacks permission for the action. Which Nest exception fits?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "`ForbiddenException` with HTTP 403.",
+        "isCorrect": true,
+        "feedback": "Correct: user identity is valid, but policy denies requested resource access."
+      },
+      {
+        "text": "`UnauthorizedException` with HTTP 401.",
+        "isCorrect": false,
+        "feedback": "401 means missing or invalid authentication credentials, not denied authorization."
+      },
+      {
+        "text": "`NotFoundException` with HTTP 404.",
+        "isCorrect": false,
+        "feedback": "404 indicates missing resource, not insufficient permission for existing resource."
+      },
+      {
+        "text": "`ConflictException` with HTTP 409.",
+        "isCorrect": false,
+        "feedback": "409 represents state conflicts, such as duplicate records, not access control."
+      }
+    ],
+    "whyQuestion": "Why is this rule preferred in practice? Why is 403 distinct from 401 in access-control flows?",
+    "whyOptions": [
+      {
+        "text": "403 means authenticated identity exists, but allowed action checks failed.",
+        "isCorrect": true,
+        "feedback": "Exactly: authentication succeeded, yet authorization policy blocks the operation."
+      },
+      {
+        "text": "403 means token is malformed and cannot be decoded by server.",
+        "isCorrect": false,
+        "feedback": "Malformed or missing credentials map to 401 authentication failures instead."
+      },
+      {
+        "text": "403 means requested route does not exist in controller mapping.",
+        "isCorrect": false,
+        "feedback": "Missing routes typically return 404, unrelated to permissions."
+      },
+      {
+        "text": "403 means request body failed semantic validation and needs 422.",
+        "isCorrect": false,
+        "feedback": "Validation semantics are separate from authorization outcomes and status codes."
+      }
+    ]
+  },
+  {
+    "id": "q6",
+    "question": "In a code review, which statement holds: A user is authenticated but lacks permission for the action. Which Nest exception fits?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "`ForbiddenException` with HTTP 403.",
+        "isCorrect": true,
+        "feedback": "Correct: user identity is valid, but policy denies requested resource access."
+      },
+      {
+        "text": "`UnauthorizedException` with HTTP 401.",
+        "isCorrect": false,
+        "feedback": "401 means missing or invalid authentication credentials, not denied authorization."
+      },
+      {
+        "text": "`NotFoundException` with HTTP 404.",
+        "isCorrect": false,
+        "feedback": "404 indicates missing resource, not insufficient permission for existing resource."
+      },
+      {
+        "text": "`ConflictException` with HTTP 409.",
+        "isCorrect": false,
+        "feedback": "409 represents state conflicts, such as duplicate records, not access control."
+      }
+    ],
+    "whyQuestion": "Why does this avoid the common misconception? Why is 403 distinct from 401 in access-control flows?",
+    "whyOptions": [
+      {
+        "text": "403 means authenticated identity exists, but allowed action checks failed.",
+        "isCorrect": true,
+        "feedback": "Exactly: authentication succeeded, yet authorization policy blocks the operation."
+      },
+      {
+        "text": "403 means token is malformed and cannot be decoded by server.",
+        "isCorrect": false,
+        "feedback": "Malformed or missing credentials map to 401 authentication failures instead."
+      },
+      {
+        "text": "403 means requested route does not exist in controller mapping.",
+        "isCorrect": false,
+        "feedback": "Missing routes typically return 404, unrelated to permissions."
+      },
+      {
+        "text": "403 means request body failed semantic validation and needs 422.",
+        "isCorrect": false,
+        "feedback": "Validation semantics are separate from authorization outcomes and status codes."
+      }
+    ]
+  },
+  {
+    "id": "q7",
+    "question": "Which choice avoids the common misunderstanding: A user is authenticated but lacks permission for the action. Which Nest exception fits?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "`ForbiddenException` with HTTP 403.",
+        "isCorrect": true,
+        "feedback": "Correct: user identity is valid, but policy denies requested resource access."
+      },
+      {
+        "text": "`UnauthorizedException` with HTTP 401.",
+        "isCorrect": false,
+        "feedback": "401 means missing or invalid authentication credentials, not denied authorization."
+      },
+      {
+        "text": "`NotFoundException` with HTTP 404.",
+        "isCorrect": false,
+        "feedback": "404 indicates missing resource, not insufficient permission for existing resource."
+      },
+      {
+        "text": "`ConflictException` with HTTP 409.",
+        "isCorrect": false,
+        "feedback": "409 represents state conflicts, such as duplicate records, not access control."
+      }
+    ],
+    "whyQuestion": "Why is this the most defensible reasoning? Why is 403 distinct from 401 in access-control flows?",
+    "whyOptions": [
+      {
+        "text": "403 means authenticated identity exists, but allowed action checks failed.",
+        "isCorrect": true,
+        "feedback": "Exactly: authentication succeeded, yet authorization policy blocks the operation."
+      },
+      {
+        "text": "403 means token is malformed and cannot be decoded by server.",
+        "isCorrect": false,
+        "feedback": "Malformed or missing credentials map to 401 authentication failures instead."
+      },
+      {
+        "text": "403 means requested route does not exist in controller mapping.",
+        "isCorrect": false,
+        "feedback": "Missing routes typically return 404, unrelated to permissions."
+      },
+      {
+        "text": "403 means request body failed semantic validation and needs 422.",
+        "isCorrect": false,
+        "feedback": "Validation semantics are separate from authorization outcomes and status codes."
+      }
+    ]
+  },
+  {
+    "id": "q8",
+    "question": "Select the strongest rule from this topic: A user is authenticated but lacks permission for the action. Which Nest exception fits?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "`ForbiddenException` with HTTP 403.",
+        "isCorrect": true,
+        "feedback": "Correct: user identity is valid, but policy denies requested resource access."
+      },
+      {
+        "text": "`UnauthorizedException` with HTTP 401.",
+        "isCorrect": false,
+        "feedback": "401 means missing or invalid authentication credentials, not denied authorization."
+      },
+      {
+        "text": "`NotFoundException` with HTTP 404.",
+        "isCorrect": false,
+        "feedback": "404 indicates missing resource, not insufficient permission for existing resource."
+      },
+      {
+        "text": "`ConflictException` with HTTP 409.",
+        "isCorrect": false,
+        "feedback": "409 represents state conflicts, such as duplicate records, not access control."
+      }
+    ],
+    "whyQuestion": "Why does this align with the note intent? Why is 403 distinct from 401 in access-control flows?",
+    "whyOptions": [
+      {
+        "text": "403 means authenticated identity exists, but allowed action checks failed.",
+        "isCorrect": true,
+        "feedback": "Exactly: authentication succeeded, yet authorization policy blocks the operation."
+      },
+      {
+        "text": "403 means token is malformed and cannot be decoded by server.",
+        "isCorrect": false,
+        "feedback": "Malformed or missing credentials map to 401 authentication failures instead."
+      },
+      {
+        "text": "403 means requested route does not exist in controller mapping.",
+        "isCorrect": false,
+        "feedback": "Missing routes typically return 404, unrelated to permissions."
+      },
+      {
+        "text": "403 means request body failed semantic validation and needs 422.",
+        "isCorrect": false,
+        "feedback": "Validation semantics are separate from authorization outcomes and status codes."
+      }
+    ]
+  },
+  {
+    "id": "q9",
+    "question": "Which option should be applied in real projects: A user is authenticated but lacks permission for the action. Which Nest exception fits?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "`ForbiddenException` with HTTP 403.",
+        "isCorrect": true,
+        "feedback": "Correct: user identity is valid, but policy denies requested resource access."
+      },
+      {
+        "text": "`UnauthorizedException` with HTTP 401.",
+        "isCorrect": false,
+        "feedback": "401 means missing or invalid authentication credentials, not denied authorization."
+      },
+      {
+        "text": "`NotFoundException` with HTTP 404.",
+        "isCorrect": false,
+        "feedback": "404 indicates missing resource, not insufficient permission for existing resource."
+      },
+      {
+        "text": "`ConflictException` with HTTP 409.",
+        "isCorrect": false,
+        "feedback": "409 represents state conflicts, such as duplicate records, not access control."
+      }
+    ],
+    "whyQuestion": "Why should engineers trust this explanation? Why is 403 distinct from 401 in access-control flows?",
+    "whyOptions": [
+      {
+        "text": "403 means authenticated identity exists, but allowed action checks failed.",
+        "isCorrect": true,
+        "feedback": "Exactly: authentication succeeded, yet authorization policy blocks the operation."
+      },
+      {
+        "text": "403 means token is malformed and cannot be decoded by server.",
+        "isCorrect": false,
+        "feedback": "Malformed or missing credentials map to 401 authentication failures instead."
+      },
+      {
+        "text": "403 means requested route does not exist in controller mapping.",
+        "isCorrect": false,
+        "feedback": "Missing routes typically return 404, unrelated to permissions."
+      },
+      {
+        "text": "403 means request body failed semantic validation and needs 422.",
+        "isCorrect": false,
+        "feedback": "Validation semantics are separate from authorization outcomes and status codes."
+      }
+    ]
+  },
+  {
+    "id": "q10",
+    "question": "Confirm the core concept: A user is authenticated but lacks permission for the action. Which Nest exception fits?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "`ForbiddenException` with HTTP 403.",
+        "isCorrect": true,
+        "feedback": "Correct: user identity is valid, but policy denies requested resource access."
+      },
+      {
+        "text": "`UnauthorizedException` with HTTP 401.",
+        "isCorrect": false,
+        "feedback": "401 means missing or invalid authentication credentials, not denied authorization."
+      },
+      {
+        "text": "`NotFoundException` with HTTP 404.",
+        "isCorrect": false,
+        "feedback": "404 indicates missing resource, not insufficient permission for existing resource."
+      },
+      {
+        "text": "`ConflictException` with HTTP 409.",
+        "isCorrect": false,
+        "feedback": "409 represents state conflicts, such as duplicate records, not access control."
+      }
+    ],
+    "whyQuestion": "Why is this the correct conceptual takeaway? Why is 403 distinct from 401 in access-control flows?",
+    "whyOptions": [
+      {
+        "text": "403 means authenticated identity exists, but allowed action checks failed.",
+        "isCorrect": true,
+        "feedback": "Exactly: authentication succeeded, yet authorization policy blocks the operation."
+      },
+      {
+        "text": "403 means token is malformed and cannot be decoded by server.",
+        "isCorrect": false,
+        "feedback": "Malformed or missing credentials map to 401 authentication failures instead."
+      },
+      {
+        "text": "403 means requested route does not exist in controller mapping.",
+        "isCorrect": false,
+        "feedback": "Missing routes typically return 404, unrelated to permissions."
+      },
+      {
+        "text": "403 means request body failed semantic validation and needs 422.",
+        "isCorrect": false,
+        "feedback": "Validation semantics are separate from authorization outcomes and status codes."
+      }
+    ]
   }
 ]

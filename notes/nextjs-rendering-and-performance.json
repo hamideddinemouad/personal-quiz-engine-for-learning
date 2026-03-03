@@ -48,5 +48,455 @@
         "feedback": "Image optimization is unrelated to parallel API request execution patterns."
       }
     ]
+  },
+  {
+    "id": "q2",
+    "question": "Which statement is most accurate: What is the best way to handle independent data requests to avoid waterfall latency?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Run them in parallel with `Promise.all` instead of sequential awaits.",
+        "isCorrect": true,
+        "feedback": "Correct: parallel execution removes unnecessary waiting between unrelated requests."
+      },
+      {
+        "text": "Force all requests into one long chain to preserve deterministic ordering.",
+        "isCorrect": false,
+        "feedback": "Ordering is unnecessary for independent calls and increases total response time."
+      },
+      {
+        "text": "Disable Next.js prefetch so requests can complete one by one.",
+        "isCorrect": false,
+        "feedback": "Prefetch behavior is separate and does not solve backend request waterfalls."
+      },
+      {
+        "text": "Move all requests to client `useEffect` so server waits are eliminated.",
+        "isCorrect": false,
+        "feedback": "Client fetching may worsen UX and does not inherently remove sequential dependencies."
+      }
+    ],
+    "whyQuestion": "Why is that answer the strongest technically? Why do waterfall requests increase page latency?",
+    "whyOptions": [
+      {
+        "text": "Because each request starts only after the previous one completes.",
+        "isCorrect": true,
+        "feedback": "Exactly: sequential dependency accumulates waiting time across every network hop."
+      },
+      {
+        "text": "Because parallel requests are blocked by the JavaScript event loop.",
+        "isCorrect": false,
+        "feedback": "I/O requests can run concurrently; event loop does not serialize network completion."
+      },
+      {
+        "text": "Because SSR requires exactly one fetch per route by framework rule.",
+        "isCorrect": false,
+        "feedback": "SSR supports multiple fetches; architecture decisions determine request strategy."
+      },
+      {
+        "text": "Because Next.js image optimization disables concurrent API communication.",
+        "isCorrect": false,
+        "feedback": "Image optimization is unrelated to parallel API request execution patterns."
+      }
+    ]
+  },
+  {
+    "id": "q3",
+    "question": "Choose the best technical interpretation: What is the best way to handle independent data requests to avoid waterfall latency?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Run them in parallel with `Promise.all` instead of sequential awaits.",
+        "isCorrect": true,
+        "feedback": "Correct: parallel execution removes unnecessary waiting between unrelated requests."
+      },
+      {
+        "text": "Force all requests into one long chain to preserve deterministic ordering.",
+        "isCorrect": false,
+        "feedback": "Ordering is unnecessary for independent calls and increases total response time."
+      },
+      {
+        "text": "Disable Next.js prefetch so requests can complete one by one.",
+        "isCorrect": false,
+        "feedback": "Prefetch behavior is separate and does not solve backend request waterfalls."
+      },
+      {
+        "text": "Move all requests to client `useEffect` so server waits are eliminated.",
+        "isCorrect": false,
+        "feedback": "Client fetching may worsen UX and does not inherently remove sequential dependencies."
+      }
+    ],
+    "whyQuestion": "Why does this option hold in real usage? Why do waterfall requests increase page latency?",
+    "whyOptions": [
+      {
+        "text": "Because each request starts only after the previous one completes.",
+        "isCorrect": true,
+        "feedback": "Exactly: sequential dependency accumulates waiting time across every network hop."
+      },
+      {
+        "text": "Because parallel requests are blocked by the JavaScript event loop.",
+        "isCorrect": false,
+        "feedback": "I/O requests can run concurrently; event loop does not serialize network completion."
+      },
+      {
+        "text": "Because SSR requires exactly one fetch per route by framework rule.",
+        "isCorrect": false,
+        "feedback": "SSR supports multiple fetches; architecture decisions determine request strategy."
+      },
+      {
+        "text": "Because Next.js image optimization disables concurrent API communication.",
+        "isCorrect": false,
+        "feedback": "Image optimization is unrelated to parallel API request execution patterns."
+      }
+    ]
+  },
+  {
+    "id": "q4",
+    "question": "For practical use, which claim is correct: What is the best way to handle independent data requests to avoid waterfall latency?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Run them in parallel with `Promise.all` instead of sequential awaits.",
+        "isCorrect": true,
+        "feedback": "Correct: parallel execution removes unnecessary waiting between unrelated requests."
+      },
+      {
+        "text": "Force all requests into one long chain to preserve deterministic ordering.",
+        "isCorrect": false,
+        "feedback": "Ordering is unnecessary for independent calls and increases total response time."
+      },
+      {
+        "text": "Disable Next.js prefetch so requests can complete one by one.",
+        "isCorrect": false,
+        "feedback": "Prefetch behavior is separate and does not solve backend request waterfalls."
+      },
+      {
+        "text": "Move all requests to client `useEffect` so server waits are eliminated.",
+        "isCorrect": false,
+        "feedback": "Client fetching may worsen UX and does not inherently remove sequential dependencies."
+      }
+    ],
+    "whyQuestion": "Why is this interpretation more reliable? Why do waterfall requests increase page latency?",
+    "whyOptions": [
+      {
+        "text": "Because each request starts only after the previous one completes.",
+        "isCorrect": true,
+        "feedback": "Exactly: sequential dependency accumulates waiting time across every network hop."
+      },
+      {
+        "text": "Because parallel requests are blocked by the JavaScript event loop.",
+        "isCorrect": false,
+        "feedback": "I/O requests can run concurrently; event loop does not serialize network completion."
+      },
+      {
+        "text": "Because SSR requires exactly one fetch per route by framework rule.",
+        "isCorrect": false,
+        "feedback": "SSR supports multiple fetches; architecture decisions determine request strategy."
+      },
+      {
+        "text": "Because Next.js image optimization disables concurrent API communication.",
+        "isCorrect": false,
+        "feedback": "Image optimization is unrelated to parallel API request execution patterns."
+      }
+    ]
+  },
+  {
+    "id": "q5",
+    "question": "Identify the option aligned with this note: What is the best way to handle independent data requests to avoid waterfall latency?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Run them in parallel with `Promise.all` instead of sequential awaits.",
+        "isCorrect": true,
+        "feedback": "Correct: parallel execution removes unnecessary waiting between unrelated requests."
+      },
+      {
+        "text": "Force all requests into one long chain to preserve deterministic ordering.",
+        "isCorrect": false,
+        "feedback": "Ordering is unnecessary for independent calls and increases total response time."
+      },
+      {
+        "text": "Disable Next.js prefetch so requests can complete one by one.",
+        "isCorrect": false,
+        "feedback": "Prefetch behavior is separate and does not solve backend request waterfalls."
+      },
+      {
+        "text": "Move all requests to client `useEffect` so server waits are eliminated.",
+        "isCorrect": false,
+        "feedback": "Client fetching may worsen UX and does not inherently remove sequential dependencies."
+      }
+    ],
+    "whyQuestion": "Why is this rule preferred in practice? Why do waterfall requests increase page latency?",
+    "whyOptions": [
+      {
+        "text": "Because each request starts only after the previous one completes.",
+        "isCorrect": true,
+        "feedback": "Exactly: sequential dependency accumulates waiting time across every network hop."
+      },
+      {
+        "text": "Because parallel requests are blocked by the JavaScript event loop.",
+        "isCorrect": false,
+        "feedback": "I/O requests can run concurrently; event loop does not serialize network completion."
+      },
+      {
+        "text": "Because SSR requires exactly one fetch per route by framework rule.",
+        "isCorrect": false,
+        "feedback": "SSR supports multiple fetches; architecture decisions determine request strategy."
+      },
+      {
+        "text": "Because Next.js image optimization disables concurrent API communication.",
+        "isCorrect": false,
+        "feedback": "Image optimization is unrelated to parallel API request execution patterns."
+      }
+    ]
+  },
+  {
+    "id": "q6",
+    "question": "In a code review, which statement holds: What is the best way to handle independent data requests to avoid waterfall latency?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Run them in parallel with `Promise.all` instead of sequential awaits.",
+        "isCorrect": true,
+        "feedback": "Correct: parallel execution removes unnecessary waiting between unrelated requests."
+      },
+      {
+        "text": "Force all requests into one long chain to preserve deterministic ordering.",
+        "isCorrect": false,
+        "feedback": "Ordering is unnecessary for independent calls and increases total response time."
+      },
+      {
+        "text": "Disable Next.js prefetch so requests can complete one by one.",
+        "isCorrect": false,
+        "feedback": "Prefetch behavior is separate and does not solve backend request waterfalls."
+      },
+      {
+        "text": "Move all requests to client `useEffect` so server waits are eliminated.",
+        "isCorrect": false,
+        "feedback": "Client fetching may worsen UX and does not inherently remove sequential dependencies."
+      }
+    ],
+    "whyQuestion": "Why does this avoid the common misconception? Why do waterfall requests increase page latency?",
+    "whyOptions": [
+      {
+        "text": "Because each request starts only after the previous one completes.",
+        "isCorrect": true,
+        "feedback": "Exactly: sequential dependency accumulates waiting time across every network hop."
+      },
+      {
+        "text": "Because parallel requests are blocked by the JavaScript event loop.",
+        "isCorrect": false,
+        "feedback": "I/O requests can run concurrently; event loop does not serialize network completion."
+      },
+      {
+        "text": "Because SSR requires exactly one fetch per route by framework rule.",
+        "isCorrect": false,
+        "feedback": "SSR supports multiple fetches; architecture decisions determine request strategy."
+      },
+      {
+        "text": "Because Next.js image optimization disables concurrent API communication.",
+        "isCorrect": false,
+        "feedback": "Image optimization is unrelated to parallel API request execution patterns."
+      }
+    ]
+  },
+  {
+    "id": "q7",
+    "question": "Which choice avoids the common misunderstanding: What is the best way to handle independent data requests to avoid waterfall latency?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Run them in parallel with `Promise.all` instead of sequential awaits.",
+        "isCorrect": true,
+        "feedback": "Correct: parallel execution removes unnecessary waiting between unrelated requests."
+      },
+      {
+        "text": "Force all requests into one long chain to preserve deterministic ordering.",
+        "isCorrect": false,
+        "feedback": "Ordering is unnecessary for independent calls and increases total response time."
+      },
+      {
+        "text": "Disable Next.js prefetch so requests can complete one by one.",
+        "isCorrect": false,
+        "feedback": "Prefetch behavior is separate and does not solve backend request waterfalls."
+      },
+      {
+        "text": "Move all requests to client `useEffect` so server waits are eliminated.",
+        "isCorrect": false,
+        "feedback": "Client fetching may worsen UX and does not inherently remove sequential dependencies."
+      }
+    ],
+    "whyQuestion": "Why is this the most defensible reasoning? Why do waterfall requests increase page latency?",
+    "whyOptions": [
+      {
+        "text": "Because each request starts only after the previous one completes.",
+        "isCorrect": true,
+        "feedback": "Exactly: sequential dependency accumulates waiting time across every network hop."
+      },
+      {
+        "text": "Because parallel requests are blocked by the JavaScript event loop.",
+        "isCorrect": false,
+        "feedback": "I/O requests can run concurrently; event loop does not serialize network completion."
+      },
+      {
+        "text": "Because SSR requires exactly one fetch per route by framework rule.",
+        "isCorrect": false,
+        "feedback": "SSR supports multiple fetches; architecture decisions determine request strategy."
+      },
+      {
+        "text": "Because Next.js image optimization disables concurrent API communication.",
+        "isCorrect": false,
+        "feedback": "Image optimization is unrelated to parallel API request execution patterns."
+      }
+    ]
+  },
+  {
+    "id": "q8",
+    "question": "Select the strongest rule from this topic: What is the best way to handle independent data requests to avoid waterfall latency?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Run them in parallel with `Promise.all` instead of sequential awaits.",
+        "isCorrect": true,
+        "feedback": "Correct: parallel execution removes unnecessary waiting between unrelated requests."
+      },
+      {
+        "text": "Force all requests into one long chain to preserve deterministic ordering.",
+        "isCorrect": false,
+        "feedback": "Ordering is unnecessary for independent calls and increases total response time."
+      },
+      {
+        "text": "Disable Next.js prefetch so requests can complete one by one.",
+        "isCorrect": false,
+        "feedback": "Prefetch behavior is separate and does not solve backend request waterfalls."
+      },
+      {
+        "text": "Move all requests to client `useEffect` so server waits are eliminated.",
+        "isCorrect": false,
+        "feedback": "Client fetching may worsen UX and does not inherently remove sequential dependencies."
+      }
+    ],
+    "whyQuestion": "Why does this align with the note intent? Why do waterfall requests increase page latency?",
+    "whyOptions": [
+      {
+        "text": "Because each request starts only after the previous one completes.",
+        "isCorrect": true,
+        "feedback": "Exactly: sequential dependency accumulates waiting time across every network hop."
+      },
+      {
+        "text": "Because parallel requests are blocked by the JavaScript event loop.",
+        "isCorrect": false,
+        "feedback": "I/O requests can run concurrently; event loop does not serialize network completion."
+      },
+      {
+        "text": "Because SSR requires exactly one fetch per route by framework rule.",
+        "isCorrect": false,
+        "feedback": "SSR supports multiple fetches; architecture decisions determine request strategy."
+      },
+      {
+        "text": "Because Next.js image optimization disables concurrent API communication.",
+        "isCorrect": false,
+        "feedback": "Image optimization is unrelated to parallel API request execution patterns."
+      }
+    ]
+  },
+  {
+    "id": "q9",
+    "question": "Which option should be applied in real projects: What is the best way to handle independent data requests to avoid waterfall latency?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Run them in parallel with `Promise.all` instead of sequential awaits.",
+        "isCorrect": true,
+        "feedback": "Correct: parallel execution removes unnecessary waiting between unrelated requests."
+      },
+      {
+        "text": "Force all requests into one long chain to preserve deterministic ordering.",
+        "isCorrect": false,
+        "feedback": "Ordering is unnecessary for independent calls and increases total response time."
+      },
+      {
+        "text": "Disable Next.js prefetch so requests can complete one by one.",
+        "isCorrect": false,
+        "feedback": "Prefetch behavior is separate and does not solve backend request waterfalls."
+      },
+      {
+        "text": "Move all requests to client `useEffect` so server waits are eliminated.",
+        "isCorrect": false,
+        "feedback": "Client fetching may worsen UX and does not inherently remove sequential dependencies."
+      }
+    ],
+    "whyQuestion": "Why should engineers trust this explanation? Why do waterfall requests increase page latency?",
+    "whyOptions": [
+      {
+        "text": "Because each request starts only after the previous one completes.",
+        "isCorrect": true,
+        "feedback": "Exactly: sequential dependency accumulates waiting time across every network hop."
+      },
+      {
+        "text": "Because parallel requests are blocked by the JavaScript event loop.",
+        "isCorrect": false,
+        "feedback": "I/O requests can run concurrently; event loop does not serialize network completion."
+      },
+      {
+        "text": "Because SSR requires exactly one fetch per route by framework rule.",
+        "isCorrect": false,
+        "feedback": "SSR supports multiple fetches; architecture decisions determine request strategy."
+      },
+      {
+        "text": "Because Next.js image optimization disables concurrent API communication.",
+        "isCorrect": false,
+        "feedback": "Image optimization is unrelated to parallel API request execution patterns."
+      }
+    ]
+  },
+  {
+    "id": "q10",
+    "question": "Confirm the core concept: What is the best way to handle independent data requests to avoid waterfall latency?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Run them in parallel with `Promise.all` instead of sequential awaits.",
+        "isCorrect": true,
+        "feedback": "Correct: parallel execution removes unnecessary waiting between unrelated requests."
+      },
+      {
+        "text": "Force all requests into one long chain to preserve deterministic ordering.",
+        "isCorrect": false,
+        "feedback": "Ordering is unnecessary for independent calls and increases total response time."
+      },
+      {
+        "text": "Disable Next.js prefetch so requests can complete one by one.",
+        "isCorrect": false,
+        "feedback": "Prefetch behavior is separate and does not solve backend request waterfalls."
+      },
+      {
+        "text": "Move all requests to client `useEffect` so server waits are eliminated.",
+        "isCorrect": false,
+        "feedback": "Client fetching may worsen UX and does not inherently remove sequential dependencies."
+      }
+    ],
+    "whyQuestion": "Why is this the correct conceptual takeaway? Why do waterfall requests increase page latency?",
+    "whyOptions": [
+      {
+        "text": "Because each request starts only after the previous one completes.",
+        "isCorrect": true,
+        "feedback": "Exactly: sequential dependency accumulates waiting time across every network hop."
+      },
+      {
+        "text": "Because parallel requests are blocked by the JavaScript event loop.",
+        "isCorrect": false,
+        "feedback": "I/O requests can run concurrently; event loop does not serialize network completion."
+      },
+      {
+        "text": "Because SSR requires exactly one fetch per route by framework rule.",
+        "isCorrect": false,
+        "feedback": "SSR supports multiple fetches; architecture decisions determine request strategy."
+      },
+      {
+        "text": "Because Next.js image optimization disables concurrent API communication.",
+        "isCorrect": false,
+        "feedback": "Image optimization is unrelated to parallel API request execution patterns."
+      }
+    ]
   }
 ]

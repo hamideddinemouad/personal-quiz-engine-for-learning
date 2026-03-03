@@ -48,5 +48,455 @@
         "feedback": "TypeScript does not force `never` here; constraints come from initial inference."
       }
     ]
+  },
+  {
+    "id": "q2",
+    "question": "Which statement is most accurate: Why does `reduce` with an initial value of `{}` often need explicit accumulator typing in TypeScript?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Because `{}` is inferred too vaguely, so indexed writes need a defined shape.",
+        "isCorrect": true,
+        "feedback": "Correct: empty object inference lacks index/value info, so property updates are unsafe."
+      },
+      {
+        "text": "Because `reduce` never supports generic inference under any circumstances.",
+        "isCorrect": false,
+        "feedback": "Reduce can infer types in many cases, especially with precise initial values."
+      },
+      {
+        "text": "Because callbacks passed to `reduce` must always return `Promise` values.",
+        "isCorrect": false,
+        "feedback": "Reduce callbacks can be synchronous; async return is optional and unrelated here."
+      },
+      {
+        "text": "Because object literals cannot be used as `reduce` initial values in TypeScript.",
+        "isCorrect": false,
+        "feedback": "Object initial values are valid; the issue is missing explicit structural typing."
+      }
+    ],
+    "whyQuestion": "Why is that answer the strongest technically? Why does an untyped `{}` initializer produce friction with dynamic keys like `acc[current]`?",
+    "whyOptions": [
+      {
+        "text": "Because the compiler cannot guarantee key existence or value type from bare `{}`.",
+        "isCorrect": true,
+        "feedback": "Exactly: without an index signature, dynamic property access remains type-unsafe."
+      },
+      {
+        "text": "Because TypeScript disables bracket notation unless `any` is globally enabled.",
+        "isCorrect": false,
+        "feedback": "Bracket notation is allowed; safety checks fail when structure is undefined."
+      },
+      {
+        "text": "Because generic `U` only works with primitive accumulator types.",
+        "isCorrect": false,
+        "feedback": "Generic accumulators can be objects; they just need a concrete declared shape."
+      },
+      {
+        "text": "Because `reduce` always narrows accumulator types to `never` during iteration.",
+        "isCorrect": false,
+        "feedback": "TypeScript does not force `never` here; constraints come from initial inference."
+      }
+    ]
+  },
+  {
+    "id": "q3",
+    "question": "Choose the best technical interpretation: Why does `reduce` with an initial value of `{}` often need explicit accumulator typing in TypeScript?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Because `{}` is inferred too vaguely, so indexed writes need a defined shape.",
+        "isCorrect": true,
+        "feedback": "Correct: empty object inference lacks index/value info, so property updates are unsafe."
+      },
+      {
+        "text": "Because `reduce` never supports generic inference under any circumstances.",
+        "isCorrect": false,
+        "feedback": "Reduce can infer types in many cases, especially with precise initial values."
+      },
+      {
+        "text": "Because callbacks passed to `reduce` must always return `Promise` values.",
+        "isCorrect": false,
+        "feedback": "Reduce callbacks can be synchronous; async return is optional and unrelated here."
+      },
+      {
+        "text": "Because object literals cannot be used as `reduce` initial values in TypeScript.",
+        "isCorrect": false,
+        "feedback": "Object initial values are valid; the issue is missing explicit structural typing."
+      }
+    ],
+    "whyQuestion": "Why does this option hold in real usage? Why does an untyped `{}` initializer produce friction with dynamic keys like `acc[current]`?",
+    "whyOptions": [
+      {
+        "text": "Because the compiler cannot guarantee key existence or value type from bare `{}`.",
+        "isCorrect": true,
+        "feedback": "Exactly: without an index signature, dynamic property access remains type-unsafe."
+      },
+      {
+        "text": "Because TypeScript disables bracket notation unless `any` is globally enabled.",
+        "isCorrect": false,
+        "feedback": "Bracket notation is allowed; safety checks fail when structure is undefined."
+      },
+      {
+        "text": "Because generic `U` only works with primitive accumulator types.",
+        "isCorrect": false,
+        "feedback": "Generic accumulators can be objects; they just need a concrete declared shape."
+      },
+      {
+        "text": "Because `reduce` always narrows accumulator types to `never` during iteration.",
+        "isCorrect": false,
+        "feedback": "TypeScript does not force `never` here; constraints come from initial inference."
+      }
+    ]
+  },
+  {
+    "id": "q4",
+    "question": "For practical use, which claim is correct: Why does `reduce` with an initial value of `{}` often need explicit accumulator typing in TypeScript?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Because `{}` is inferred too vaguely, so indexed writes need a defined shape.",
+        "isCorrect": true,
+        "feedback": "Correct: empty object inference lacks index/value info, so property updates are unsafe."
+      },
+      {
+        "text": "Because `reduce` never supports generic inference under any circumstances.",
+        "isCorrect": false,
+        "feedback": "Reduce can infer types in many cases, especially with precise initial values."
+      },
+      {
+        "text": "Because callbacks passed to `reduce` must always return `Promise` values.",
+        "isCorrect": false,
+        "feedback": "Reduce callbacks can be synchronous; async return is optional and unrelated here."
+      },
+      {
+        "text": "Because object literals cannot be used as `reduce` initial values in TypeScript.",
+        "isCorrect": false,
+        "feedback": "Object initial values are valid; the issue is missing explicit structural typing."
+      }
+    ],
+    "whyQuestion": "Why is this interpretation more reliable? Why does an untyped `{}` initializer produce friction with dynamic keys like `acc[current]`?",
+    "whyOptions": [
+      {
+        "text": "Because the compiler cannot guarantee key existence or value type from bare `{}`.",
+        "isCorrect": true,
+        "feedback": "Exactly: without an index signature, dynamic property access remains type-unsafe."
+      },
+      {
+        "text": "Because TypeScript disables bracket notation unless `any` is globally enabled.",
+        "isCorrect": false,
+        "feedback": "Bracket notation is allowed; safety checks fail when structure is undefined."
+      },
+      {
+        "text": "Because generic `U` only works with primitive accumulator types.",
+        "isCorrect": false,
+        "feedback": "Generic accumulators can be objects; they just need a concrete declared shape."
+      },
+      {
+        "text": "Because `reduce` always narrows accumulator types to `never` during iteration.",
+        "isCorrect": false,
+        "feedback": "TypeScript does not force `never` here; constraints come from initial inference."
+      }
+    ]
+  },
+  {
+    "id": "q5",
+    "question": "Identify the option aligned with this note: Why does `reduce` with an initial value of `{}` often need explicit accumulator typing in TypeScript?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Because `{}` is inferred too vaguely, so indexed writes need a defined shape.",
+        "isCorrect": true,
+        "feedback": "Correct: empty object inference lacks index/value info, so property updates are unsafe."
+      },
+      {
+        "text": "Because `reduce` never supports generic inference under any circumstances.",
+        "isCorrect": false,
+        "feedback": "Reduce can infer types in many cases, especially with precise initial values."
+      },
+      {
+        "text": "Because callbacks passed to `reduce` must always return `Promise` values.",
+        "isCorrect": false,
+        "feedback": "Reduce callbacks can be synchronous; async return is optional and unrelated here."
+      },
+      {
+        "text": "Because object literals cannot be used as `reduce` initial values in TypeScript.",
+        "isCorrect": false,
+        "feedback": "Object initial values are valid; the issue is missing explicit structural typing."
+      }
+    ],
+    "whyQuestion": "Why is this rule preferred in practice? Why does an untyped `{}` initializer produce friction with dynamic keys like `acc[current]`?",
+    "whyOptions": [
+      {
+        "text": "Because the compiler cannot guarantee key existence or value type from bare `{}`.",
+        "isCorrect": true,
+        "feedback": "Exactly: without an index signature, dynamic property access remains type-unsafe."
+      },
+      {
+        "text": "Because TypeScript disables bracket notation unless `any` is globally enabled.",
+        "isCorrect": false,
+        "feedback": "Bracket notation is allowed; safety checks fail when structure is undefined."
+      },
+      {
+        "text": "Because generic `U` only works with primitive accumulator types.",
+        "isCorrect": false,
+        "feedback": "Generic accumulators can be objects; they just need a concrete declared shape."
+      },
+      {
+        "text": "Because `reduce` always narrows accumulator types to `never` during iteration.",
+        "isCorrect": false,
+        "feedback": "TypeScript does not force `never` here; constraints come from initial inference."
+      }
+    ]
+  },
+  {
+    "id": "q6",
+    "question": "In a code review, which statement holds: Why does `reduce` with an initial value of `{}` often need explicit accumulator typing in TypeScript?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Because `{}` is inferred too vaguely, so indexed writes need a defined shape.",
+        "isCorrect": true,
+        "feedback": "Correct: empty object inference lacks index/value info, so property updates are unsafe."
+      },
+      {
+        "text": "Because `reduce` never supports generic inference under any circumstances.",
+        "isCorrect": false,
+        "feedback": "Reduce can infer types in many cases, especially with precise initial values."
+      },
+      {
+        "text": "Because callbacks passed to `reduce` must always return `Promise` values.",
+        "isCorrect": false,
+        "feedback": "Reduce callbacks can be synchronous; async return is optional and unrelated here."
+      },
+      {
+        "text": "Because object literals cannot be used as `reduce` initial values in TypeScript.",
+        "isCorrect": false,
+        "feedback": "Object initial values are valid; the issue is missing explicit structural typing."
+      }
+    ],
+    "whyQuestion": "Why does this avoid the common misconception? Why does an untyped `{}` initializer produce friction with dynamic keys like `acc[current]`?",
+    "whyOptions": [
+      {
+        "text": "Because the compiler cannot guarantee key existence or value type from bare `{}`.",
+        "isCorrect": true,
+        "feedback": "Exactly: without an index signature, dynamic property access remains type-unsafe."
+      },
+      {
+        "text": "Because TypeScript disables bracket notation unless `any` is globally enabled.",
+        "isCorrect": false,
+        "feedback": "Bracket notation is allowed; safety checks fail when structure is undefined."
+      },
+      {
+        "text": "Because generic `U` only works with primitive accumulator types.",
+        "isCorrect": false,
+        "feedback": "Generic accumulators can be objects; they just need a concrete declared shape."
+      },
+      {
+        "text": "Because `reduce` always narrows accumulator types to `never` during iteration.",
+        "isCorrect": false,
+        "feedback": "TypeScript does not force `never` here; constraints come from initial inference."
+      }
+    ]
+  },
+  {
+    "id": "q7",
+    "question": "Which choice avoids the common misunderstanding: Why does `reduce` with an initial value of `{}` often need explicit accumulator typing in TypeScript?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Because `{}` is inferred too vaguely, so indexed writes need a defined shape.",
+        "isCorrect": true,
+        "feedback": "Correct: empty object inference lacks index/value info, so property updates are unsafe."
+      },
+      {
+        "text": "Because `reduce` never supports generic inference under any circumstances.",
+        "isCorrect": false,
+        "feedback": "Reduce can infer types in many cases, especially with precise initial values."
+      },
+      {
+        "text": "Because callbacks passed to `reduce` must always return `Promise` values.",
+        "isCorrect": false,
+        "feedback": "Reduce callbacks can be synchronous; async return is optional and unrelated here."
+      },
+      {
+        "text": "Because object literals cannot be used as `reduce` initial values in TypeScript.",
+        "isCorrect": false,
+        "feedback": "Object initial values are valid; the issue is missing explicit structural typing."
+      }
+    ],
+    "whyQuestion": "Why is this the most defensible reasoning? Why does an untyped `{}` initializer produce friction with dynamic keys like `acc[current]`?",
+    "whyOptions": [
+      {
+        "text": "Because the compiler cannot guarantee key existence or value type from bare `{}`.",
+        "isCorrect": true,
+        "feedback": "Exactly: without an index signature, dynamic property access remains type-unsafe."
+      },
+      {
+        "text": "Because TypeScript disables bracket notation unless `any` is globally enabled.",
+        "isCorrect": false,
+        "feedback": "Bracket notation is allowed; safety checks fail when structure is undefined."
+      },
+      {
+        "text": "Because generic `U` only works with primitive accumulator types.",
+        "isCorrect": false,
+        "feedback": "Generic accumulators can be objects; they just need a concrete declared shape."
+      },
+      {
+        "text": "Because `reduce` always narrows accumulator types to `never` during iteration.",
+        "isCorrect": false,
+        "feedback": "TypeScript does not force `never` here; constraints come from initial inference."
+      }
+    ]
+  },
+  {
+    "id": "q8",
+    "question": "Select the strongest rule from this topic: Why does `reduce` with an initial value of `{}` often need explicit accumulator typing in TypeScript?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Because `{}` is inferred too vaguely, so indexed writes need a defined shape.",
+        "isCorrect": true,
+        "feedback": "Correct: empty object inference lacks index/value info, so property updates are unsafe."
+      },
+      {
+        "text": "Because `reduce` never supports generic inference under any circumstances.",
+        "isCorrect": false,
+        "feedback": "Reduce can infer types in many cases, especially with precise initial values."
+      },
+      {
+        "text": "Because callbacks passed to `reduce` must always return `Promise` values.",
+        "isCorrect": false,
+        "feedback": "Reduce callbacks can be synchronous; async return is optional and unrelated here."
+      },
+      {
+        "text": "Because object literals cannot be used as `reduce` initial values in TypeScript.",
+        "isCorrect": false,
+        "feedback": "Object initial values are valid; the issue is missing explicit structural typing."
+      }
+    ],
+    "whyQuestion": "Why does this align with the note intent? Why does an untyped `{}` initializer produce friction with dynamic keys like `acc[current]`?",
+    "whyOptions": [
+      {
+        "text": "Because the compiler cannot guarantee key existence or value type from bare `{}`.",
+        "isCorrect": true,
+        "feedback": "Exactly: without an index signature, dynamic property access remains type-unsafe."
+      },
+      {
+        "text": "Because TypeScript disables bracket notation unless `any` is globally enabled.",
+        "isCorrect": false,
+        "feedback": "Bracket notation is allowed; safety checks fail when structure is undefined."
+      },
+      {
+        "text": "Because generic `U` only works with primitive accumulator types.",
+        "isCorrect": false,
+        "feedback": "Generic accumulators can be objects; they just need a concrete declared shape."
+      },
+      {
+        "text": "Because `reduce` always narrows accumulator types to `never` during iteration.",
+        "isCorrect": false,
+        "feedback": "TypeScript does not force `never` here; constraints come from initial inference."
+      }
+    ]
+  },
+  {
+    "id": "q9",
+    "question": "Which option should be applied in real projects: Why does `reduce` with an initial value of `{}` often need explicit accumulator typing in TypeScript?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Because `{}` is inferred too vaguely, so indexed writes need a defined shape.",
+        "isCorrect": true,
+        "feedback": "Correct: empty object inference lacks index/value info, so property updates are unsafe."
+      },
+      {
+        "text": "Because `reduce` never supports generic inference under any circumstances.",
+        "isCorrect": false,
+        "feedback": "Reduce can infer types in many cases, especially with precise initial values."
+      },
+      {
+        "text": "Because callbacks passed to `reduce` must always return `Promise` values.",
+        "isCorrect": false,
+        "feedback": "Reduce callbacks can be synchronous; async return is optional and unrelated here."
+      },
+      {
+        "text": "Because object literals cannot be used as `reduce` initial values in TypeScript.",
+        "isCorrect": false,
+        "feedback": "Object initial values are valid; the issue is missing explicit structural typing."
+      }
+    ],
+    "whyQuestion": "Why should engineers trust this explanation? Why does an untyped `{}` initializer produce friction with dynamic keys like `acc[current]`?",
+    "whyOptions": [
+      {
+        "text": "Because the compiler cannot guarantee key existence or value type from bare `{}`.",
+        "isCorrect": true,
+        "feedback": "Exactly: without an index signature, dynamic property access remains type-unsafe."
+      },
+      {
+        "text": "Because TypeScript disables bracket notation unless `any` is globally enabled.",
+        "isCorrect": false,
+        "feedback": "Bracket notation is allowed; safety checks fail when structure is undefined."
+      },
+      {
+        "text": "Because generic `U` only works with primitive accumulator types.",
+        "isCorrect": false,
+        "feedback": "Generic accumulators can be objects; they just need a concrete declared shape."
+      },
+      {
+        "text": "Because `reduce` always narrows accumulator types to `never` during iteration.",
+        "isCorrect": false,
+        "feedback": "TypeScript does not force `never` here; constraints come from initial inference."
+      }
+    ]
+  },
+  {
+    "id": "q10",
+    "question": "Confirm the core concept: Why does `reduce` with an initial value of `{}` often need explicit accumulator typing in TypeScript?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Because `{}` is inferred too vaguely, so indexed writes need a defined shape.",
+        "isCorrect": true,
+        "feedback": "Correct: empty object inference lacks index/value info, so property updates are unsafe."
+      },
+      {
+        "text": "Because `reduce` never supports generic inference under any circumstances.",
+        "isCorrect": false,
+        "feedback": "Reduce can infer types in many cases, especially with precise initial values."
+      },
+      {
+        "text": "Because callbacks passed to `reduce` must always return `Promise` values.",
+        "isCorrect": false,
+        "feedback": "Reduce callbacks can be synchronous; async return is optional and unrelated here."
+      },
+      {
+        "text": "Because object literals cannot be used as `reduce` initial values in TypeScript.",
+        "isCorrect": false,
+        "feedback": "Object initial values are valid; the issue is missing explicit structural typing."
+      }
+    ],
+    "whyQuestion": "Why is this the correct conceptual takeaway? Why does an untyped `{}` initializer produce friction with dynamic keys like `acc[current]`?",
+    "whyOptions": [
+      {
+        "text": "Because the compiler cannot guarantee key existence or value type from bare `{}`.",
+        "isCorrect": true,
+        "feedback": "Exactly: without an index signature, dynamic property access remains type-unsafe."
+      },
+      {
+        "text": "Because TypeScript disables bracket notation unless `any` is globally enabled.",
+        "isCorrect": false,
+        "feedback": "Bracket notation is allowed; safety checks fail when structure is undefined."
+      },
+      {
+        "text": "Because generic `U` only works with primitive accumulator types.",
+        "isCorrect": false,
+        "feedback": "Generic accumulators can be objects; they just need a concrete declared shape."
+      },
+      {
+        "text": "Because `reduce` always narrows accumulator types to `never` during iteration.",
+        "isCorrect": false,
+        "feedback": "TypeScript does not force `never` here; constraints come from initial inference."
+      }
+    ]
   }
 ]

@@ -48,5 +48,455 @@
         "feedback": "Transform option belongs to validation pipe behavior and does not disable pipes."
       }
     ]
+  },
+  {
+    "id": "q2",
+    "question": "Which statement is most accurate: Which NestJS component is responsible for route-level authorization decisions?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Guard, because it allows or blocks execution using auth and role logic.",
+        "isCorrect": true,
+        "feedback": "Correct: guards enforce access policy before controller handler execution."
+      },
+      {
+        "text": "Middleware, because it always has access to route metadata and roles.",
+        "isCorrect": false,
+        "feedback": "Middleware runs earlier and is route-agnostic, so metadata access is limited."
+      },
+      {
+        "text": "Interceptor, because it only runs after responses are serialized.",
+        "isCorrect": false,
+        "feedback": "Interceptors wrap execution pre/post handler; they are not primary authorization gates."
+      },
+      {
+        "text": "Pipe, because it transforms and validates request body authorization rules.",
+        "isCorrect": false,
+        "feedback": "Pipes validate or transform data, not decide permissions for route access."
+      }
+    ],
+    "whyQuestion": "Why is that answer the strongest technically? Why use a guard instead of middleware for role checks?",
+    "whyOptions": [
+      {
+        "text": "Because guards integrate with execution context and route-specific metadata.",
+        "isCorrect": true,
+        "feedback": "Exactly: guards can read decorators and apply per-handler authorization policies."
+      },
+      {
+        "text": "Because middleware executes after controllers and can inspect return values.",
+        "isCorrect": false,
+        "feedback": "Middleware executes before routing, not after controller return processing."
+      },
+      {
+        "text": "Because interceptors cannot access request objects in NestJS.",
+        "isCorrect": false,
+        "feedback": "Interceptors can access context, but authorization remains a guard concern."
+      },
+      {
+        "text": "Because pipes are disabled when `transform: true` is enabled.",
+        "isCorrect": false,
+        "feedback": "Transform option belongs to validation pipe behavior and does not disable pipes."
+      }
+    ]
+  },
+  {
+    "id": "q3",
+    "question": "Choose the best technical interpretation: Which NestJS component is responsible for route-level authorization decisions?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Guard, because it allows or blocks execution using auth and role logic.",
+        "isCorrect": true,
+        "feedback": "Correct: guards enforce access policy before controller handler execution."
+      },
+      {
+        "text": "Middleware, because it always has access to route metadata and roles.",
+        "isCorrect": false,
+        "feedback": "Middleware runs earlier and is route-agnostic, so metadata access is limited."
+      },
+      {
+        "text": "Interceptor, because it only runs after responses are serialized.",
+        "isCorrect": false,
+        "feedback": "Interceptors wrap execution pre/post handler; they are not primary authorization gates."
+      },
+      {
+        "text": "Pipe, because it transforms and validates request body authorization rules.",
+        "isCorrect": false,
+        "feedback": "Pipes validate or transform data, not decide permissions for route access."
+      }
+    ],
+    "whyQuestion": "Why does this option hold in real usage? Why use a guard instead of middleware for role checks?",
+    "whyOptions": [
+      {
+        "text": "Because guards integrate with execution context and route-specific metadata.",
+        "isCorrect": true,
+        "feedback": "Exactly: guards can read decorators and apply per-handler authorization policies."
+      },
+      {
+        "text": "Because middleware executes after controllers and can inspect return values.",
+        "isCorrect": false,
+        "feedback": "Middleware executes before routing, not after controller return processing."
+      },
+      {
+        "text": "Because interceptors cannot access request objects in NestJS.",
+        "isCorrect": false,
+        "feedback": "Interceptors can access context, but authorization remains a guard concern."
+      },
+      {
+        "text": "Because pipes are disabled when `transform: true` is enabled.",
+        "isCorrect": false,
+        "feedback": "Transform option belongs to validation pipe behavior and does not disable pipes."
+      }
+    ]
+  },
+  {
+    "id": "q4",
+    "question": "For practical use, which claim is correct: Which NestJS component is responsible for route-level authorization decisions?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Guard, because it allows or blocks execution using auth and role logic.",
+        "isCorrect": true,
+        "feedback": "Correct: guards enforce access policy before controller handler execution."
+      },
+      {
+        "text": "Middleware, because it always has access to route metadata and roles.",
+        "isCorrect": false,
+        "feedback": "Middleware runs earlier and is route-agnostic, so metadata access is limited."
+      },
+      {
+        "text": "Interceptor, because it only runs after responses are serialized.",
+        "isCorrect": false,
+        "feedback": "Interceptors wrap execution pre/post handler; they are not primary authorization gates."
+      },
+      {
+        "text": "Pipe, because it transforms and validates request body authorization rules.",
+        "isCorrect": false,
+        "feedback": "Pipes validate or transform data, not decide permissions for route access."
+      }
+    ],
+    "whyQuestion": "Why is this interpretation more reliable? Why use a guard instead of middleware for role checks?",
+    "whyOptions": [
+      {
+        "text": "Because guards integrate with execution context and route-specific metadata.",
+        "isCorrect": true,
+        "feedback": "Exactly: guards can read decorators and apply per-handler authorization policies."
+      },
+      {
+        "text": "Because middleware executes after controllers and can inspect return values.",
+        "isCorrect": false,
+        "feedback": "Middleware executes before routing, not after controller return processing."
+      },
+      {
+        "text": "Because interceptors cannot access request objects in NestJS.",
+        "isCorrect": false,
+        "feedback": "Interceptors can access context, but authorization remains a guard concern."
+      },
+      {
+        "text": "Because pipes are disabled when `transform: true` is enabled.",
+        "isCorrect": false,
+        "feedback": "Transform option belongs to validation pipe behavior and does not disable pipes."
+      }
+    ]
+  },
+  {
+    "id": "q5",
+    "question": "Identify the option aligned with this note: Which NestJS component is responsible for route-level authorization decisions?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Guard, because it allows or blocks execution using auth and role logic.",
+        "isCorrect": true,
+        "feedback": "Correct: guards enforce access policy before controller handler execution."
+      },
+      {
+        "text": "Middleware, because it always has access to route metadata and roles.",
+        "isCorrect": false,
+        "feedback": "Middleware runs earlier and is route-agnostic, so metadata access is limited."
+      },
+      {
+        "text": "Interceptor, because it only runs after responses are serialized.",
+        "isCorrect": false,
+        "feedback": "Interceptors wrap execution pre/post handler; they are not primary authorization gates."
+      },
+      {
+        "text": "Pipe, because it transforms and validates request body authorization rules.",
+        "isCorrect": false,
+        "feedback": "Pipes validate or transform data, not decide permissions for route access."
+      }
+    ],
+    "whyQuestion": "Why is this rule preferred in practice? Why use a guard instead of middleware for role checks?",
+    "whyOptions": [
+      {
+        "text": "Because guards integrate with execution context and route-specific metadata.",
+        "isCorrect": true,
+        "feedback": "Exactly: guards can read decorators and apply per-handler authorization policies."
+      },
+      {
+        "text": "Because middleware executes after controllers and can inspect return values.",
+        "isCorrect": false,
+        "feedback": "Middleware executes before routing, not after controller return processing."
+      },
+      {
+        "text": "Because interceptors cannot access request objects in NestJS.",
+        "isCorrect": false,
+        "feedback": "Interceptors can access context, but authorization remains a guard concern."
+      },
+      {
+        "text": "Because pipes are disabled when `transform: true` is enabled.",
+        "isCorrect": false,
+        "feedback": "Transform option belongs to validation pipe behavior and does not disable pipes."
+      }
+    ]
+  },
+  {
+    "id": "q6",
+    "question": "In a code review, which statement holds: Which NestJS component is responsible for route-level authorization decisions?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Guard, because it allows or blocks execution using auth and role logic.",
+        "isCorrect": true,
+        "feedback": "Correct: guards enforce access policy before controller handler execution."
+      },
+      {
+        "text": "Middleware, because it always has access to route metadata and roles.",
+        "isCorrect": false,
+        "feedback": "Middleware runs earlier and is route-agnostic, so metadata access is limited."
+      },
+      {
+        "text": "Interceptor, because it only runs after responses are serialized.",
+        "isCorrect": false,
+        "feedback": "Interceptors wrap execution pre/post handler; they are not primary authorization gates."
+      },
+      {
+        "text": "Pipe, because it transforms and validates request body authorization rules.",
+        "isCorrect": false,
+        "feedback": "Pipes validate or transform data, not decide permissions for route access."
+      }
+    ],
+    "whyQuestion": "Why does this avoid the common misconception? Why use a guard instead of middleware for role checks?",
+    "whyOptions": [
+      {
+        "text": "Because guards integrate with execution context and route-specific metadata.",
+        "isCorrect": true,
+        "feedback": "Exactly: guards can read decorators and apply per-handler authorization policies."
+      },
+      {
+        "text": "Because middleware executes after controllers and can inspect return values.",
+        "isCorrect": false,
+        "feedback": "Middleware executes before routing, not after controller return processing."
+      },
+      {
+        "text": "Because interceptors cannot access request objects in NestJS.",
+        "isCorrect": false,
+        "feedback": "Interceptors can access context, but authorization remains a guard concern."
+      },
+      {
+        "text": "Because pipes are disabled when `transform: true` is enabled.",
+        "isCorrect": false,
+        "feedback": "Transform option belongs to validation pipe behavior and does not disable pipes."
+      }
+    ]
+  },
+  {
+    "id": "q7",
+    "question": "Which choice avoids the common misunderstanding: Which NestJS component is responsible for route-level authorization decisions?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Guard, because it allows or blocks execution using auth and role logic.",
+        "isCorrect": true,
+        "feedback": "Correct: guards enforce access policy before controller handler execution."
+      },
+      {
+        "text": "Middleware, because it always has access to route metadata and roles.",
+        "isCorrect": false,
+        "feedback": "Middleware runs earlier and is route-agnostic, so metadata access is limited."
+      },
+      {
+        "text": "Interceptor, because it only runs after responses are serialized.",
+        "isCorrect": false,
+        "feedback": "Interceptors wrap execution pre/post handler; they are not primary authorization gates."
+      },
+      {
+        "text": "Pipe, because it transforms and validates request body authorization rules.",
+        "isCorrect": false,
+        "feedback": "Pipes validate or transform data, not decide permissions for route access."
+      }
+    ],
+    "whyQuestion": "Why is this the most defensible reasoning? Why use a guard instead of middleware for role checks?",
+    "whyOptions": [
+      {
+        "text": "Because guards integrate with execution context and route-specific metadata.",
+        "isCorrect": true,
+        "feedback": "Exactly: guards can read decorators and apply per-handler authorization policies."
+      },
+      {
+        "text": "Because middleware executes after controllers and can inspect return values.",
+        "isCorrect": false,
+        "feedback": "Middleware executes before routing, not after controller return processing."
+      },
+      {
+        "text": "Because interceptors cannot access request objects in NestJS.",
+        "isCorrect": false,
+        "feedback": "Interceptors can access context, but authorization remains a guard concern."
+      },
+      {
+        "text": "Because pipes are disabled when `transform: true` is enabled.",
+        "isCorrect": false,
+        "feedback": "Transform option belongs to validation pipe behavior and does not disable pipes."
+      }
+    ]
+  },
+  {
+    "id": "q8",
+    "question": "Select the strongest rule from this topic: Which NestJS component is responsible for route-level authorization decisions?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Guard, because it allows or blocks execution using auth and role logic.",
+        "isCorrect": true,
+        "feedback": "Correct: guards enforce access policy before controller handler execution."
+      },
+      {
+        "text": "Middleware, because it always has access to route metadata and roles.",
+        "isCorrect": false,
+        "feedback": "Middleware runs earlier and is route-agnostic, so metadata access is limited."
+      },
+      {
+        "text": "Interceptor, because it only runs after responses are serialized.",
+        "isCorrect": false,
+        "feedback": "Interceptors wrap execution pre/post handler; they are not primary authorization gates."
+      },
+      {
+        "text": "Pipe, because it transforms and validates request body authorization rules.",
+        "isCorrect": false,
+        "feedback": "Pipes validate or transform data, not decide permissions for route access."
+      }
+    ],
+    "whyQuestion": "Why does this align with the note intent? Why use a guard instead of middleware for role checks?",
+    "whyOptions": [
+      {
+        "text": "Because guards integrate with execution context and route-specific metadata.",
+        "isCorrect": true,
+        "feedback": "Exactly: guards can read decorators and apply per-handler authorization policies."
+      },
+      {
+        "text": "Because middleware executes after controllers and can inspect return values.",
+        "isCorrect": false,
+        "feedback": "Middleware executes before routing, not after controller return processing."
+      },
+      {
+        "text": "Because interceptors cannot access request objects in NestJS.",
+        "isCorrect": false,
+        "feedback": "Interceptors can access context, but authorization remains a guard concern."
+      },
+      {
+        "text": "Because pipes are disabled when `transform: true` is enabled.",
+        "isCorrect": false,
+        "feedback": "Transform option belongs to validation pipe behavior and does not disable pipes."
+      }
+    ]
+  },
+  {
+    "id": "q9",
+    "question": "Which option should be applied in real projects: Which NestJS component is responsible for route-level authorization decisions?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Guard, because it allows or blocks execution using auth and role logic.",
+        "isCorrect": true,
+        "feedback": "Correct: guards enforce access policy before controller handler execution."
+      },
+      {
+        "text": "Middleware, because it always has access to route metadata and roles.",
+        "isCorrect": false,
+        "feedback": "Middleware runs earlier and is route-agnostic, so metadata access is limited."
+      },
+      {
+        "text": "Interceptor, because it only runs after responses are serialized.",
+        "isCorrect": false,
+        "feedback": "Interceptors wrap execution pre/post handler; they are not primary authorization gates."
+      },
+      {
+        "text": "Pipe, because it transforms and validates request body authorization rules.",
+        "isCorrect": false,
+        "feedback": "Pipes validate or transform data, not decide permissions for route access."
+      }
+    ],
+    "whyQuestion": "Why should engineers trust this explanation? Why use a guard instead of middleware for role checks?",
+    "whyOptions": [
+      {
+        "text": "Because guards integrate with execution context and route-specific metadata.",
+        "isCorrect": true,
+        "feedback": "Exactly: guards can read decorators and apply per-handler authorization policies."
+      },
+      {
+        "text": "Because middleware executes after controllers and can inspect return values.",
+        "isCorrect": false,
+        "feedback": "Middleware executes before routing, not after controller return processing."
+      },
+      {
+        "text": "Because interceptors cannot access request objects in NestJS.",
+        "isCorrect": false,
+        "feedback": "Interceptors can access context, but authorization remains a guard concern."
+      },
+      {
+        "text": "Because pipes are disabled when `transform: true` is enabled.",
+        "isCorrect": false,
+        "feedback": "Transform option belongs to validation pipe behavior and does not disable pipes."
+      }
+    ]
+  },
+  {
+    "id": "q10",
+    "question": "Confirm the core concept: Which NestJS component is responsible for route-level authorization decisions?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Guard, because it allows or blocks execution using auth and role logic.",
+        "isCorrect": true,
+        "feedback": "Correct: guards enforce access policy before controller handler execution."
+      },
+      {
+        "text": "Middleware, because it always has access to route metadata and roles.",
+        "isCorrect": false,
+        "feedback": "Middleware runs earlier and is route-agnostic, so metadata access is limited."
+      },
+      {
+        "text": "Interceptor, because it only runs after responses are serialized.",
+        "isCorrect": false,
+        "feedback": "Interceptors wrap execution pre/post handler; they are not primary authorization gates."
+      },
+      {
+        "text": "Pipe, because it transforms and validates request body authorization rules.",
+        "isCorrect": false,
+        "feedback": "Pipes validate or transform data, not decide permissions for route access."
+      }
+    ],
+    "whyQuestion": "Why is this the correct conceptual takeaway? Why use a guard instead of middleware for role checks?",
+    "whyOptions": [
+      {
+        "text": "Because guards integrate with execution context and route-specific metadata.",
+        "isCorrect": true,
+        "feedback": "Exactly: guards can read decorators and apply per-handler authorization policies."
+      },
+      {
+        "text": "Because middleware executes after controllers and can inspect return values.",
+        "isCorrect": false,
+        "feedback": "Middleware executes before routing, not after controller return processing."
+      },
+      {
+        "text": "Because interceptors cannot access request objects in NestJS.",
+        "isCorrect": false,
+        "feedback": "Interceptors can access context, but authorization remains a guard concern."
+      },
+      {
+        "text": "Because pipes are disabled when `transform: true` is enabled.",
+        "isCorrect": false,
+        "feedback": "Transform option belongs to validation pipe behavior and does not disable pipes."
+      }
+    ]
   }
 ]

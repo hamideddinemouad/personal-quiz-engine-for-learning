@@ -48,5 +48,455 @@
         "feedback": "RAG helps relevance, but generated prompts still respect context limits."
       }
     ]
+  },
+  {
+    "id": "q2",
+    "question": "Which statement is most accurate: What does Retrieval-Augmented Generation (RAG) do according to the notes?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Retrieves external context at query time without retraining the base model.",
+        "isCorrect": true,
+        "feedback": "Correct: RAG injects retrieved knowledge dynamically during answer generation."
+      },
+      {
+        "text": "Retrains the language model on every user query for personalization.",
+        "isCorrect": false,
+        "feedback": "Per-query retraining is impractical; RAG uses retrieval, not model updates."
+      },
+      {
+        "text": "Disables retrieval and relies only on parametric model memory.",
+        "isCorrect": false,
+        "feedback": "That is the opposite of RAG, which explicitly depends on retrieval."
+      },
+      {
+        "text": "Compresses vector indexes into static prompts before deployment.",
+        "isCorrect": false,
+        "feedback": "RAG performs runtime retrieval rather than one-time prompt compression."
+      }
+    ],
+    "whyQuestion": "Why is that answer the strongest technically? Why is RAG useful for personalized or current answers?",
+    "whyOptions": [
+      {
+        "text": "Because it can inject relevant private or recent data during inference.",
+        "isCorrect": true,
+        "feedback": "Exactly: retrieval supplies fresh context that base training may not include."
+      },
+      {
+        "text": "Because it guarantees factual accuracy without retrieval quality concerns.",
+        "isCorrect": false,
+        "feedback": "Accuracy still depends on retrieval relevance and source reliability."
+      },
+      {
+        "text": "Because it permanently writes fetched documents into model weights.",
+        "isCorrect": false,
+        "feedback": "RAG context is transient and does not alter core model parameters."
+      },
+      {
+        "text": "Because it removes token limits by bypassing context windows entirely.",
+        "isCorrect": false,
+        "feedback": "RAG helps relevance, but generated prompts still respect context limits."
+      }
+    ]
+  },
+  {
+    "id": "q3",
+    "question": "Choose the best technical interpretation: What does Retrieval-Augmented Generation (RAG) do according to the notes?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Retrieves external context at query time without retraining the base model.",
+        "isCorrect": true,
+        "feedback": "Correct: RAG injects retrieved knowledge dynamically during answer generation."
+      },
+      {
+        "text": "Retrains the language model on every user query for personalization.",
+        "isCorrect": false,
+        "feedback": "Per-query retraining is impractical; RAG uses retrieval, not model updates."
+      },
+      {
+        "text": "Disables retrieval and relies only on parametric model memory.",
+        "isCorrect": false,
+        "feedback": "That is the opposite of RAG, which explicitly depends on retrieval."
+      },
+      {
+        "text": "Compresses vector indexes into static prompts before deployment.",
+        "isCorrect": false,
+        "feedback": "RAG performs runtime retrieval rather than one-time prompt compression."
+      }
+    ],
+    "whyQuestion": "Why does this option hold in real usage? Why is RAG useful for personalized or current answers?",
+    "whyOptions": [
+      {
+        "text": "Because it can inject relevant private or recent data during inference.",
+        "isCorrect": true,
+        "feedback": "Exactly: retrieval supplies fresh context that base training may not include."
+      },
+      {
+        "text": "Because it guarantees factual accuracy without retrieval quality concerns.",
+        "isCorrect": false,
+        "feedback": "Accuracy still depends on retrieval relevance and source reliability."
+      },
+      {
+        "text": "Because it permanently writes fetched documents into model weights.",
+        "isCorrect": false,
+        "feedback": "RAG context is transient and does not alter core model parameters."
+      },
+      {
+        "text": "Because it removes token limits by bypassing context windows entirely.",
+        "isCorrect": false,
+        "feedback": "RAG helps relevance, but generated prompts still respect context limits."
+      }
+    ]
+  },
+  {
+    "id": "q4",
+    "question": "For practical use, which claim is correct: What does Retrieval-Augmented Generation (RAG) do according to the notes?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Retrieves external context at query time without retraining the base model.",
+        "isCorrect": true,
+        "feedback": "Correct: RAG injects retrieved knowledge dynamically during answer generation."
+      },
+      {
+        "text": "Retrains the language model on every user query for personalization.",
+        "isCorrect": false,
+        "feedback": "Per-query retraining is impractical; RAG uses retrieval, not model updates."
+      },
+      {
+        "text": "Disables retrieval and relies only on parametric model memory.",
+        "isCorrect": false,
+        "feedback": "That is the opposite of RAG, which explicitly depends on retrieval."
+      },
+      {
+        "text": "Compresses vector indexes into static prompts before deployment.",
+        "isCorrect": false,
+        "feedback": "RAG performs runtime retrieval rather than one-time prompt compression."
+      }
+    ],
+    "whyQuestion": "Why is this interpretation more reliable? Why is RAG useful for personalized or current answers?",
+    "whyOptions": [
+      {
+        "text": "Because it can inject relevant private or recent data during inference.",
+        "isCorrect": true,
+        "feedback": "Exactly: retrieval supplies fresh context that base training may not include."
+      },
+      {
+        "text": "Because it guarantees factual accuracy without retrieval quality concerns.",
+        "isCorrect": false,
+        "feedback": "Accuracy still depends on retrieval relevance and source reliability."
+      },
+      {
+        "text": "Because it permanently writes fetched documents into model weights.",
+        "isCorrect": false,
+        "feedback": "RAG context is transient and does not alter core model parameters."
+      },
+      {
+        "text": "Because it removes token limits by bypassing context windows entirely.",
+        "isCorrect": false,
+        "feedback": "RAG helps relevance, but generated prompts still respect context limits."
+      }
+    ]
+  },
+  {
+    "id": "q5",
+    "question": "Identify the option aligned with this note: What does Retrieval-Augmented Generation (RAG) do according to the notes?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Retrieves external context at query time without retraining the base model.",
+        "isCorrect": true,
+        "feedback": "Correct: RAG injects retrieved knowledge dynamically during answer generation."
+      },
+      {
+        "text": "Retrains the language model on every user query for personalization.",
+        "isCorrect": false,
+        "feedback": "Per-query retraining is impractical; RAG uses retrieval, not model updates."
+      },
+      {
+        "text": "Disables retrieval and relies only on parametric model memory.",
+        "isCorrect": false,
+        "feedback": "That is the opposite of RAG, which explicitly depends on retrieval."
+      },
+      {
+        "text": "Compresses vector indexes into static prompts before deployment.",
+        "isCorrect": false,
+        "feedback": "RAG performs runtime retrieval rather than one-time prompt compression."
+      }
+    ],
+    "whyQuestion": "Why is this rule preferred in practice? Why is RAG useful for personalized or current answers?",
+    "whyOptions": [
+      {
+        "text": "Because it can inject relevant private or recent data during inference.",
+        "isCorrect": true,
+        "feedback": "Exactly: retrieval supplies fresh context that base training may not include."
+      },
+      {
+        "text": "Because it guarantees factual accuracy without retrieval quality concerns.",
+        "isCorrect": false,
+        "feedback": "Accuracy still depends on retrieval relevance and source reliability."
+      },
+      {
+        "text": "Because it permanently writes fetched documents into model weights.",
+        "isCorrect": false,
+        "feedback": "RAG context is transient and does not alter core model parameters."
+      },
+      {
+        "text": "Because it removes token limits by bypassing context windows entirely.",
+        "isCorrect": false,
+        "feedback": "RAG helps relevance, but generated prompts still respect context limits."
+      }
+    ]
+  },
+  {
+    "id": "q6",
+    "question": "In a code review, which statement holds: What does Retrieval-Augmented Generation (RAG) do according to the notes?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Retrieves external context at query time without retraining the base model.",
+        "isCorrect": true,
+        "feedback": "Correct: RAG injects retrieved knowledge dynamically during answer generation."
+      },
+      {
+        "text": "Retrains the language model on every user query for personalization.",
+        "isCorrect": false,
+        "feedback": "Per-query retraining is impractical; RAG uses retrieval, not model updates."
+      },
+      {
+        "text": "Disables retrieval and relies only on parametric model memory.",
+        "isCorrect": false,
+        "feedback": "That is the opposite of RAG, which explicitly depends on retrieval."
+      },
+      {
+        "text": "Compresses vector indexes into static prompts before deployment.",
+        "isCorrect": false,
+        "feedback": "RAG performs runtime retrieval rather than one-time prompt compression."
+      }
+    ],
+    "whyQuestion": "Why does this avoid the common misconception? Why is RAG useful for personalized or current answers?",
+    "whyOptions": [
+      {
+        "text": "Because it can inject relevant private or recent data during inference.",
+        "isCorrect": true,
+        "feedback": "Exactly: retrieval supplies fresh context that base training may not include."
+      },
+      {
+        "text": "Because it guarantees factual accuracy without retrieval quality concerns.",
+        "isCorrect": false,
+        "feedback": "Accuracy still depends on retrieval relevance and source reliability."
+      },
+      {
+        "text": "Because it permanently writes fetched documents into model weights.",
+        "isCorrect": false,
+        "feedback": "RAG context is transient and does not alter core model parameters."
+      },
+      {
+        "text": "Because it removes token limits by bypassing context windows entirely.",
+        "isCorrect": false,
+        "feedback": "RAG helps relevance, but generated prompts still respect context limits."
+      }
+    ]
+  },
+  {
+    "id": "q7",
+    "question": "Which choice avoids the common misunderstanding: What does Retrieval-Augmented Generation (RAG) do according to the notes?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Retrieves external context at query time without retraining the base model.",
+        "isCorrect": true,
+        "feedback": "Correct: RAG injects retrieved knowledge dynamically during answer generation."
+      },
+      {
+        "text": "Retrains the language model on every user query for personalization.",
+        "isCorrect": false,
+        "feedback": "Per-query retraining is impractical; RAG uses retrieval, not model updates."
+      },
+      {
+        "text": "Disables retrieval and relies only on parametric model memory.",
+        "isCorrect": false,
+        "feedback": "That is the opposite of RAG, which explicitly depends on retrieval."
+      },
+      {
+        "text": "Compresses vector indexes into static prompts before deployment.",
+        "isCorrect": false,
+        "feedback": "RAG performs runtime retrieval rather than one-time prompt compression."
+      }
+    ],
+    "whyQuestion": "Why is this the most defensible reasoning? Why is RAG useful for personalized or current answers?",
+    "whyOptions": [
+      {
+        "text": "Because it can inject relevant private or recent data during inference.",
+        "isCorrect": true,
+        "feedback": "Exactly: retrieval supplies fresh context that base training may not include."
+      },
+      {
+        "text": "Because it guarantees factual accuracy without retrieval quality concerns.",
+        "isCorrect": false,
+        "feedback": "Accuracy still depends on retrieval relevance and source reliability."
+      },
+      {
+        "text": "Because it permanently writes fetched documents into model weights.",
+        "isCorrect": false,
+        "feedback": "RAG context is transient and does not alter core model parameters."
+      },
+      {
+        "text": "Because it removes token limits by bypassing context windows entirely.",
+        "isCorrect": false,
+        "feedback": "RAG helps relevance, but generated prompts still respect context limits."
+      }
+    ]
+  },
+  {
+    "id": "q8",
+    "question": "Select the strongest rule from this topic: What does Retrieval-Augmented Generation (RAG) do according to the notes?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Retrieves external context at query time without retraining the base model.",
+        "isCorrect": true,
+        "feedback": "Correct: RAG injects retrieved knowledge dynamically during answer generation."
+      },
+      {
+        "text": "Retrains the language model on every user query for personalization.",
+        "isCorrect": false,
+        "feedback": "Per-query retraining is impractical; RAG uses retrieval, not model updates."
+      },
+      {
+        "text": "Disables retrieval and relies only on parametric model memory.",
+        "isCorrect": false,
+        "feedback": "That is the opposite of RAG, which explicitly depends on retrieval."
+      },
+      {
+        "text": "Compresses vector indexes into static prompts before deployment.",
+        "isCorrect": false,
+        "feedback": "RAG performs runtime retrieval rather than one-time prompt compression."
+      }
+    ],
+    "whyQuestion": "Why does this align with the note intent? Why is RAG useful for personalized or current answers?",
+    "whyOptions": [
+      {
+        "text": "Because it can inject relevant private or recent data during inference.",
+        "isCorrect": true,
+        "feedback": "Exactly: retrieval supplies fresh context that base training may not include."
+      },
+      {
+        "text": "Because it guarantees factual accuracy without retrieval quality concerns.",
+        "isCorrect": false,
+        "feedback": "Accuracy still depends on retrieval relevance and source reliability."
+      },
+      {
+        "text": "Because it permanently writes fetched documents into model weights.",
+        "isCorrect": false,
+        "feedback": "RAG context is transient and does not alter core model parameters."
+      },
+      {
+        "text": "Because it removes token limits by bypassing context windows entirely.",
+        "isCorrect": false,
+        "feedback": "RAG helps relevance, but generated prompts still respect context limits."
+      }
+    ]
+  },
+  {
+    "id": "q9",
+    "question": "Which option should be applied in real projects: What does Retrieval-Augmented Generation (RAG) do according to the notes?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Retrieves external context at query time without retraining the base model.",
+        "isCorrect": true,
+        "feedback": "Correct: RAG injects retrieved knowledge dynamically during answer generation."
+      },
+      {
+        "text": "Retrains the language model on every user query for personalization.",
+        "isCorrect": false,
+        "feedback": "Per-query retraining is impractical; RAG uses retrieval, not model updates."
+      },
+      {
+        "text": "Disables retrieval and relies only on parametric model memory.",
+        "isCorrect": false,
+        "feedback": "That is the opposite of RAG, which explicitly depends on retrieval."
+      },
+      {
+        "text": "Compresses vector indexes into static prompts before deployment.",
+        "isCorrect": false,
+        "feedback": "RAG performs runtime retrieval rather than one-time prompt compression."
+      }
+    ],
+    "whyQuestion": "Why should engineers trust this explanation? Why is RAG useful for personalized or current answers?",
+    "whyOptions": [
+      {
+        "text": "Because it can inject relevant private or recent data during inference.",
+        "isCorrect": true,
+        "feedback": "Exactly: retrieval supplies fresh context that base training may not include."
+      },
+      {
+        "text": "Because it guarantees factual accuracy without retrieval quality concerns.",
+        "isCorrect": false,
+        "feedback": "Accuracy still depends on retrieval relevance and source reliability."
+      },
+      {
+        "text": "Because it permanently writes fetched documents into model weights.",
+        "isCorrect": false,
+        "feedback": "RAG context is transient and does not alter core model parameters."
+      },
+      {
+        "text": "Because it removes token limits by bypassing context windows entirely.",
+        "isCorrect": false,
+        "feedback": "RAG helps relevance, but generated prompts still respect context limits."
+      }
+    ]
+  },
+  {
+    "id": "q10",
+    "question": "Confirm the core concept: What does Retrieval-Augmented Generation (RAG) do according to the notes?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Retrieves external context at query time without retraining the base model.",
+        "isCorrect": true,
+        "feedback": "Correct: RAG injects retrieved knowledge dynamically during answer generation."
+      },
+      {
+        "text": "Retrains the language model on every user query for personalization.",
+        "isCorrect": false,
+        "feedback": "Per-query retraining is impractical; RAG uses retrieval, not model updates."
+      },
+      {
+        "text": "Disables retrieval and relies only on parametric model memory.",
+        "isCorrect": false,
+        "feedback": "That is the opposite of RAG, which explicitly depends on retrieval."
+      },
+      {
+        "text": "Compresses vector indexes into static prompts before deployment.",
+        "isCorrect": false,
+        "feedback": "RAG performs runtime retrieval rather than one-time prompt compression."
+      }
+    ],
+    "whyQuestion": "Why is this the correct conceptual takeaway? Why is RAG useful for personalized or current answers?",
+    "whyOptions": [
+      {
+        "text": "Because it can inject relevant private or recent data during inference.",
+        "isCorrect": true,
+        "feedback": "Exactly: retrieval supplies fresh context that base training may not include."
+      },
+      {
+        "text": "Because it guarantees factual accuracy without retrieval quality concerns.",
+        "isCorrect": false,
+        "feedback": "Accuracy still depends on retrieval relevance and source reliability."
+      },
+      {
+        "text": "Because it permanently writes fetched documents into model weights.",
+        "isCorrect": false,
+        "feedback": "RAG context is transient and does not alter core model parameters."
+      },
+      {
+        "text": "Because it removes token limits by bypassing context windows entirely.",
+        "isCorrect": false,
+        "feedback": "RAG helps relevance, but generated prompts still respect context limits."
+      }
+    ]
   }
 ]

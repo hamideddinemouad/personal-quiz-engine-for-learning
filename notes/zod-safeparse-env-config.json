@@ -48,5 +48,455 @@
         "feedback": "Validation improves correctness, not bundle optimization or dead-code elimination."
       }
     ]
+  },
+  {
+    "id": "q2",
+    "question": "Which statement is most accurate: How does `safeParse` behave when environment values fail schema validation?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "It returns `{ success: false }` metadata instead of throwing by default.",
+        "isCorrect": true,
+        "feedback": "Correct: safeParse returns a result object and avoids exception-based control flow."
+      },
+      {
+        "text": "It rewrites `.env` file entries to satisfy the schema automatically.",
+        "isCorrect": false,
+        "feedback": "SafeParse validates runtime values; it never edits your `.env` file."
+      },
+      {
+        "text": "It always throws immediately when any key is undefined.",
+        "isCorrect": false,
+        "feedback": "That behavior matches parse, not safeParse's non-throwing result contract."
+      },
+      {
+        "text": "It mutates `process.env` types so all keys become numbers.",
+        "isCorrect": false,
+        "feedback": "Validation returns parsed output; it does not globally mutate env source types."
+      }
+    ],
+    "whyQuestion": "Why is that answer the strongest technically? Why validate `process.env` against a schema at startup?",
+    "whyOptions": [
+      {
+        "text": "Because env inputs are strings or undefined and need explicit constraints.",
+        "isCorrect": true,
+        "feedback": "Exactly: schema validation prevents hidden misconfiguration from reaching runtime logic."
+      },
+      {
+        "text": "Because Node cannot access environment variables without Zod middleware.",
+        "isCorrect": false,
+        "feedback": "Node reads env variables directly; Zod adds safety, not access."
+      },
+      {
+        "text": "Because coercion only works after routes are registered in Nest.",
+        "isCorrect": false,
+        "feedback": "Coercion works during parsing and is independent from route registration."
+      },
+      {
+        "text": "Because schema checks reduce bundle size by stripping unused variables.",
+        "isCorrect": false,
+        "feedback": "Validation improves correctness, not bundle optimization or dead-code elimination."
+      }
+    ]
+  },
+  {
+    "id": "q3",
+    "question": "Choose the best technical interpretation: How does `safeParse` behave when environment values fail schema validation?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "It returns `{ success: false }` metadata instead of throwing by default.",
+        "isCorrect": true,
+        "feedback": "Correct: safeParse returns a result object and avoids exception-based control flow."
+      },
+      {
+        "text": "It rewrites `.env` file entries to satisfy the schema automatically.",
+        "isCorrect": false,
+        "feedback": "SafeParse validates runtime values; it never edits your `.env` file."
+      },
+      {
+        "text": "It always throws immediately when any key is undefined.",
+        "isCorrect": false,
+        "feedback": "That behavior matches parse, not safeParse's non-throwing result contract."
+      },
+      {
+        "text": "It mutates `process.env` types so all keys become numbers.",
+        "isCorrect": false,
+        "feedback": "Validation returns parsed output; it does not globally mutate env source types."
+      }
+    ],
+    "whyQuestion": "Why does this option hold in real usage? Why validate `process.env` against a schema at startup?",
+    "whyOptions": [
+      {
+        "text": "Because env inputs are strings or undefined and need explicit constraints.",
+        "isCorrect": true,
+        "feedback": "Exactly: schema validation prevents hidden misconfiguration from reaching runtime logic."
+      },
+      {
+        "text": "Because Node cannot access environment variables without Zod middleware.",
+        "isCorrect": false,
+        "feedback": "Node reads env variables directly; Zod adds safety, not access."
+      },
+      {
+        "text": "Because coercion only works after routes are registered in Nest.",
+        "isCorrect": false,
+        "feedback": "Coercion works during parsing and is independent from route registration."
+      },
+      {
+        "text": "Because schema checks reduce bundle size by stripping unused variables.",
+        "isCorrect": false,
+        "feedback": "Validation improves correctness, not bundle optimization or dead-code elimination."
+      }
+    ]
+  },
+  {
+    "id": "q4",
+    "question": "For practical use, which claim is correct: How does `safeParse` behave when environment values fail schema validation?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "It returns `{ success: false }` metadata instead of throwing by default.",
+        "isCorrect": true,
+        "feedback": "Correct: safeParse returns a result object and avoids exception-based control flow."
+      },
+      {
+        "text": "It rewrites `.env` file entries to satisfy the schema automatically.",
+        "isCorrect": false,
+        "feedback": "SafeParse validates runtime values; it never edits your `.env` file."
+      },
+      {
+        "text": "It always throws immediately when any key is undefined.",
+        "isCorrect": false,
+        "feedback": "That behavior matches parse, not safeParse's non-throwing result contract."
+      },
+      {
+        "text": "It mutates `process.env` types so all keys become numbers.",
+        "isCorrect": false,
+        "feedback": "Validation returns parsed output; it does not globally mutate env source types."
+      }
+    ],
+    "whyQuestion": "Why is this interpretation more reliable? Why validate `process.env` against a schema at startup?",
+    "whyOptions": [
+      {
+        "text": "Because env inputs are strings or undefined and need explicit constraints.",
+        "isCorrect": true,
+        "feedback": "Exactly: schema validation prevents hidden misconfiguration from reaching runtime logic."
+      },
+      {
+        "text": "Because Node cannot access environment variables without Zod middleware.",
+        "isCorrect": false,
+        "feedback": "Node reads env variables directly; Zod adds safety, not access."
+      },
+      {
+        "text": "Because coercion only works after routes are registered in Nest.",
+        "isCorrect": false,
+        "feedback": "Coercion works during parsing and is independent from route registration."
+      },
+      {
+        "text": "Because schema checks reduce bundle size by stripping unused variables.",
+        "isCorrect": false,
+        "feedback": "Validation improves correctness, not bundle optimization or dead-code elimination."
+      }
+    ]
+  },
+  {
+    "id": "q5",
+    "question": "Identify the option aligned with this note: How does `safeParse` behave when environment values fail schema validation?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "It returns `{ success: false }` metadata instead of throwing by default.",
+        "isCorrect": true,
+        "feedback": "Correct: safeParse returns a result object and avoids exception-based control flow."
+      },
+      {
+        "text": "It rewrites `.env` file entries to satisfy the schema automatically.",
+        "isCorrect": false,
+        "feedback": "SafeParse validates runtime values; it never edits your `.env` file."
+      },
+      {
+        "text": "It always throws immediately when any key is undefined.",
+        "isCorrect": false,
+        "feedback": "That behavior matches parse, not safeParse's non-throwing result contract."
+      },
+      {
+        "text": "It mutates `process.env` types so all keys become numbers.",
+        "isCorrect": false,
+        "feedback": "Validation returns parsed output; it does not globally mutate env source types."
+      }
+    ],
+    "whyQuestion": "Why is this rule preferred in practice? Why validate `process.env` against a schema at startup?",
+    "whyOptions": [
+      {
+        "text": "Because env inputs are strings or undefined and need explicit constraints.",
+        "isCorrect": true,
+        "feedback": "Exactly: schema validation prevents hidden misconfiguration from reaching runtime logic."
+      },
+      {
+        "text": "Because Node cannot access environment variables without Zod middleware.",
+        "isCorrect": false,
+        "feedback": "Node reads env variables directly; Zod adds safety, not access."
+      },
+      {
+        "text": "Because coercion only works after routes are registered in Nest.",
+        "isCorrect": false,
+        "feedback": "Coercion works during parsing and is independent from route registration."
+      },
+      {
+        "text": "Because schema checks reduce bundle size by stripping unused variables.",
+        "isCorrect": false,
+        "feedback": "Validation improves correctness, not bundle optimization or dead-code elimination."
+      }
+    ]
+  },
+  {
+    "id": "q6",
+    "question": "In a code review, which statement holds: How does `safeParse` behave when environment values fail schema validation?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "It returns `{ success: false }` metadata instead of throwing by default.",
+        "isCorrect": true,
+        "feedback": "Correct: safeParse returns a result object and avoids exception-based control flow."
+      },
+      {
+        "text": "It rewrites `.env` file entries to satisfy the schema automatically.",
+        "isCorrect": false,
+        "feedback": "SafeParse validates runtime values; it never edits your `.env` file."
+      },
+      {
+        "text": "It always throws immediately when any key is undefined.",
+        "isCorrect": false,
+        "feedback": "That behavior matches parse, not safeParse's non-throwing result contract."
+      },
+      {
+        "text": "It mutates `process.env` types so all keys become numbers.",
+        "isCorrect": false,
+        "feedback": "Validation returns parsed output; it does not globally mutate env source types."
+      }
+    ],
+    "whyQuestion": "Why does this avoid the common misconception? Why validate `process.env` against a schema at startup?",
+    "whyOptions": [
+      {
+        "text": "Because env inputs are strings or undefined and need explicit constraints.",
+        "isCorrect": true,
+        "feedback": "Exactly: schema validation prevents hidden misconfiguration from reaching runtime logic."
+      },
+      {
+        "text": "Because Node cannot access environment variables without Zod middleware.",
+        "isCorrect": false,
+        "feedback": "Node reads env variables directly; Zod adds safety, not access."
+      },
+      {
+        "text": "Because coercion only works after routes are registered in Nest.",
+        "isCorrect": false,
+        "feedback": "Coercion works during parsing and is independent from route registration."
+      },
+      {
+        "text": "Because schema checks reduce bundle size by stripping unused variables.",
+        "isCorrect": false,
+        "feedback": "Validation improves correctness, not bundle optimization or dead-code elimination."
+      }
+    ]
+  },
+  {
+    "id": "q7",
+    "question": "Which choice avoids the common misunderstanding: How does `safeParse` behave when environment values fail schema validation?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "It returns `{ success: false }` metadata instead of throwing by default.",
+        "isCorrect": true,
+        "feedback": "Correct: safeParse returns a result object and avoids exception-based control flow."
+      },
+      {
+        "text": "It rewrites `.env` file entries to satisfy the schema automatically.",
+        "isCorrect": false,
+        "feedback": "SafeParse validates runtime values; it never edits your `.env` file."
+      },
+      {
+        "text": "It always throws immediately when any key is undefined.",
+        "isCorrect": false,
+        "feedback": "That behavior matches parse, not safeParse's non-throwing result contract."
+      },
+      {
+        "text": "It mutates `process.env` types so all keys become numbers.",
+        "isCorrect": false,
+        "feedback": "Validation returns parsed output; it does not globally mutate env source types."
+      }
+    ],
+    "whyQuestion": "Why is this the most defensible reasoning? Why validate `process.env` against a schema at startup?",
+    "whyOptions": [
+      {
+        "text": "Because env inputs are strings or undefined and need explicit constraints.",
+        "isCorrect": true,
+        "feedback": "Exactly: schema validation prevents hidden misconfiguration from reaching runtime logic."
+      },
+      {
+        "text": "Because Node cannot access environment variables without Zod middleware.",
+        "isCorrect": false,
+        "feedback": "Node reads env variables directly; Zod adds safety, not access."
+      },
+      {
+        "text": "Because coercion only works after routes are registered in Nest.",
+        "isCorrect": false,
+        "feedback": "Coercion works during parsing and is independent from route registration."
+      },
+      {
+        "text": "Because schema checks reduce bundle size by stripping unused variables.",
+        "isCorrect": false,
+        "feedback": "Validation improves correctness, not bundle optimization or dead-code elimination."
+      }
+    ]
+  },
+  {
+    "id": "q8",
+    "question": "Select the strongest rule from this topic: How does `safeParse` behave when environment values fail schema validation?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "It returns `{ success: false }` metadata instead of throwing by default.",
+        "isCorrect": true,
+        "feedback": "Correct: safeParse returns a result object and avoids exception-based control flow."
+      },
+      {
+        "text": "It rewrites `.env` file entries to satisfy the schema automatically.",
+        "isCorrect": false,
+        "feedback": "SafeParse validates runtime values; it never edits your `.env` file."
+      },
+      {
+        "text": "It always throws immediately when any key is undefined.",
+        "isCorrect": false,
+        "feedback": "That behavior matches parse, not safeParse's non-throwing result contract."
+      },
+      {
+        "text": "It mutates `process.env` types so all keys become numbers.",
+        "isCorrect": false,
+        "feedback": "Validation returns parsed output; it does not globally mutate env source types."
+      }
+    ],
+    "whyQuestion": "Why does this align with the note intent? Why validate `process.env` against a schema at startup?",
+    "whyOptions": [
+      {
+        "text": "Because env inputs are strings or undefined and need explicit constraints.",
+        "isCorrect": true,
+        "feedback": "Exactly: schema validation prevents hidden misconfiguration from reaching runtime logic."
+      },
+      {
+        "text": "Because Node cannot access environment variables without Zod middleware.",
+        "isCorrect": false,
+        "feedback": "Node reads env variables directly; Zod adds safety, not access."
+      },
+      {
+        "text": "Because coercion only works after routes are registered in Nest.",
+        "isCorrect": false,
+        "feedback": "Coercion works during parsing and is independent from route registration."
+      },
+      {
+        "text": "Because schema checks reduce bundle size by stripping unused variables.",
+        "isCorrect": false,
+        "feedback": "Validation improves correctness, not bundle optimization or dead-code elimination."
+      }
+    ]
+  },
+  {
+    "id": "q9",
+    "question": "Which option should be applied in real projects: How does `safeParse` behave when environment values fail schema validation?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "It returns `{ success: false }` metadata instead of throwing by default.",
+        "isCorrect": true,
+        "feedback": "Correct: safeParse returns a result object and avoids exception-based control flow."
+      },
+      {
+        "text": "It rewrites `.env` file entries to satisfy the schema automatically.",
+        "isCorrect": false,
+        "feedback": "SafeParse validates runtime values; it never edits your `.env` file."
+      },
+      {
+        "text": "It always throws immediately when any key is undefined.",
+        "isCorrect": false,
+        "feedback": "That behavior matches parse, not safeParse's non-throwing result contract."
+      },
+      {
+        "text": "It mutates `process.env` types so all keys become numbers.",
+        "isCorrect": false,
+        "feedback": "Validation returns parsed output; it does not globally mutate env source types."
+      }
+    ],
+    "whyQuestion": "Why should engineers trust this explanation? Why validate `process.env` against a schema at startup?",
+    "whyOptions": [
+      {
+        "text": "Because env inputs are strings or undefined and need explicit constraints.",
+        "isCorrect": true,
+        "feedback": "Exactly: schema validation prevents hidden misconfiguration from reaching runtime logic."
+      },
+      {
+        "text": "Because Node cannot access environment variables without Zod middleware.",
+        "isCorrect": false,
+        "feedback": "Node reads env variables directly; Zod adds safety, not access."
+      },
+      {
+        "text": "Because coercion only works after routes are registered in Nest.",
+        "isCorrect": false,
+        "feedback": "Coercion works during parsing and is independent from route registration."
+      },
+      {
+        "text": "Because schema checks reduce bundle size by stripping unused variables.",
+        "isCorrect": false,
+        "feedback": "Validation improves correctness, not bundle optimization or dead-code elimination."
+      }
+    ]
+  },
+  {
+    "id": "q10",
+    "question": "Confirm the core concept: How does `safeParse` behave when environment values fail schema validation?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "It returns `{ success: false }` metadata instead of throwing by default.",
+        "isCorrect": true,
+        "feedback": "Correct: safeParse returns a result object and avoids exception-based control flow."
+      },
+      {
+        "text": "It rewrites `.env` file entries to satisfy the schema automatically.",
+        "isCorrect": false,
+        "feedback": "SafeParse validates runtime values; it never edits your `.env` file."
+      },
+      {
+        "text": "It always throws immediately when any key is undefined.",
+        "isCorrect": false,
+        "feedback": "That behavior matches parse, not safeParse's non-throwing result contract."
+      },
+      {
+        "text": "It mutates `process.env` types so all keys become numbers.",
+        "isCorrect": false,
+        "feedback": "Validation returns parsed output; it does not globally mutate env source types."
+      }
+    ],
+    "whyQuestion": "Why is this the correct conceptual takeaway? Why validate `process.env` against a schema at startup?",
+    "whyOptions": [
+      {
+        "text": "Because env inputs are strings or undefined and need explicit constraints.",
+        "isCorrect": true,
+        "feedback": "Exactly: schema validation prevents hidden misconfiguration from reaching runtime logic."
+      },
+      {
+        "text": "Because Node cannot access environment variables without Zod middleware.",
+        "isCorrect": false,
+        "feedback": "Node reads env variables directly; Zod adds safety, not access."
+      },
+      {
+        "text": "Because coercion only works after routes are registered in Nest.",
+        "isCorrect": false,
+        "feedback": "Coercion works during parsing and is independent from route registration."
+      },
+      {
+        "text": "Because schema checks reduce bundle size by stripping unused variables.",
+        "isCorrect": false,
+        "feedback": "Validation improves correctness, not bundle optimization or dead-code elimination."
+      }
+    ]
   }
 ]
