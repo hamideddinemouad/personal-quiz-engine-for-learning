@@ -6,13 +6,23 @@ declare global {
   var __quizSchemaReady: Promise<void> | undefined;
 }
 
-function resolveDatabaseUrl(): string {
-  const databaseUrl = process.env.DATABASE_URL?.trim();
-  if (!databaseUrl) {
-    throw new Error('DATABASE_URL is required to run quiz history on Postgres.');
+const DATABASE_URL_ENV_KEYS = ['DATABASE_URL', 'POSTGRES_URL', 'NEON_DATABASE_URL'] as const;
+type DatabaseUrlEnvKey = (typeof DATABASE_URL_ENV_KEYS)[number];
+
+function resolveDatabaseUrl(): { databaseUrl: string; sourceEnv: DatabaseUrlEnvKey } {
+  for (const envKey of DATABASE_URL_ENV_KEYS) {
+    const candidate = process.env[envKey]?.trim();
+    if (candidate) {
+      return {
+        databaseUrl: candidate,
+        sourceEnv: envKey
+      };
+    }
   }
 
-  return databaseUrl;
+  throw new Error(
+    `Database URL is missing. Set one of: ${DATABASE_URL_ENV_KEYS.join(', ')}.`
+  );
 }
 
 function toSafeDatabaseTarget(databaseUrl: string): string {
@@ -43,7 +53,7 @@ function shouldUseSsl(databaseUrl: string): boolean {
 
 function getOrCreatePool(): Pool {
   if (!global.__quizDbPool) {
-    const databaseUrl = resolveDatabaseUrl();
+    const { databaseUrl, sourceEnv } = resolveDatabaseUrl();
     global.__quizDbPool = new Pool({
       connectionString: databaseUrl,
       ssl: shouldUseSsl(databaseUrl) ? { rejectUnauthorized: false } : undefined,
@@ -56,7 +66,8 @@ function getOrCreatePool(): Pool {
 
     logInfo('db.pool.initialized', {
       target: toSafeDatabaseTarget(databaseUrl),
-      ssl: shouldUseSsl(databaseUrl)
+      ssl: shouldUseSsl(databaseUrl),
+      sourceEnv
     });
   }
 
