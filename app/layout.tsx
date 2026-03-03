@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import AppModeNav from '@/features/quiz/components/app-mode-nav';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -15,7 +16,14 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps): JSX.Element {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <div className="app-shell">
+          <aside className="app-shell-sidebar card-surface">
+            <AppModeNav />
+          </aside>
+          <div className="app-shell-main">{children}</div>
+        </div>
+      </body>
     </html>
   );
 }

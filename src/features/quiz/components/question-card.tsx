@@ -12,6 +12,18 @@ interface QuestionCardProps {
   choiceUi: ChoiceUiMode;
 }
 
+function logQuestionCardDebug(
+  questionId: string,
+  phase: 'main' | 'why',
+  details: Record<string, unknown>
+): void {
+  if (process.env.NODE_ENV === 'production') {
+    return;
+  }
+
+  console.log(`[quiz-debug][question-card:${questionId}:${phase}] selection-result`, details);
+}
+
 export default function QuestionCard({ question, choiceUi }: QuestionCardProps): JSX.Element {
   // Goal: Bridge global quiz state (correctness/locks) with local UI feedback copy.
   const { answersById, selectMainOption, selectWhyOption } = useQuizContext();
@@ -34,6 +46,11 @@ export default function QuestionCard({ question, choiceUi }: QuestionCardProps):
     // Goal: Translate state-machine result into user-facing feedback text.
     const { result } = selectMainOption(question.id, optionIndex);
     const selectedOption = question.options[optionIndex];
+    logQuestionCardDebug(question.id, 'main', {
+      optionIndex,
+      result,
+      optionIsCorrect: selectedOption?.isCorrect ?? null
+    });
 
     if (result === 'correct') {
       setMainFeedback({
@@ -67,6 +84,11 @@ export default function QuestionCard({ question, choiceUi }: QuestionCardProps):
     // Goal: Same as main phase, but for conceptual "why" mastery.
     const { result } = selectWhyOption(question.id, optionIndex);
     const selectedOption = question.whyOptions?.[optionIndex];
+    logQuestionCardDebug(question.id, 'why', {
+      optionIndex,
+      result,
+      optionIsCorrect: selectedOption?.isCorrect ?? null
+    });
 
     if (result === 'correct') {
       setWhyFeedback({

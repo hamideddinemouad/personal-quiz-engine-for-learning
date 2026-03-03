@@ -17,10 +17,12 @@ import {
 
 interface SidebarNavigationProps {
   dailyMasteredGoal: number;
+  dailySnapshotError: string | null;
   studyStreakDays: number;
   isShufflingMegaQuiz: boolean;
   shuffleError: string | null;
   onShuffleMegaQuiz: () => Promise<void>;
+  onOpenHistoryCrud: () => void;
 }
 
 function statusMarkerClass(status: QuizStatus): string {
@@ -49,10 +51,12 @@ function statusLabel(status: QuizStatus): string {
 
 export default function SidebarNavigation({
   dailyMasteredGoal,
+  dailySnapshotError,
   studyStreakDays,
   isShufflingMegaQuiz,
   shuffleError,
-  onShuffleMegaQuiz
+  onShuffleMegaQuiz,
+  onOpenHistoryCrud
 }: SidebarNavigationProps): JSX.Element {
   const { questions, currentQuestionIndex, statusesById, elapsedSeconds, progress, goToQuestion } =
     useQuizContext();
@@ -72,6 +76,7 @@ export default function SidebarNavigation({
         <ClockIcon className="inline-icon" />
         Stopwatch: <span className="mono-text">{formatStopwatch(elapsedSeconds)}</span>
       </p>
+      {dailySnapshotError ? <p className="feedback feedback--error">{dailySnapshotError}</p> : null}
       <div aria-live="polite" className="sidebar-progress">
         <div className="sidebar-stat-grid">
           <p className="sidebar-progress-row sidebar-progress-row--card">
@@ -129,6 +134,9 @@ export default function SidebarNavigation({
             <ShuffleIcon className={`inline-icon ${isShufflingMegaQuiz ? 'spin-icon' : ''}`} />
             {isShufflingMegaQuiz ? 'Building Mega Quiz...' : 'Shuffle Mega Quiz'}
           </span>
+        </button>
+        <button className="button button--ghost sidebar-mega-button" onClick={onOpenHistoryCrud} type="button">
+          Manage History DB
         </button>
         {shuffleError ? <p className="feedback feedback--error">{shuffleError}</p> : null}
       </div>

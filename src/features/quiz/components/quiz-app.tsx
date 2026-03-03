@@ -10,6 +10,7 @@ interface QuizAppProps {
   initialQuestions: QuizQuestion[];
   initialStudyStreakDays: number;
   dailyMasteredGoal: number;
+  initialDailySnapshotError?: string | null;
   choiceUi?: ChoiceUiMode;
 }
 
@@ -22,6 +23,7 @@ export default function QuizApp({
   initialQuestions,
   initialStudyStreakDays,
   dailyMasteredGoal,
+  initialDailySnapshotError = null,
   choiceUi = 'standard'
 }: QuizAppProps): JSX.Element {
   // Goal: Keep the active quiz session replaceable in-place (daily -> mega quiz)
@@ -83,6 +85,7 @@ export default function QuizApp({
       <QuizEngine
         choiceUi={choiceUi}
         dailyMasteredGoal={dailyMasteredGoal}
+        initialDailySnapshotError={initialDailySnapshotError}
         initialStudyStreakDays={initialStudyStreakDays}
         isShufflingMegaQuiz={isShufflingMegaQuiz}
         onShuffleMegaQuiz={handleShuffleMegaQuiz}

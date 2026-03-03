@@ -87,6 +87,37 @@ export function upsertDailyQuizHistoryEntry(
   };
 }
 
+export function createDailyQuizHistoryEntry(
+  date: string,
+  questionsSnapshot: QuizQuestion[]
+): DailyQuizHistoryEntry | null {
+  // Goal: Create only a brand-new date row. If date already exists, return null.
+  const database = getDatabase();
+  const snapshot = cloneQuestions(questionsSnapshot);
+  const savedAt = new Date().toISOString();
+
+  const insertResult = database
+    .prepare(
+      `
+      INSERT OR IGNORE INTO daily_quiz_history (date, saved_at, questions_json)
+      VALUES (?, ?, ?);
+      `
+    )
+    .run(date, savedAt, JSON.stringify(snapshot));
+
+  if (insertResult.changes === 0) {
+    return null;
+  }
+
+  trimHistoryToMaxDays();
+
+  return {
+    date,
+    savedAt,
+    questions: cloneQuestions(snapshot)
+  };
+}
+
 export function listDailyQuizHistoryEntries(): DailyQuizHistoryEntry[] {
   // Goal: Return ascending date history and silently skip corrupt rows.
   const database = getDatabase();
@@ -111,6 +142,73 @@ export function findDailyQuizHistoryEntryByDate(date: string): DailyQuizHistoryE
   }
 
   return mapRowToEntry(row);
+}
+
+export function findLatestDailyQuizHistoryBeforeDate(date: string): DailyQuizHistoryEntry | null {
+  // Goal: Fetch the chronologically closest row before `date`.
+  // Date keys use YYYY-MM-DD, so lexicographic order matches time order.
+  const database = getDatabase();
+  const row = database
+    .prepare(
+      `
+      SELECT date, saved_at, questions_json
+      FROM daily_quiz_history
+      WHERE date < ?
+      ORDER BY date DESC
+      LIMIT 1
+      `
+    )
+    .get(date) as HistoryRow | undefined;
+
+  if (!row) {
+    return null;
+  }
+
+  return mapRowToEntry(row);
+}
+
+export function renameDailyQuizHistoryEntryDate(
+  currentDate: string,
+  nextDate: string
+): 'updated' | 'not_found' | 'conflict' {
+  // Goal: Move one row to a different date key without touching question payload.
+  const database = getDatabase();
+
+  const existingRow = database
+    .prepare('SELECT date FROM daily_quiz_history WHERE date = ? LIMIT 1')
+    .get(currentDate) as { date: string } | undefined;
+  if (!existingRow) {
+    return 'not_found';
+  }
+
+  if (currentDate === nextDate) {
+    return 'updated';
+  }
+
+  const targetRow = database
+    .prepare('SELECT date FROM daily_quiz_history WHERE date = ? LIMIT 1')
+    .get(nextDate) as { date: string } | undefined;
+  if (targetRow) {
+    return 'conflict';
+  }
+
+  database
+    .prepare(
+      `
+      UPDATE daily_quiz_history
+      SET date = ?, saved_at = ?
+      WHERE date = ?;
+      `
+    )
+    .run(nextDate, new Date().toISOString(), currentDate);
+
+  return 'updated';
+}
+
+export function deleteDailyQuizHistoryEntryByDate(date: string): boolean {
+  const database = getDatabase();
+  const result = database.prepare('DELETE FROM daily_quiz_history WHERE date = ?').run(date);
+  return result.changes > 0;
 }
 
 export function buildMegaQuizFromDates(dates: string[]): QuizQuestion[] {

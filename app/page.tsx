@@ -5,13 +5,14 @@ export const dynamic = 'force-dynamic';
 const DAILY_MASTERED_GOAL = 20;
 
 export default function HomePage(): JSX.Element {
-  const questions = getOrCreateTodayQuizSnapshot();
+  const todaySnapshot = getOrCreateTodayQuizSnapshot();
   const studyStreakStats = getStudyStreakStats();
 
   return (
     <QuizApp
       dailyMasteredGoal={DAILY_MASTERED_GOAL}
-      initialQuestions={questions}
+      initialDailySnapshotError={todaySnapshot.saveError}
+      initialQuestions={todaySnapshot.questions}
       initialStudyStreakDays={studyStreakStats.currentStreakDays}
     />
   );

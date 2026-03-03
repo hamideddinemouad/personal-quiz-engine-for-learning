@@ -39,6 +39,23 @@ interface QuizProviderProps extends PropsWithChildren {
 
 const QuizContext = createContext<QuizContextValue | null>(null);
 
+function logQuizContextDebug(
+  phase: 'main' | 'why',
+  event: string,
+  details?: Record<string, unknown>
+): void {
+  if (process.env.NODE_ENV === 'production') {
+    return;
+  }
+
+  if (details) {
+    console.log(`[quiz-debug][quiz-context:${phase}] ${event}`, details);
+    return;
+  }
+
+  console.log(`[quiz-debug][quiz-context:${phase}] ${event}`);
+}
+
 function createInitialAnswersById(questions: QuizQuestion[]): AnswersById {
   // Goal: Create a predictable answer bucket for every question id.
   // This avoids null checks spread across the UI and status logic.
@@ -85,18 +102,41 @@ export function QuizProvider({ children, questions }: QuizProviderProps): JSX.El
     // Step 1: Validate question and current answer bucket.
     const question = questions.find((entry) => entry.id === questionId);
     if (!question) {
+      logQuizContextDebug('main', 'invalid-question-id', {
+        questionId,
+        optionIndex
+      });
       return { result: 'invalid' };
     }
 
     const current = answersById[questionId];
     if (!current || current.mainLocked) {
+      logQuizContextDebug('main', 'selection-blocked-locked', {
+        questionId,
+        optionIndex,
+        hasCurrent: Boolean(current),
+        mainLocked: current?.mainLocked ?? null
+      });
       return { result: 'locked' };
     }
 
     const selected = question.options[optionIndex];
     if (!selected) {
+      logQuizContextDebug('main', 'invalid-option-index', {
+        questionId,
+        optionIndex,
+        optionsCount: question.options.length
+      });
       return { result: 'invalid' };
     }
+
+    logQuizContextDebug('main', 'selection-attempt', {
+      questionId,
+      optionIndex,
+      optionIsCorrect: selected.isCorrect,
+      mainSelectionBefore: current.mainSelection,
+      mainLockedBefore: current.mainLocked
+    });
 
     if (selected.isCorrect) {
       // Step 2a: Correct answer -> lock phase 1.
@@ -118,6 +158,10 @@ export function QuizProvider({ children, questions }: QuizProviderProps): JSX.El
         };
       });
 
+      logQuizContextDebug('main', 'selection-result-correct', {
+        questionId,
+        optionIndex
+      });
       return { result: 'correct' };
     }
 
@@ -137,6 +181,10 @@ export function QuizProvider({ children, questions }: QuizProviderProps): JSX.El
       };
     });
 
+    logQuizContextDebug('main', 'selection-result-incorrect', {
+      questionId,
+      optionIndex
+    });
     return { result: 'incorrect' };
   };
 
@@ -152,18 +200,42 @@ export function QuizProvider({ children, questions }: QuizProviderProps): JSX.El
     // Step 1: Validate that this question supports a why phase.
     const question = questions.find((entry) => entry.id === questionId);
     if (!question || !question.requiresWhy || !question.whyOptions) {
+      logQuizContextDebug('why', 'invalid-why-question', {
+        questionId,
+        optionIndex
+      });
       return { result: 'invalid' };
     }
 
     const current = answersById[questionId];
     if (!current || !current.mainCorrect || current.whyLocked) {
+      logQuizContextDebug('why', 'selection-blocked-locked', {
+        questionId,
+        optionIndex,
+        hasCurrent: Boolean(current),
+        mainCorrect: current?.mainCorrect ?? null,
+        whyLocked: current?.whyLocked ?? null
+      });
       return { result: 'locked' };
     }
 
     const selected = question.whyOptions[optionIndex];
     if (!selected) {
+      logQuizContextDebug('why', 'invalid-option-index', {
+        questionId,
+        optionIndex,
+        optionsCount: question.whyOptions.length
+      });
       return { result: 'invalid' };
     }
+
+    logQuizContextDebug('why', 'selection-attempt', {
+      questionId,
+      optionIndex,
+      optionIsCorrect: selected.isCorrect,
+      whySelectionBefore: current.whySelection,
+      whyLockedBefore: current.whyLocked
+    });
 
     if (selected.isCorrect) {
       // Step 2a: Correct why answer -> finalize conceptual mastery.
@@ -184,6 +256,10 @@ export function QuizProvider({ children, questions }: QuizProviderProps): JSX.El
         };
       });
 
+      logQuizContextDebug('why', 'selection-result-correct', {
+        questionId,
+        optionIndex
+      });
       return { result: 'correct' };
     }
 
@@ -203,6 +279,10 @@ export function QuizProvider({ children, questions }: QuizProviderProps): JSX.El
       };
     });
 
+    logQuizContextDebug('why', 'selection-result-incorrect', {
+      questionId,
+      optionIndex
+    });
     return { result: 'incorrect' };
   };
 

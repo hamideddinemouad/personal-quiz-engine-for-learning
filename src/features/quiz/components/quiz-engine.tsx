@@ -1,14 +1,17 @@
 'use client';
 
+import { useState } from 'react';
 import { useQuizContext } from '@/features/quiz/context/quiz-context';
 import type { ChoiceUiMode } from '@/features/quiz/types';
 import { AlertCircleIcon } from './icons';
+import HistoryCrudModal from './history-crud-modal';
 import QuestionCard from './question-card';
 import SidebarNavigation from './sidebar-navigation';
 
 interface QuizEngineProps {
   initialStudyStreakDays: number;
   dailyMasteredGoal: number;
+  initialDailySnapshotError: string | null;
   isShufflingMegaQuiz: boolean;
   shuffleError: string | null;
   onShuffleMegaQuiz: () => Promise<void>;
@@ -18,6 +21,7 @@ interface QuizEngineProps {
 export default function QuizEngine({
   initialStudyStreakDays,
   dailyMasteredGoal,
+  initialDailySnapshotError,
   isShufflingMegaQuiz,
   shuffleError,
   onShuffleMegaQuiz,
@@ -25,6 +29,7 @@ export default function QuizEngine({
 }: QuizEngineProps): JSX.Element {
   // Goal: Compose quiz content + sidebar controls from shared context state.
   const { currentQuestion, currentAnswer } = useQuizContext();
+  const [isHistoryCrudOpen, setIsHistoryCrudOpen] = useState(false);
 
   if (!currentQuestion || !currentAnswer) {
     return (
@@ -45,12 +50,15 @@ export default function QuizEngine({
         </section>
         <SidebarNavigation
           dailyMasteredGoal={dailyMasteredGoal}
+          dailySnapshotError={initialDailySnapshotError}
           studyStreakDays={initialStudyStreakDays}
           isShufflingMegaQuiz={isShufflingMegaQuiz}
+          onOpenHistoryCrud={() => setIsHistoryCrudOpen(true)}
           onShuffleMegaQuiz={onShuffleMegaQuiz}
           shuffleError={shuffleError}
         />
       </div>
+      <HistoryCrudModal isOpen={isHistoryCrudOpen} onClose={() => setIsHistoryCrudOpen(false)} />
     </main>
   );
 }
