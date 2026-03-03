@@ -17,9 +17,6 @@ interface QuizEngineProps {
   isShufflingMegaQuiz: boolean;
   shuffleError: string | null;
   onShuffleMegaQuiz: () => Promise<void>;
-  isCreatingGithubBackup: boolean;
-  backupFeedback: { tone: 'success' | 'error' | 'neutral'; text: string } | null;
-  onCreateGithubBackup: () => Promise<void>;
   onLoadQuizTemporarily: (questions: QuizQuestion[], subject: string | null) => void;
   choiceUi: ChoiceUiMode;
 }
@@ -32,9 +29,6 @@ export default function QuizEngine({
   isShufflingMegaQuiz,
   shuffleError,
   onShuffleMegaQuiz,
-  isCreatingGithubBackup,
-  backupFeedback,
-  onCreateGithubBackup,
   onLoadQuizTemporarily,
   choiceUi
 }: QuizEngineProps): JSX.Element {
@@ -66,11 +60,8 @@ export default function QuizEngine({
           quizSubject={quizSubject}
           studyStreakDays={initialStudyStreakDays}
           isShufflingMegaQuiz={isShufflingMegaQuiz}
-          isCreatingGithubBackup={isCreatingGithubBackup}
-          backupFeedback={backupFeedback}
           onOpenHistoryCrud={() => setIsHistoryCrudOpen(true)}
           onShuffleMegaQuiz={onShuffleMegaQuiz}
-          onCreateGithubBackup={onCreateGithubBackup}
           shuffleError={shuffleError}
         />
       </div>

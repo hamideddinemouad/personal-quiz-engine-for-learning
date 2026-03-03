@@ -23,11 +23,8 @@ interface SidebarNavigationProps {
   quizSubject: string | null;
   studyStreakDays: number;
   isShufflingMegaQuiz: boolean;
-  isCreatingGithubBackup: boolean;
-  backupFeedback: { tone: 'success' | 'error' | 'neutral'; text: string } | null;
   shuffleError: string | null;
   onShuffleMegaQuiz: () => Promise<void>;
-  onCreateGithubBackup: () => Promise<void>;
   onOpenHistoryCrud: () => void;
 }
 
@@ -62,11 +59,8 @@ export default function SidebarNavigation({
   quizSubject,
   studyStreakDays,
   isShufflingMegaQuiz,
-  isCreatingGithubBackup,
-  backupFeedback,
   shuffleError,
   onShuffleMegaQuiz,
-  onCreateGithubBackup,
   onOpenHistoryCrud
 }: SidebarNavigationProps): JSX.Element {
   const isFlashMode = choiceUi === 'flashcards';
@@ -161,32 +155,6 @@ export default function SidebarNavigation({
           Manage History DB
         </button>
         {shuffleError ? <p className="feedback feedback--error">{shuffleError}</p> : null}
-      </div>
-      <div className="sidebar-backup-action">
-        <p className="sidebar-action-label">Data safety</p>
-        <button
-          className="button button--ghost sidebar-mega-button sidebar-backup-button"
-          disabled={isCreatingGithubBackup}
-          onClick={() => {
-            void onCreateGithubBackup();
-          }}
-          type="button"
-        >
-          {isCreatingGithubBackup ? 'Creating GitHub Backup...' : 'Create GitHub Backup'}
-        </button>
-        {backupFeedback ? (
-          <p
-            className={`feedback ${
-              backupFeedback.tone === 'success'
-                ? 'feedback--success'
-                : backupFeedback.tone === 'error'
-                  ? 'feedback--error'
-                  : 'feedback--neutral'
-            }`}
-          >
-            {backupFeedback.text}
-          </p>
-        ) : null}
       </div>
 
       <div aria-label="Question list" className="navigator-grid">
