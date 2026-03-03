@@ -102,7 +102,7 @@ Hard output rules (must follow):
   - "subject": non-empty string
   - "questions": non-empty array of quiz questions
 - IDs must be unique in order: q1, q2, q3, ...
-- according to notes length choose the right amount of questions
+- output at least 8 questions and maximum 12 questions
 
 Question schema (exact field names):
 {

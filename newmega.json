@@ -1,0 +1,1004 @@
+[
+  {
+    "id": "mega-2026-02-23-q7-u1",
+    "options": [
+      {
+        "text": "Pipe, because permission checks are a form of input transformation and validation.",
+        "feedback": "Pipes validate/transform data, not enforce access-control policy.",
+        "isCorrect": false
+      },
+      {
+        "text": "Guard, because it evaluates authorization logic before the route handler executes.",
+        "feedback": "Correct: guards are the primary route-level authorization mechanism in Nest.",
+        "isCorrect": true
+      },
+      {
+        "text": "Middleware, because it has full per-handler role metadata before route binding.",
+        "feedback": "Middleware runs earlier and is not ideal for metadata-driven auth decisions.",
+        "isCorrect": false
+      },
+      {
+        "text": "Interceptor, because authorization should be enforced after controller result mapping.",
+        "feedback": "Interceptors wrap execution, but authorization gates belong in guards.",
+        "isCorrect": false
+      }
+    ],
+    "question": "Which choice avoids the common misunderstanding: Which NestJS component is responsible for route-level authorization decisions?",
+    "whyOptions": [
+      {
+        "text": "Pipes automatically return 403 when role requirements are not satisfied.",
+        "feedback": "Pipes handle data shape and type concerns, not authorization status.",
+        "isCorrect": false
+      },
+      {
+        "text": "Guards can read execution context and route metadata before invoking handlers.",
+        "feedback": "Exactly: they are designed for per-route auth checks using decorators.",
+        "isCorrect": true
+      },
+      {
+        "text": "Middleware executes after guards and has richer handler metadata than guards.",
+        "feedback": "Middleware executes earlier and lacks the same route-specific focus.",
+        "isCorrect": false
+      },
+      {
+        "text": "Interceptors run only after controller return values, so they cannot pre-check access.",
+        "feedback": "Interceptors can run pre/post, but auth policy should still live in guards.",
+        "isCorrect": false
+      }
+    ],
+    "requiresWhy": true,
+    "whyQuestion": "Why is this the most defensible reasoning? Why use a guard instead of middleware for role checks?"
+  },
+  {
+    "id": "mega-2026-02-20-q9-u2",
+    "hint": "Execution starts with source rows, not projection.",
+    "options": [
+      {
+        "text": "FROM -> JOIN -> WHERE -> GROUP BY -> SELECT -> HAVING -> ORDER BY",
+        "feedback": "HAVING filters grouped results before final SELECT projection.",
+        "isCorrect": false
+      },
+      {
+        "text": "FROM -> JOIN -> GROUP BY -> WHERE -> HAVING -> SELECT -> ORDER BY",
+        "feedback": "WHERE filters rows before grouping, not after it.",
+        "isCorrect": false
+      },
+      {
+        "text": "FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY",
+        "feedback": "Correct: source rows are built and filtered before projection and sorting.",
+        "isCorrect": true
+      },
+      {
+        "text": "FROM -> JOIN -> WHERE -> SELECT -> GROUP BY -> HAVING -> ORDER BY",
+        "feedback": "SELECT cannot precede grouping because GROUP BY/HAVING shape projection input.",
+        "isCorrect": false
+      }
+    ],
+    "question": "Which option should be applied in real projects: What is the correct logical SQL execution order from the notes?",
+    "whyOptions": [
+      {
+        "text": "SELECT must run first so WHERE and GROUP BY can reference select aliases.",
+        "feedback": "Aliases are not a reason for execution order and often unavailable there.",
+        "isCorrect": false
+      },
+      {
+        "text": "SQL must build the working row set before selecting projected output columns.",
+        "feedback": "Exactly: projection requires a resolved and filtered relational dataset first.",
+        "isCorrect": true
+      },
+      {
+        "text": "ORDER BY determines which joined rows survive earlier relational operations.",
+        "feedback": "ORDER BY sorts final results; it does not decide row eligibility.",
+        "isCorrect": false
+      },
+      {
+        "text": "HAVING creates join relationships that FROM and JOIN evaluate afterward.",
+        "feedback": "HAVING filters existing groups; it does not define joins.",
+        "isCorrect": false
+      }
+    ],
+    "requiresWhy": true,
+    "whyQuestion": "Why should engineers trust this explanation? Why must SQL process FROM and JOIN before SELECT?"
+  },
+  {
+    "id": "mega-2026-02-25-q2-u3",
+    "options": [
+      {
+        "text": "To guarantee strict compile-time typing directly inside PostgreSQL rows.",
+        "feedback": "JSONB is flexible runtime data, not compile-time static typing enforcement.",
+        "isCorrect": false
+      },
+      {
+        "text": "To force every tenant to share one immutable global content model.",
+        "feedback": "The design exists to support tenant-specific models, not one rigid schema.",
+        "isCorrect": false
+      },
+      {
+        "text": "To let tenants add content types without running database migrations.",
+        "feedback": "Correct: schema flexibility moves model evolution into tenant-level configuration.",
+        "isCorrect": true
+      },
+      {
+        "text": "To remove the need for relational links between entries and definitions.",
+        "feedback": "Entries still reference definitions through identifiers to maintain structure mapping.",
+        "isCorrect": false
+      }
+    ],
+    "question": "Which statement is most accurate: Why does the CMS note store content definitions as JSON schema/config objects?",
+    "whyOptions": [
+      {
+        "text": "Definitions store field blueprint; entries store item data referencing that blueprint.",
+        "feedback": "Exactly: one defines structure, the other stores actual records and values.",
+        "isCorrect": true
+      },
+      {
+        "text": "Definitions store published posts, while entries only store tenant membership roles.",
+        "feedback": "Membership is separate; entries hold content items tied to definitions.",
+        "isCorrect": false
+      },
+      {
+        "text": "Definitions and entries are duplicates kept for backup and rollback only.",
+        "feedback": "They represent distinct responsibilities, not redundant backup copies.",
+        "isCorrect": false
+      },
+      {
+        "text": "Definitions are static SQL views, while entries are temporary cache rows.",
+        "feedback": "The note describes JSON-backed domain entities, not view-cache architecture.",
+        "isCorrect": false
+      }
+    ],
+    "requiresWhy": true,
+    "whyQuestion": "Why is that answer the strongest technically? How do `content_definitions` and `content_entries` work together in this design?"
+  },
+  {
+    "id": "mega-2026-02-19-q4-u4",
+    "options": [
+      {
+        "text": "When reads heavily outnumber writes and latency is query-bound.",
+        "feedback": "Read-heavy selective workloads typically benefit from proper indexing.",
+        "isCorrect": false
+      },
+      {
+        "text": "When the column appears in join predicates across large tables.",
+        "feedback": "Join keys are common index targets to reduce expensive table scans.",
+        "isCorrect": false
+      },
+      {
+        "text": "When writes dominate and the column is rarely filtered or joined.",
+        "feedback": "Correct: index maintenance adds write overhead without enough query benefit.",
+        "isCorrect": true
+      },
+      {
+        "text": "When queries frequently use selective `WHERE` conditions on that column.",
+        "feedback": "That is a strong indexing case because selective reads gain speed.",
+        "isCorrect": false
+      }
+    ],
+    "question": "For practical use, which claim is correct: When is indexing a column usually a bad tradeoff according to the notes?",
+    "whyOptions": [
+      {
+        "text": "Because query planners ignore indexed columns for equality comparisons.",
+        "feedback": "Planners often prefer indexes for selective equality predicates, not ignore them.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because indexes only accelerate sorting and never help filtering operations.",
+        "feedback": "Indexes often speed filtering and joins, not just sort operations.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because inserts and updates must also maintain index structures on each write.",
+        "feedback": "Exactly: every write now updates extra data structures, increasing total cost.",
+        "isCorrect": true
+      },
+      {
+        "text": "Because indexes disable transaction commits until manual vacuum runs.",
+        "feedback": "Transactions commit normally; index cost is maintenance, not commit disabling.",
+        "isCorrect": false
+      }
+    ],
+    "requiresWhy": true,
+    "whyQuestion": "Why is this interpretation more reliable? Why can an index hurt write-heavy workloads?"
+  },
+  {
+    "id": "mega-2026-02-16-q2-u5",
+    "options": [
+      {
+        "text": "It always throws immediately when any key is undefined.",
+        "feedback": "That behavior matches parse, not safeParse's non-throwing result contract.",
+        "isCorrect": false
+      },
+      {
+        "text": "It returns `{ success: false }` metadata instead of throwing by default.",
+        "feedback": "Correct: safeParse returns a result object and avoids exception-based control flow.",
+        "isCorrect": true
+      },
+      {
+        "text": "It mutates `process.env` types so all keys become numbers.",
+        "feedback": "Validation returns parsed output; it does not globally mutate env source types.",
+        "isCorrect": false
+      },
+      {
+        "text": "It rewrites `.env` file entries to satisfy the schema automatically.",
+        "feedback": "SafeParse validates runtime values; it never edits your `.env` file.",
+        "isCorrect": false
+      }
+    ],
+    "question": "Which statement is most accurate: How does `safeParse` behave when environment values fail schema validation?",
+    "whyOptions": [
+      {
+        "text": "Because env inputs are strings or undefined and need explicit constraints.",
+        "feedback": "Exactly: schema validation prevents hidden misconfiguration from reaching runtime logic.",
+        "isCorrect": true
+      },
+      {
+        "text": "Because Node cannot access environment variables without Zod middleware.",
+        "feedback": "Node reads env variables directly; Zod adds safety, not access.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because coercion only works after routes are registered in Nest.",
+        "feedback": "Coercion works during parsing and is independent from route registration.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because schema checks reduce bundle size by stripping unused variables.",
+        "feedback": "Validation improves correctness, not bundle optimization or dead-code elimination.",
+        "isCorrect": false
+      }
+    ],
+    "requiresWhy": true,
+    "whyQuestion": "Why is that answer the strongest technically? Why validate `process.env` against a schema at startup?"
+  },
+  {
+    "id": "mega-2026-02-21-q6-u6",
+    "options": [
+      {
+        "text": "Answers from cached prior responses only, without retrieving new external context.",
+        "feedback": "Caching past outputs is different from retrieval-augmented generation.",
+        "isCorrect": false
+      },
+      {
+        "text": "Only increases context-window length and does not fetch knowledge from external sources.",
+        "feedback": "Longer context helps capacity, but RAG specifically requires retrieval.",
+        "isCorrect": false
+      },
+      {
+        "text": "Retrieves relevant external documents at inference time and conditions generation without retraining model weights.",
+        "feedback": "Correct: RAG grounds outputs using runtime context, not weight updates.",
+        "isCorrect": true
+      },
+      {
+        "text": "Fine-tunes the base model on retrieved passages before returning each user answer.",
+        "feedback": "That describes continual training, while RAG keeps weights fixed at query time.",
+        "isCorrect": false
+      }
+    ],
+    "question": "In a code review, which statement holds: What does Retrieval-Augmented Generation (RAG) do according to the notes?",
+    "whyOptions": [
+      {
+        "text": "It injects tenant-specific or recent evidence into prompts right before generation.",
+        "feedback": "Exactly: retrieval supplies fresh, private context the base model lacks.",
+        "isCorrect": true
+      },
+      {
+        "text": "Vector similarity ranking guarantees correctness regardless of document quality.",
+        "feedback": "Retrieval quality still controls grounding accuracy and hallucination risk.",
+        "isCorrect": false
+      },
+      {
+        "text": "It removes prompt-construction needs because token limits no longer apply.",
+        "feedback": "Token budgets still matter even when retrieval is used.",
+        "isCorrect": false
+      },
+      {
+        "text": "It permanently writes retrieved facts into model parameters after each request.",
+        "feedback": "RAG context is transient; it does not mutate model weights.",
+        "isCorrect": false
+      }
+    ],
+    "requiresWhy": true,
+    "whyQuestion": "Why does this avoid the common misconception? Why is RAG useful for personalized or current answers?"
+  },
+  {
+    "id": "mega-2026-03-01-q3-u7",
+    "options": [
+      {
+        "text": "A generic account settings page with no website context.",
+        "feedback": "Settings-first navigation delays core objective of managing current websites.",
+        "isCorrect": false
+      },
+      {
+        "text": "Immediately into a forced new-site wizard for every login session.",
+        "feedback": "Forcing creation ignores existing assets and adds unnecessary workflow friction.",
+        "isCorrect": false
+      },
+      {
+        "text": "Directly to the manage websites dashboard showing created site snapshots.",
+        "feedback": "Correct: returning users should resume management from their existing sites dashboard.",
+        "isCorrect": true
+      },
+      {
+        "text": "Back to the marketing home page to read product presentation again.",
+        "feedback": "Post-login flow should prioritize task continuation, not repeated landing content.",
+        "isCorrect": false
+      }
+    ],
+    "question": "Choose the best technical interpretation: In the CMS flow, where should a user with existing sites go right after login?",
+    "whyOptions": [
+      {
+        "text": "It removes the need for per-site dashboards and blog management screens.",
+        "feedback": "Per-site dashboards remain essential after selecting a specific website.",
+        "isCorrect": false
+      },
+      {
+        "text": "It is required because CMS products cannot render public landing pages.",
+        "feedback": "Landing pages remain useful; routing choice depends on authenticated context.",
+        "isCorrect": false
+      },
+      {
+        "text": "It prevents users from creating any additional sites after first login.",
+        "feedback": "The goal is efficient access, not restricting future site creation.",
+        "isCorrect": false
+      },
+      {
+        "text": "It reduces friction and moves users immediately to relevant management actions.",
+        "feedback": "Exactly: contextual routing shortens time-to-task and improves product usability.",
+        "isCorrect": true
+      }
+    ],
+    "requiresWhy": true,
+    "whyQuestion": "Why does this option hold in real usage? Why is direct dashboard routing better for users with existing websites?"
+  },
+  {
+    "id": "mega-2026-02-27-q10-u8",
+    "options": [
+      {
+        "text": "`reduce` must return an array of identical length to the input.",
+        "feedback": "Reduce may return objects, numbers, strings, or arrays of different sizes.",
+        "isCorrect": false
+      },
+      {
+        "text": "`map` returns a same-length array, while `reduce` can return any accumulated type.",
+        "feedback": "Correct: map transforms each item, but reduce folds into a chosen result.",
+        "isCorrect": true
+      },
+      {
+        "text": "`map` always mutates the original array, while `reduce` never does.",
+        "feedback": "Map returns a new array; mutation behavior depends on callback side effects.",
+        "isCorrect": false
+      },
+      {
+        "text": "`map` is only for numbers, and `reduce` is only for objects.",
+        "feedback": "Both work on any element type; purpose differs by transformation strategy.",
+        "isCorrect": false
+      }
+    ],
+    "question": "Confirm the core concept: Which statement best captures the difference between `map()` and `reduce()`?",
+    "whyOptions": [
+      {
+        "text": "Because `map` automatically infers object keys from array indexes.",
+        "feedback": "Map does index-wise transformation, not key projection into arbitrary objects.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because `map` forbids callback returns and only reuses existing values.",
+        "feedback": "Map requires callback returns; they fill each slot in a new array.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because `reduce` skips callback execution for non-primitive array entries.",
+        "feedback": "Reduce processes elements normally; entry primitiveness is irrelevant here.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because `reduce` is driven by accumulator type and callback return contract.",
+        "feedback": "Exactly: accumulator initialization defines the destination shape of the fold.",
+        "isCorrect": true
+      }
+    ],
+    "requiresWhy": true,
+    "whyQuestion": "Why is this the correct conceptual takeaway? Why can `reduce` change the output data type while `map` usually does not?"
+  },
+  {
+    "id": "mega-2026-02-21-q3-u9",
+    "options": [
+      {
+        "text": "Retrieves relevant external documents at inference time and conditions generation without retraining model weights.",
+        "feedback": "Correct: RAG grounds outputs using runtime context, not weight updates.",
+        "isCorrect": true
+      },
+      {
+        "text": "Fine-tunes the base model on retrieved passages before returning each user answer.",
+        "feedback": "That describes continual training, while RAG keeps weights fixed at query time.",
+        "isCorrect": false
+      },
+      {
+        "text": "Answers from cached prior responses only, without retrieving new external context.",
+        "feedback": "Caching past outputs is different from retrieval-augmented generation.",
+        "isCorrect": false
+      },
+      {
+        "text": "Only increases context-window length and does not fetch knowledge from external sources.",
+        "feedback": "Longer context helps capacity, but RAG specifically requires retrieval.",
+        "isCorrect": false
+      }
+    ],
+    "question": "Choose the best technical interpretation: What does Retrieval-Augmented Generation (RAG) do according to the notes?",
+    "whyOptions": [
+      {
+        "text": "It permanently writes retrieved facts into model parameters after each request.",
+        "feedback": "RAG context is transient; it does not mutate model weights.",
+        "isCorrect": false
+      },
+      {
+        "text": "Vector similarity ranking guarantees correctness regardless of document quality.",
+        "feedback": "Retrieval quality still controls grounding accuracy and hallucination risk.",
+        "isCorrect": false
+      },
+      {
+        "text": "It injects tenant-specific or recent evidence into prompts right before generation.",
+        "feedback": "Exactly: retrieval supplies fresh, private context the base model lacks.",
+        "isCorrect": true
+      },
+      {
+        "text": "It removes prompt-construction needs because token limits no longer apply.",
+        "feedback": "Token budgets still matter even when retrieval is used.",
+        "isCorrect": false
+      }
+    ],
+    "requiresWhy": true,
+    "whyQuestion": "Why does this option hold in real usage? Why is RAG useful for personalized or current answers?"
+  },
+  {
+    "id": "mega-2026-02-18-q5-u10",
+    "options": [
+      {
+        "text": "An operator like `+` or `&&` used inside expressions.",
+        "feedback": "Operators are symbols; predicates are full expressions yielding boolean values.",
+        "isCorrect": false
+      },
+      {
+        "text": "An expression that evaluates to either true or false.",
+        "feedback": "Correct: predicates produce boolean outcomes used by conditional logic.",
+        "isCorrect": true
+      },
+      {
+        "text": "A function signature listing parameter and return data types.",
+        "feedback": "Signatures describe contracts; they do not themselves evaluate boolean outcomes.",
+        "isCorrect": false
+      },
+      {
+        "text": "A global constant written in uppercase to avoid mutation.",
+        "feedback": "Uppercase naming is convention, but predicate definition concerns evaluation result.",
+        "isCorrect": false
+      }
+    ],
+    "question": "Identify the option aligned with this note: In the notes, what is a predicate?",
+    "whyOptions": [
+      {
+        "text": "Because predicates eliminate boundary cases by ignoring edge inputs.",
+        "feedback": "Boundary cases still exist and must be tested explicitly in design.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because predicates automatically convert all function outputs to constants.",
+        "feedback": "Predicates evaluate conditions; they do not rewrite output mutability semantics.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because they drive branching decisions and filtering based on explicit conditions.",
+        "feedback": "Exactly: reliable condition checks control execution paths and expected outcomes.",
+        "isCorrect": true
+      },
+      {
+        "text": "Because predicates replace the need for tests in HTDF workflow.",
+        "feedback": "Tests remain required; predicates only define decision conditions within logic.",
+        "isCorrect": false
+      }
+    ],
+    "requiresWhy": true,
+    "whyQuestion": "Why is this rule preferred in practice? Why are predicates central when designing function logic?"
+  },
+  {
+    "id": "mega-2026-02-23-q4-u11",
+    "options": [
+      {
+        "text": "Pipe, because permission checks are a form of input transformation and validation.",
+        "feedback": "Pipes validate/transform data, not enforce access-control policy.",
+        "isCorrect": false
+      },
+      {
+        "text": "Middleware, because it has full per-handler role metadata before route binding.",
+        "feedback": "Middleware runs earlier and is not ideal for metadata-driven auth decisions.",
+        "isCorrect": false
+      },
+      {
+        "text": "Guard, because it evaluates authorization logic before the route handler executes.",
+        "feedback": "Correct: guards are the primary route-level authorization mechanism in Nest.",
+        "isCorrect": true
+      },
+      {
+        "text": "Interceptor, because authorization should be enforced after controller result mapping.",
+        "feedback": "Interceptors wrap execution, but authorization gates belong in guards.",
+        "isCorrect": false
+      }
+    ],
+    "question": "For practical use, which claim is correct: Which NestJS component is responsible for route-level authorization decisions?",
+    "whyOptions": [
+      {
+        "text": "Pipes automatically return 403 when role requirements are not satisfied.",
+        "feedback": "Pipes handle data shape and type concerns, not authorization status.",
+        "isCorrect": false
+      },
+      {
+        "text": "Guards can read execution context and route metadata before invoking handlers.",
+        "feedback": "Exactly: they are designed for per-route auth checks using decorators.",
+        "isCorrect": true
+      },
+      {
+        "text": "Interceptors run only after controller return values, so they cannot pre-check access.",
+        "feedback": "Interceptors can run pre/post, but auth policy should still live in guards.",
+        "isCorrect": false
+      },
+      {
+        "text": "Middleware executes after guards and has richer handler metadata than guards.",
+        "feedback": "Middleware executes earlier and lacks the same route-specific focus.",
+        "isCorrect": false
+      }
+    ],
+    "requiresWhy": true,
+    "whyQuestion": "Why is this interpretation more reliable? Why use a guard instead of middleware for role checks?"
+  },
+  {
+    "id": "mega-2026-02-28-q3-u12",
+    "options": [
+      {
+        "text": "Benchmark frontend performance metrics with statistically significant confidence.",
+        "feedback": "Performance benchmarking requires dedicated tooling, not basic smoke scenarios.",
+        "isCorrect": false
+      },
+      {
+        "text": "Validate only fixture file schemas and ignore UI interactions entirely.",
+        "feedback": "Smoke tests focus on user-critical flows, not schema-only fixture validation.",
+        "isCorrect": false
+      },
+      {
+        "text": "Replace all regression tests so full suites become unnecessary.",
+        "feedback": "Smoke tests are minimal checks and cannot replace comprehensive behavior coverage.",
+        "isCorrect": false
+      },
+      {
+        "text": "Quickly verify critical user journeys before running deeper test coverage.",
+        "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time.",
+        "isCorrect": true
+      }
+    ],
+    "question": "Choose the best technical interpretation: What is the primary purpose of smoke tests in a Cypress suite?",
+    "whyOptions": [
+      {
+        "text": "They guarantee every edge case is covered before release.",
+        "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage.",
+        "isCorrect": false
+      },
+      {
+        "text": "They automatically fix flaky tests by rerunning failing commands silently.",
+        "feedback": "Smoke strategy improves sequencing, but does not auto-heal flaky test logic.",
+        "isCorrect": false
+      },
+      {
+        "text": "They remove the need for reusable commands and page objects.",
+        "feedback": "Abstractions still reduce duplication and improve maintainability across suites.",
+        "isCorrect": false
+      },
+      {
+        "text": "They fail fast on major outages, saving time and debugging effort.",
+        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites.",
+        "isCorrect": true
+      }
+    ],
+    "requiresWhy": true,
+    "whyQuestion": "Why does this option hold in real usage? Why run smoke tests before full end-to-end suites?"
+  },
+  {
+    "id": "mega-2026-02-27-q4-u13",
+    "options": [
+      {
+        "text": "`map` is only for numbers, and `reduce` is only for objects.",
+        "feedback": "Both work on any element type; purpose differs by transformation strategy.",
+        "isCorrect": false
+      },
+      {
+        "text": "`map` always mutates the original array, while `reduce` never does.",
+        "feedback": "Map returns a new array; mutation behavior depends on callback side effects.",
+        "isCorrect": false
+      },
+      {
+        "text": "`map` returns a same-length array, while `reduce` can return any accumulated type.",
+        "feedback": "Correct: map transforms each item, but reduce folds into a chosen result.",
+        "isCorrect": true
+      },
+      {
+        "text": "`reduce` must return an array of identical length to the input.",
+        "feedback": "Reduce may return objects, numbers, strings, or arrays of different sizes.",
+        "isCorrect": false
+      }
+    ],
+    "question": "For practical use, which claim is correct: Which statement best captures the difference between `map()` and `reduce()`?",
+    "whyOptions": [
+      {
+        "text": "Because `map` forbids callback returns and only reuses existing values.",
+        "feedback": "Map requires callback returns; they fill each slot in a new array.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because `reduce` is driven by accumulator type and callback return contract.",
+        "feedback": "Exactly: accumulator initialization defines the destination shape of the fold.",
+        "isCorrect": true
+      },
+      {
+        "text": "Because `reduce` skips callback execution for non-primitive array entries.",
+        "feedback": "Reduce processes elements normally; entry primitiveness is irrelevant here.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because `map` automatically infers object keys from array indexes.",
+        "feedback": "Map does index-wise transformation, not key projection into arbitrary objects.",
+        "isCorrect": false
+      }
+    ],
+    "requiresWhy": true,
+    "whyQuestion": "Why is this interpretation more reliable? Why can `reduce` change the output data type while `map` usually does not?"
+  },
+  {
+    "id": "mega-2026-02-26-q9-u14",
+    "hint": "It is not the modified array object.",
+    "options": [
+      {
+        "text": "The array itself, so methods can always be chained.",
+        "feedback": "This confuses push with fluent APIs; push returns a number, not array.",
+        "isCorrect": false
+      },
+      {
+        "text": "A new array containing only the pushed item.",
+        "feedback": "Push mutates in place; creating a separate array is not its behavior.",
+        "isCorrect": false
+      },
+      {
+        "text": "The new length of the array after insertion.",
+        "feedback": "Correct: push mutates the array and returns the updated element count.",
+        "isCorrect": true
+      },
+      {
+        "text": "The element that was previously at the last index.",
+        "feedback": "Push does not expose prior tail values; it reports resulting array length.",
+        "isCorrect": false
+      }
+    ],
+    "question": "Which option should be applied in real projects: In JavaScript, what does `array.push(item)` return?",
+    "whyOptions": [
+      {
+        "text": "Because the operation's primary immediate result is the updated array size.",
+        "feedback": "Exactly: the method signals post-mutation size, which callers often need immediately.",
+        "isCorrect": true
+      },
+      {
+        "text": "Because `push` internally clones arrays and hides the original reference.",
+        "feedback": "Push does not clone by default; it mutates the same array instance.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because JavaScript forbids returning reference types from mutating methods.",
+        "feedback": "JavaScript allows returning references; this is a specific API design choice.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because returning arrays would break garbage collection in V8.",
+        "feedback": "Garbage collection is unrelated to this return contract and method semantics.",
+        "isCorrect": false
+      }
+    ],
+    "requiresWhy": true,
+    "whyQuestion": "Why should engineers trust this explanation? Why does `push` return length instead of the array value?"
+  },
+  {
+    "id": "mega-2026-02-21-q1-u15",
+    "options": [
+      {
+        "text": "Answers from cached prior responses only, without retrieving new external context.",
+        "feedback": "Caching past outputs is different from retrieval-augmented generation.",
+        "isCorrect": false
+      },
+      {
+        "text": "Retrieves relevant external documents at inference time and conditions generation without retraining model weights.",
+        "feedback": "Correct: RAG grounds outputs using runtime context, not weight updates.",
+        "isCorrect": true
+      },
+      {
+        "text": "Fine-tunes the base model on retrieved passages before returning each user answer.",
+        "feedback": "That describes continual training, while RAG keeps weights fixed at query time.",
+        "isCorrect": false
+      },
+      {
+        "text": "Only increases context-window length and does not fetch knowledge from external sources.",
+        "feedback": "Longer context helps capacity, but RAG specifically requires retrieval.",
+        "isCorrect": false
+      }
+    ],
+    "question": "What does Retrieval-Augmented Generation (RAG) do according to the notes?",
+    "whyOptions": [
+      {
+        "text": "It permanently writes retrieved facts into model parameters after each request.",
+        "feedback": "RAG context is transient; it does not mutate model weights.",
+        "isCorrect": false
+      },
+      {
+        "text": "It injects tenant-specific or recent evidence into prompts right before generation.",
+        "feedback": "Exactly: retrieval supplies fresh, private context the base model lacks.",
+        "isCorrect": true
+      },
+      {
+        "text": "Vector similarity ranking guarantees correctness regardless of document quality.",
+        "feedback": "Retrieval quality still controls grounding accuracy and hallucination risk.",
+        "isCorrect": false
+      },
+      {
+        "text": "It removes prompt-construction needs because token limits no longer apply.",
+        "feedback": "Token budgets still matter even when retrieval is used.",
+        "isCorrect": false
+      }
+    ],
+    "requiresWhy": true,
+    "whyQuestion": "Why is RAG useful for personalized or current answers?"
+  },
+  {
+    "id": "mega-2026-02-17-q9-u16",
+    "options": [
+      {
+        "text": "Because `reduce` never supports generic inference under any circumstances.",
+        "feedback": "Reduce can infer types in many cases, especially with precise initial values.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because callbacks passed to `reduce` must always return `Promise` values.",
+        "feedback": "Reduce callbacks can be synchronous; async return is optional and unrelated here.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because `{}` is inferred too vaguely, so indexed writes need a defined shape.",
+        "feedback": "Correct: empty object inference lacks index/value info, so property updates are unsafe.",
+        "isCorrect": true
+      },
+      {
+        "text": "Because object literals cannot be used as `reduce` initial values in TypeScript.",
+        "feedback": "Object initial values are valid; the issue is missing explicit structural typing.",
+        "isCorrect": false
+      }
+    ],
+    "question": "Which option should be applied in real projects: Why does `reduce` with an initial value of `{}` often need explicit accumulator typing in TypeScript?",
+    "whyOptions": [
+      {
+        "text": "Because `reduce` always narrows accumulator types to `never` during iteration.",
+        "feedback": "TypeScript does not force `never` here; constraints come from initial inference.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because TypeScript disables bracket notation unless `any` is globally enabled.",
+        "feedback": "Bracket notation is allowed; safety checks fail when structure is undefined.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because generic `U` only works with primitive accumulator types.",
+        "feedback": "Generic accumulators can be objects; they just need a concrete declared shape.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because the compiler cannot guarantee key existence or value type from bare `{}`.",
+        "feedback": "Exactly: without an index signature, dynamic property access remains type-unsafe.",
+        "isCorrect": true
+      }
+    ],
+    "requiresWhy": true,
+    "whyQuestion": "Why should engineers trust this explanation? Why does an untyped `{}` initializer produce friction with dynamic keys like `acc[current]`?"
+  },
+  {
+    "id": "mega-2026-02-17-q4-u17",
+    "options": [
+      {
+        "text": "Because `{}` is inferred too vaguely, so indexed writes need a defined shape.",
+        "feedback": "Correct: empty object inference lacks index/value info, so property updates are unsafe.",
+        "isCorrect": true
+      },
+      {
+        "text": "Because callbacks passed to `reduce` must always return `Promise` values.",
+        "feedback": "Reduce callbacks can be synchronous; async return is optional and unrelated here.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because object literals cannot be used as `reduce` initial values in TypeScript.",
+        "feedback": "Object initial values are valid; the issue is missing explicit structural typing.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because `reduce` never supports generic inference under any circumstances.",
+        "feedback": "Reduce can infer types in many cases, especially with precise initial values.",
+        "isCorrect": false
+      }
+    ],
+    "question": "For practical use, which claim is correct: Why does `reduce` with an initial value of `{}` often need explicit accumulator typing in TypeScript?",
+    "whyOptions": [
+      {
+        "text": "Because the compiler cannot guarantee key existence or value type from bare `{}`.",
+        "feedback": "Exactly: without an index signature, dynamic property access remains type-unsafe.",
+        "isCorrect": true
+      },
+      {
+        "text": "Because `reduce` always narrows accumulator types to `never` during iteration.",
+        "feedback": "TypeScript does not force `never` here; constraints come from initial inference.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because generic `U` only works with primitive accumulator types.",
+        "feedback": "Generic accumulators can be objects; they just need a concrete declared shape.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because TypeScript disables bracket notation unless `any` is globally enabled.",
+        "feedback": "Bracket notation is allowed; safety checks fail when structure is undefined.",
+        "isCorrect": false
+      }
+    ],
+    "requiresWhy": true,
+    "whyQuestion": "Why is this interpretation more reliable? Why does an untyped `{}` initializer produce friction with dynamic keys like `acc[current]`?"
+  },
+  {
+    "id": "mega-2026-02-18-q4-u18",
+    "options": [
+      {
+        "text": "An expression that evaluates to either true or false.",
+        "feedback": "Correct: predicates produce boolean outcomes used by conditional logic.",
+        "isCorrect": true
+      },
+      {
+        "text": "A global constant written in uppercase to avoid mutation.",
+        "feedback": "Uppercase naming is convention, but predicate definition concerns evaluation result.",
+        "isCorrect": false
+      },
+      {
+        "text": "A function signature listing parameter and return data types.",
+        "feedback": "Signatures describe contracts; they do not themselves evaluate boolean outcomes.",
+        "isCorrect": false
+      },
+      {
+        "text": "An operator like `+` or `&&` used inside expressions.",
+        "feedback": "Operators are symbols; predicates are full expressions yielding boolean values.",
+        "isCorrect": false
+      }
+    ],
+    "question": "For practical use, which claim is correct: In the notes, what is a predicate?",
+    "whyOptions": [
+      {
+        "text": "Because predicates eliminate boundary cases by ignoring edge inputs.",
+        "feedback": "Boundary cases still exist and must be tested explicitly in design.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because they drive branching decisions and filtering based on explicit conditions.",
+        "feedback": "Exactly: reliable condition checks control execution paths and expected outcomes.",
+        "isCorrect": true
+      },
+      {
+        "text": "Because predicates replace the need for tests in HTDF workflow.",
+        "feedback": "Tests remain required; predicates only define decision conditions within logic.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because predicates automatically convert all function outputs to constants.",
+        "feedback": "Predicates evaluate conditions; they do not rewrite output mutability semantics.",
+        "isCorrect": false
+      }
+    ],
+    "requiresWhy": true,
+    "whyQuestion": "Why is this interpretation more reliable? Why are predicates central when designing function logic?"
+  },
+  {
+    "id": "mega-2026-02-18-q8-u19",
+    "options": [
+      {
+        "text": "An expression that evaluates to either true or false.",
+        "feedback": "Correct: predicates produce boolean outcomes used by conditional logic.",
+        "isCorrect": true
+      },
+      {
+        "text": "A global constant written in uppercase to avoid mutation.",
+        "feedback": "Uppercase naming is convention, but predicate definition concerns evaluation result.",
+        "isCorrect": false
+      },
+      {
+        "text": "An operator like `+` or `&&` used inside expressions.",
+        "feedback": "Operators are symbols; predicates are full expressions yielding boolean values.",
+        "isCorrect": false
+      },
+      {
+        "text": "A function signature listing parameter and return data types.",
+        "feedback": "Signatures describe contracts; they do not themselves evaluate boolean outcomes.",
+        "isCorrect": false
+      }
+    ],
+    "question": "Select the strongest rule from this topic: In the notes, what is a predicate?",
+    "whyOptions": [
+      {
+        "text": "Because predicates replace the need for tests in HTDF workflow.",
+        "feedback": "Tests remain required; predicates only define decision conditions within logic.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because predicates eliminate boundary cases by ignoring edge inputs.",
+        "feedback": "Boundary cases still exist and must be tested explicitly in design.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because they drive branching decisions and filtering based on explicit conditions.",
+        "feedback": "Exactly: reliable condition checks control execution paths and expected outcomes.",
+        "isCorrect": true
+      },
+      {
+        "text": "Because predicates automatically convert all function outputs to constants.",
+        "feedback": "Predicates evaluate conditions; they do not rewrite output mutability semantics.",
+        "isCorrect": false
+      }
+    ],
+    "requiresWhy": true,
+    "whyQuestion": "Why does this align with the note intent? Why are predicates central when designing function logic?"
+  },
+  {
+    "id": "mega-2026-02-18-q7-u20",
+    "options": [
+      {
+        "text": "A global constant written in uppercase to avoid mutation.",
+        "feedback": "Uppercase naming is convention, but predicate definition concerns evaluation result.",
+        "isCorrect": false
+      },
+      {
+        "text": "An expression that evaluates to either true or false.",
+        "feedback": "Correct: predicates produce boolean outcomes used by conditional logic.",
+        "isCorrect": true
+      },
+      {
+        "text": "An operator like `+` or `&&` used inside expressions.",
+        "feedback": "Operators are symbols; predicates are full expressions yielding boolean values.",
+        "isCorrect": false
+      },
+      {
+        "text": "A function signature listing parameter and return data types.",
+        "feedback": "Signatures describe contracts; they do not themselves evaluate boolean outcomes.",
+        "isCorrect": false
+      }
+    ],
+    "question": "Which choice avoids the common misunderstanding: In the notes, what is a predicate?",
+    "whyOptions": [
+      {
+        "text": "Because predicates replace the need for tests in HTDF workflow.",
+        "feedback": "Tests remain required; predicates only define decision conditions within logic.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because they drive branching decisions and filtering based on explicit conditions.",
+        "feedback": "Exactly: reliable condition checks control execution paths and expected outcomes.",
+        "isCorrect": true
+      },
+      {
+        "text": "Because predicates eliminate boundary cases by ignoring edge inputs.",
+        "feedback": "Boundary cases still exist and must be tested explicitly in design.",
+        "isCorrect": false
+      },
+      {
+        "text": "Because predicates automatically convert all function outputs to constants.",
+        "feedback": "Predicates evaluate conditions; they do not rewrite output mutability semantics.",
+        "isCorrect": false
+      }
+    ],
+    "requiresWhy": true,
+    "whyQuestion": "Why is this the most defensible reasoning? Why are predicates central when designing function logic?"
+  }
+]
