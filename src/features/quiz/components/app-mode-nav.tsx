@@ -35,6 +35,7 @@ export default function AppModeNav(): JSX.Element {
   const [wishListUpdatedAt, setWishListUpdatedAt] = useState<string | null>(null);
   const [isLoadingWishList, setIsLoadingWishList] = useState(false);
   const [isSavingWish, setIsSavingWish] = useState(false);
+  const [deletingWish, setDeletingWish] = useState<string | null>(null);
   const [isWishListVisible, setIsWishListVisible] = useState(false);
   const [wishFeedback, setWishFeedback] = useState<{
     tone: 'success' | 'error' | 'neutral';
@@ -182,6 +183,50 @@ export default function AppModeNav(): JSX.Element {
     }
   };
 
+  const handleDeleteWish = async (wish: string): Promise<void> => {
+    if (deletingWish) {
+      return;
+    }
+
+    setDeletingWish(wish);
+    setWishFeedback(null);
+
+    try {
+      const response = await fetch('/api/data-safety/wishlist', {
+        method: 'DELETE',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          wish
+        })
+      });
+      const payload = (await response.json()) as WishListApiResponse;
+
+      if (!response.ok || !Array.isArray(payload.wishList)) {
+        setWishFeedback({
+          tone: 'error',
+          text: payload.error || 'Unable to delete wish.'
+        });
+        return;
+      }
+
+      setWishList(payload.wishList);
+      setWishListUpdatedAt(payload.updatedAt ?? null);
+      setWishFeedback({
+        tone: 'success',
+        text: 'Wish deleted from database.'
+      });
+    } catch {
+      setWishFeedback({
+        tone: 'error',
+        text: 'Network error while deleting wish.'
+      });
+    } finally {
+      setDeletingWish(null);
+    }
+  };
+
   return (
     <nav aria-label="Quiz mode navigation" className="app-mode-nav">
       <p className="app-mode-nav__eyebrow">Mode</p>
@@ -265,9 +310,19 @@ export default function AppModeNav(): JSX.Element {
                   </p>
                 ) : null}
                 <ul className="app-mode-nav__wish-list">
-                  {wishList.map((wish, index) => (
-                    <li className="app-mode-nav__wish-item" key={`${wish}-${index}`}>
-                      {wish}
+                  {wishList.map((wish) => (
+                    <li className="app-mode-nav__wish-item" key={wish}>
+                      <span>{wish}</span>
+                      <button
+                        className="button button--ghost app-mode-nav__wish-delete-button"
+                        disabled={Boolean(deletingWish)}
+                        onClick={() => {
+                          void handleDeleteWish(wish);
+                        }}
+                        type="button"
+                      >
+                        {deletingWish === wish ? 'Deleting...' : 'Delete'}
+                      </button>
                     </li>
                   ))}
                 </ul>

@@ -1,4 +1,8 @@
-import { appendWishListItem, getDataSafetyState } from '@/server/data-safety/repository';
+import {
+  appendWishListItem,
+  getDataSafetyState,
+  removeWishListItem
+} from '@/server/data-safety/repository';
 import { logError } from '@/server/logging';
 import type { DataSafetyState } from '@/types/quiz';
 
@@ -27,6 +31,20 @@ export async function saveWishListItem(wish: string): Promise<DataSafetyState> {
     return await appendWishListItem(normalizedWish);
   } catch (error) {
     logError('data_safety.wish.save.failed', error);
+    throw error;
+  }
+}
+
+export async function deleteWishListItem(wish: string): Promise<DataSafetyState> {
+  const normalizedWish = normalizeWishInput(wish);
+  if (!normalizedWish) {
+    throw new Error('Wish cannot be empty.');
+  }
+
+  try {
+    return await removeWishListItem(normalizedWish);
+  } catch (error) {
+    logError('data_safety.wish.delete.failed', error);
     throw error;
   }
 }

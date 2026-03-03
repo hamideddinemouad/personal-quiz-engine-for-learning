@@ -120,3 +120,38 @@ export async function appendWishListItem(wish: string): Promise<DataSafetyState>
     throw error;
   }
 }
+
+export async function removeWishListItem(wish: string): Promise<DataSafetyState> {
+  const normalizedWish = normalizeWishText(wish);
+  if (!normalizedWish) {
+    throw new Error('Wish cannot be empty.');
+  }
+
+  const pool = await getDbPool();
+  const currentState = await getDataSafetyState();
+  const nextWishList = currentState.wishList.filter((item) => item !== normalizedWish);
+  const updatedAt = new Date().toISOString();
+
+  try {
+    const upsertResult = await pool.query<DataSafetyRow>(
+      `
+        INSERT INTO data_safety_state (singleton_key, updated_at, wish_list_json)
+        VALUES ($1, $2, $3::jsonb)
+        ON CONFLICT (singleton_key) DO UPDATE SET
+          updated_at = excluded.updated_at,
+          wish_list_json = excluded.wish_list_json
+        RETURNING singleton_key, updated_at, wish_list_json;
+      `,
+      [DATA_SAFETY_SINGLETON_KEY, updatedAt, JSON.stringify(nextWishList)]
+    );
+
+    logDebug('data_safety.wish.remove.success', {
+      wishCount: nextWishList.length
+    });
+
+    return mapRowToState(upsertResult.rows[0]);
+  } catch (error) {
+    logError('data_safety.wish.remove.failed', error);
+    throw error;
+  }
+}
