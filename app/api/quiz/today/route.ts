@@ -4,6 +4,7 @@ import {
   createTodayQuizFromShuffledMegaQuiz,
   getTodayQuizSnapshot
 } from '@/server/history/service';
+import { logError, logInfo } from '@/server/logging';
 import type { QuizOption, QuizQuestion } from '@/types/quiz';
 
 export const runtime = 'nodejs';
@@ -149,7 +150,11 @@ function parseJsonQuizQuestions(value: unknown): { questions: QuizQuestion[]; er
 }
 
 export async function GET(): Promise<Response> {
-  const snapshot = getTodayQuizSnapshot();
+  const snapshot = await getTodayQuizSnapshot();
+  logInfo('api.today.get.success', {
+    hasTodayQuiz: snapshot.hasTodayQuiz,
+    questionCount: snapshot.questions.length
+  });
 
   return Response.json({
     hasTodayQuiz: snapshot.hasTodayQuiz,
@@ -172,27 +177,44 @@ export async function POST(request: Request): Promise<Response> {
     let result;
 
     if (body.mode === 'load') {
-      result = createTodayQuizFromLatestHistory(subject);
+      result = await createTodayQuizFromLatestHistory(subject);
     } else if (body.mode === 'shuffle') {
-      result = createTodayQuizFromShuffledMegaQuiz(subject);
+      result = await createTodayQuizFromShuffledMegaQuiz(subject);
     } else {
       const parsedJsonQuiz = parseJsonQuizQuestions(body.questions);
       if (parsedJsonQuiz.error) {
         return Response.json({ error: parsedJsonQuiz.error }, { status: 400 });
       }
 
-      result = createTodayQuizFromJson(parsedJsonQuiz.questions, subject);
+      result = await createTodayQuizFromJson(parsedJsonQuiz.questions, subject);
     }
 
     if (result.saveError || result.questions.length === 0) {
+      logInfo('api.today.post.failed_validation', {
+        mode: body.mode,
+        subject,
+        saveError: result.saveError,
+        questionCount: result.questions.length
+      });
       return Response.json(
         { error: result.saveError || 'Unable to create today quiz.' },
         { status: 400 }
       );
     }
 
+    logInfo('api.today.post.success', {
+      mode: body.mode,
+      subject: result.subject,
+      questionCount: result.questions.length
+    });
+
     return Response.json({ subject: result.subject, questions: result.questions });
-  } catch {
-    return Response.json({ error: 'Invalid JSON payload.' }, { status: 400 });
+  } catch (error) {
+    if (error instanceof SyntaxError) {
+      return Response.json({ error: 'Invalid JSON payload.' }, { status: 400 });
+    }
+
+    logError('api.today.post.failed', error);
+    return Response.json({ error: 'Unable to process request.' }, { status: 500 });
   }
 }

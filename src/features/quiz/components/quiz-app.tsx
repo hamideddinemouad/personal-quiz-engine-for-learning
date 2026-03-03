@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { QuizProvider } from '@/features/quiz/context/quiz-context';
 import type { ChoiceUiMode } from '@/features/quiz/types';
 import type { QuizQuestion } from '@/types/quiz';
@@ -29,6 +29,143 @@ interface TodayQuizApiResponse {
 
 type DailySetupMode = 'load' | 'shuffle' | 'json';
 
+const JSON_QUIZ_TEMPLATE = `[
+  {
+    "id": "q1",
+    "question": "What is the correct logical order of SQL query execution?",
+    "hint": "Execution order differs from written syntax.",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY",
+        "isCorrect": true,
+        "feedback": "Correct: SQL builds and filters row sets before projection and final sorting."
+      },
+      {
+        "text": "SELECT -> FROM -> WHERE -> GROUP BY -> HAVING -> ORDER BY",
+        "isCorrect": false,
+        "feedback": "That is written syntax order, but execution starts from source row construction."
+      },
+      {
+        "text": "FROM -> WHERE -> SELECT -> ORDER BY -> GROUP BY -> HAVING",
+        "isCorrect": false,
+        "feedback": "Grouping and HAVING must occur before projection and after row filtering."
+      },
+      {
+        "text": "WHERE -> FROM -> GROUP BY -> SELECT -> HAVING -> ORDER BY",
+        "isCorrect": false,
+        "feedback": "WHERE cannot run first because rows do not exist before FROM/JOIN."
+      }
+    ],
+    "whyQuestion": "Why does SQL execute FROM/JOIN before SELECT?",
+    "whyOptions": [
+      {
+        "text": "Because SQL must construct the working row set before choosing output columns.",
+        "isCorrect": true,
+        "feedback": "Exactly: projection requires a formed dataset, so source resolution happens first."
+      },
+      {
+        "text": "Because SELECT is only for aliases and never controls returned columns.",
+        "isCorrect": false,
+        "feedback": "Incorrect: SELECT directly controls projection, but only after row-set creation."
+      },
+      {
+        "text": "Because ORDER BY always decides which rows are available to SELECT.",
+        "isCorrect": false,
+        "feedback": "ORDER BY only sorts final output and does not create eligible rows."
+      },
+      {
+        "text": "Because HAVING defines base tables before joins are evaluated.",
+        "isCorrect": false,
+        "feedback": "HAVING filters groups later; it does not participate in table resolution."
+      }
+    ]
+  }
+]`;
+
+const AI_GENERATOR_PROMPT_TEMPLATE = `You are converting raw study notes into quiz JSON for a strict validator.
+
+Task:
+- Convert the notes into one JSON array of quiz questions.
+
+Hard output rules (must follow):
+- Return one markdown code fence with language tag "json".
+- Inside the fence, include JSON only (no comments or extra text).
+- Do not include comments or explanations.
+- Use double quotes for all keys and string values.
+- Ensure the result can be parsed with JSON.parse (no trailing commas).
+
+Question schema (exact field names):
+[
+  {
+    "id": "q1",
+    "question": "string",
+    "hint": "string (optional)",
+    "requiresWhy": true,
+    "options": [
+      { "text": "string", "isCorrect": true, "feedback": "string" },
+      { "text": "string", "isCorrect": false, "feedback": "string" },
+      { "text": "string", "isCorrect": false, "feedback": "string" },
+      { "text": "string", "isCorrect": false, "feedback": "string" }
+    ],
+    "whyQuestion": "string",
+    "whyOptions": [
+      { "text": "string", "isCorrect": true, "feedback": "string" },
+      { "text": "string", "isCorrect": false, "feedback": "string" },
+      { "text": "string", "isCorrect": false, "feedback": "string" },
+      { "text": "string", "isCorrect": false, "feedback": "string" }
+    ]
+  }
+]
+
+Non-negotiable validation constraints:
+- Top-level value must be a non-empty array.
+- Use unique IDs in order: q1, q2, q3, ...
+- Every question must have a non-empty "question" string.
+- Every question must set "requiresWhy": true.
+- Every question must include non-empty "whyQuestion".
+- Every question must include non-empty "whyOptions".
+- "options" must contain exactly 4 items.
+- "whyOptions" must contain exactly 4 items.
+- Each "options" item must have non-empty "text", boolean "isCorrect", and non-empty "feedback".
+- Each "whyOptions" item must have non-empty "text", boolean "isCorrect", and non-empty "feedback".
+- "options" must contain exactly one correct answer.
+- "whyOptions" must contain exactly one correct answer.
+- Never output empty arrays for "options" or "whyOptions".
+- Include "hint" only when genuinely useful.
+
+Feedback quality constraints (important):
+- Feedback must be compact for UI: one sentence, about 8-20 words.
+- Feedback must be informative: explain reasoning, not just "Correct" or "Wrong".
+- Correct-option feedback should explain why that choice is valid.
+- Wrong-option feedback should explain the misconception and hint the right principle.
+- Keep tone direct, technical, and concise.
+
+Content quality constraints:
+- Keep wording clear and concise.
+- Use plausible distractors tied to common confusion from the notes.
+- Do not output placeholders like "TBD", "...", or "<...>".
+
+Before finalizing, silently self-check:
+1. Every question has whyQuestion + 4 whyOptions.
+2. Every options/whyOptions array has exactly 4 items.
+3. Exactly one isCorrect=true in each options and each whyOptions array.
+4. JSON is valid and parseable.
+
+JSON structure example:
+${JSON_QUIZ_TEMPLATE}
+
+Raw notes:
+<PASTE YOUR NOTES HERE>`;
+
+function extractJsonPayload(input: string): string {
+  const trimmedInput = input.trim();
+  const codeFenceMatch = /^```(?:json)?\s*([\s\S]*?)\s*```$/i.exec(trimmedInput);
+
+  // Support direct pasting of AI output wrapped in ```json ... ```.
+  return codeFenceMatch ? codeFenceMatch[1].trim() : trimmedInput;
+}
+
 export default function QuizApp({
   initialQuestions,
   initialNeedsDailySetup = false,
@@ -55,8 +192,31 @@ export default function QuizApp({
   const [dailySnapshotError, setDailySnapshotError] = useState<string | null>(
     initialDailySnapshotError
   );
+  const [isJsonTemplateModalOpen, setIsJsonTemplateModalOpen] = useState(false);
+  const [jsonTemplateFeedback, setJsonTemplateFeedback] = useState<string | null>(null);
   const [isShufflingMegaQuiz, setIsShufflingMegaQuiz] = useState(false);
   const [shuffleError, setShuffleError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!isJsonTemplateModalOpen) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent): void => {
+      if (event.key === 'Escape') {
+        setIsJsonTemplateModalOpen(false);
+      }
+    };
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isJsonTemplateModalOpen]);
 
   const handleCreateTodayQuiz = async (mode: DailySetupMode, questions?: unknown): Promise<void> => {
     if (isPreparingDailyQuiz) {
@@ -113,13 +273,37 @@ export default function QuizApp({
 
     let parsedQuestions: unknown;
     try {
-      parsedQuestions = JSON.parse(jsonQuizInput);
+      parsedQuestions = JSON.parse(extractJsonPayload(jsonQuizInput));
     } catch {
-      setDailySnapshotError('JSON is invalid. Fix formatting and try again.');
+      setDailySnapshotError('JSON is invalid. If using code fences, ensure the inner JSON is valid.');
       return;
     }
 
     await handleCreateTodayQuiz('json', parsedQuestions);
+  };
+
+  const handleCopyJsonTemplate = async (): Promise<void> => {
+    try {
+      await navigator.clipboard.writeText(JSON_QUIZ_TEMPLATE);
+      setJsonTemplateFeedback('Template copied. Paste it into Quiz JSON.');
+    } catch {
+      setJsonTemplateFeedback('Copy failed. Select and copy the template manually.');
+    }
+  };
+
+  const handleInsertJsonTemplate = (): void => {
+    setJsonQuizInput(JSON_QUIZ_TEMPLATE);
+    setJsonTemplateFeedback('Template inserted into Quiz JSON.');
+    setIsJsonTemplateModalOpen(false);
+  };
+
+  const handleCopyAiPromptTemplate = async (): Promise<void> => {
+    try {
+      await navigator.clipboard.writeText(AI_GENERATOR_PROMPT_TEMPLATE);
+      setJsonTemplateFeedback('AI prompt copied. Paste it into your AI tool and add raw notes.');
+    } catch {
+      setJsonTemplateFeedback('Copy failed. Select and copy the AI prompt manually.');
+    }
   };
 
   const handleShuffleMegaQuiz = async (): Promise<void> => {
@@ -220,6 +404,19 @@ export default function QuizApp({
               value={jsonQuizInput}
             />
           </label>
+          <div className="daily-setup__template-row">
+            <button
+              className="button button--ghost"
+              onClick={() => {
+                setJsonTemplateFeedback(null);
+                setIsJsonTemplateModalOpen(true);
+              }}
+              type="button"
+            >
+              Open AI Prompt + JSON Template
+            </button>
+            <p className="muted-text">Use this when you need a ready-to-paste quiz format.</p>
+          </div>
           <button
             className="button button--ghost"
             disabled={isPreparingDailyQuiz}
@@ -232,6 +429,84 @@ export default function QuizApp({
           </button>
           {dailySnapshotError ? <p className="feedback feedback--error">{dailySnapshotError}</p> : null}
         </section>
+
+        {isJsonTemplateModalOpen ? (
+          <div
+            aria-hidden="true"
+            className="json-template-modal-overlay"
+            onClick={() => {
+              setIsJsonTemplateModalOpen(false);
+            }}
+            role="presentation"
+          >
+            <section
+              aria-labelledby="json-template-modal-title"
+              aria-modal="true"
+              className="json-template-modal"
+              onClick={(event) => event.stopPropagation()}
+              role="dialog"
+            >
+              <header className="json-template-modal__header">
+                <div>
+                  <p className="section-label">Quick start</p>
+                  <h2 className="quiz-title" id="json-template-modal-title">
+                    JSON Quiz Template
+                  </h2>
+                </div>
+                <button
+                  className="button button--ghost"
+                  onClick={() => {
+                    setIsJsonTemplateModalOpen(false);
+                  }}
+                  type="button"
+                >
+                  Close
+                </button>
+              </header>
+
+              <p className="muted-text">
+                Copy the AI prompt, paste it into your AI tool, then paste the generated JSON here.
+              </p>
+              <pre className="json-template-modal__pre">{AI_GENERATOR_PROMPT_TEMPLATE}</pre>
+              <div className="json-template-modal__actions">
+                <button
+                  className="button button--primary"
+                  onClick={() => {
+                    void handleCopyAiPromptTemplate();
+                  }}
+                  type="button"
+                >
+                  Copy AI Prompt
+                </button>
+              </div>
+              <p className="muted-text">
+                Template output format used by the website:
+              </p>
+              <pre className="json-template-modal__pre">{JSON_QUIZ_TEMPLATE}</pre>
+              <div className="json-template-modal__actions">
+                <button
+                  className="button button--primary"
+                  onClick={() => {
+                    void handleCopyJsonTemplate();
+                  }}
+                  type="button"
+                >
+                  Copy Template
+                </button>
+                <button
+                  className="button button--ghost"
+                  onClick={handleInsertJsonTemplate}
+                  type="button"
+                >
+                  Insert Into Quiz JSON
+                </button>
+              </div>
+              {jsonTemplateFeedback ? (
+                <p className="feedback feedback--neutral">{jsonTemplateFeedback}</p>
+              ) : null}
+            </section>
+          </div>
+        ) : null}
       </main>
     );
   }

@@ -1,4 +1,5 @@
 import { createDailyQuizByCopy, getDailyQuizHistory } from '@/server/history/service';
+import { logError, logInfo } from '@/server/logging';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -32,7 +33,14 @@ function isValidDateKey(value: unknown): value is string {
 }
 
 export async function GET(): Promise<Response> {
-  return Response.json({ history: getDailyQuizHistory() });
+  try {
+    const history = await getDailyQuizHistory();
+    logInfo('api.history.get.success', { rowCount: history.length });
+    return Response.json({ history });
+  } catch (error) {
+    logError('api.history.get.failed', error);
+    return Response.json({ error: 'Unable to load quiz history.' }, { status: 500 });
+  }
 }
 
 export async function POST(request: Request): Promise<Response> {
@@ -45,18 +53,35 @@ export async function POST(request: Request): Promise<Response> {
       );
     }
 
-    const result = createDailyQuizByCopy(body.date, body.sourceDate);
+    const result = await createDailyQuizByCopy(body.date, body.sourceDate);
 
     if (result.kind === 'source_not_found') {
+      logInfo('api.history.post.source_not_found', {
+        date: body.date,
+        sourceDate: body.sourceDate
+      });
       return Response.json({ error: 'Source date was not found in history.' }, { status: 404 });
     }
 
     if (result.kind === 'date_conflict') {
+      logInfo('api.history.post.date_conflict', {
+        date: body.date,
+        sourceDate: body.sourceDate
+      });
       return Response.json({ error: 'Target date already exists.' }, { status: 409 });
     }
 
+    logInfo('api.history.post.success', {
+      date: result.entry.date,
+      sourceDate: body.sourceDate
+    });
     return Response.json({ entry: result.entry }, { status: 201 });
-  } catch {
-    return Response.json({ error: 'Invalid JSON payload.' }, { status: 400 });
+  } catch (error) {
+    if (error instanceof SyntaxError) {
+      return Response.json({ error: 'Invalid JSON payload.' }, { status: 400 });
+    }
+
+    logError('api.history.post.failed', error);
+    return Response.json({ error: 'Unable to process request.' }, { status: 500 });
   }
 }

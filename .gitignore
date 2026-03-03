@@ -4,6 +4,8 @@ out
 .DS_Store
 *.log
 *.tsbuildinfo
+.env*
+!.env.example
 data/*.sqlite
 data/*.sqlite-*
 v2-next/data/*.sqlite

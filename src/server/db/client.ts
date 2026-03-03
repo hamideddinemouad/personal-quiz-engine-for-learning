@@ -1,88 +1,110 @@
-import fs from 'node:fs';
-import path from 'node:path';
-import Database from 'better-sqlite3';
-
-type SqliteDatabase = InstanceType<typeof Database>;
+import { Pool } from 'pg';
+import { logDebug, logError, logInfo } from '@/server/logging';
 
 declare global {
-  var __quizDb: SqliteDatabase | undefined;
+  var __quizDbPool: Pool | undefined;
+  var __quizSchemaReady: Promise<void> | undefined;
 }
 
-const DEFAULT_DATABASE_FILE_NAME = 'quiz-history.sqlite';
+function resolveDatabaseUrl(): string {
+  const databaseUrl = process.env.DATABASE_URL?.trim();
+  if (!databaseUrl) {
+    throw new Error('DATABASE_URL is required to run quiz history on Postgres.');
+  }
 
-function isVercelRuntime(): boolean {
-  return process.env.VERCEL === '1' || process.env.VERCEL === 'true';
+  return databaseUrl;
 }
 
-function resolveDatabasePath(): string {
-  const explicitPath = process.env.QUIZ_DB_PATH?.trim();
-  if (explicitPath) {
-    return path.isAbsolute(explicitPath)
-      ? explicitPath
-      : path.resolve(process.cwd(), explicitPath);
-  }
-
-  // Vercel serverless functions can only write in /tmp.
-  if (isVercelRuntime()) {
-    return path.join('/tmp', DEFAULT_DATABASE_FILE_NAME);
-  }
-
-  const rootDataDirectory = path.join(process.cwd(), 'data');
-  if (fs.existsSync(rootDataDirectory)) {
-    return path.join(rootDataDirectory, DEFAULT_DATABASE_FILE_NAME);
-  }
-
-  // Backward compatibility for older nested layout.
-  return path.join(process.cwd(), 'v2-next', 'data', DEFAULT_DATABASE_FILE_NAME);
-}
-
-const DATABASE_PATH = resolveDatabasePath();
-
-const CREATE_DAILY_QUIZ_HISTORY_TABLE_SQL = `
-CREATE TABLE IF NOT EXISTS daily_quiz_history (
-  date TEXT PRIMARY KEY,
-  saved_at TEXT NOT NULL,
-  subject TEXT,
-  questions_json TEXT NOT NULL
-);
-`;
-
-function ensureDailyQuizHistorySubjectColumn(database: SqliteDatabase): void {
-  const columns = database
-    .prepare('PRAGMA table_info(daily_quiz_history)')
-    .all() as Array<{ name: string }>;
-  const hasSubjectColumn = columns.some((column) => column.name === 'subject');
-
-  if (!hasSubjectColumn) {
-    database.exec('ALTER TABLE daily_quiz_history ADD COLUMN subject TEXT;');
+function toSafeDatabaseTarget(databaseUrl: string): string {
+  try {
+    const parsed = new URL(databaseUrl);
+    return `${parsed.hostname}:${parsed.port || '5432'}`;
+  } catch {
+    return 'invalid_database_url';
   }
 }
 
-function ensureDataDirectoryExists(): void {
-  // Goal: Guarantee sqlite file creation does not fail on missing parent folder.
-  fs.mkdirSync(path.dirname(DATABASE_PATH), { recursive: true });
+function shouldUseSsl(databaseUrl: string): boolean {
+  try {
+    const parsed = new URL(databaseUrl);
+    const host = parsed.hostname.toLowerCase();
+    const sslMode = parsed.searchParams.get('sslmode')?.toLowerCase();
+
+    // Local Docker/Postgres usually runs without TLS, while Neon requires TLS.
+    if (host === 'localhost' || host === '127.0.0.1') {
+      return sslMode === 'require';
+    }
+
+    return true;
+  } catch {
+    return false;
+  }
 }
 
-function initializeDatabase(database: SqliteDatabase): void {
-  // Goal: Configure sqlite once and ensure required schema exists.
-  database.pragma('busy_timeout = 5000');
+function getOrCreatePool(): Pool {
+  if (!global.__quizDbPool) {
+    const databaseUrl = resolveDatabaseUrl();
+    global.__quizDbPool = new Pool({
+      connectionString: databaseUrl,
+      ssl: shouldUseSsl(databaseUrl) ? { rejectUnauthorized: false } : undefined,
+      max: 5
+    });
 
-  // WAL is best for local long-lived process.
-  // On Vercel, DELETE mode avoids extra WAL/SHM file churn in /tmp.
-  database.pragma(`journal_mode = ${isVercelRuntime() ? 'DELETE' : 'WAL'}`);
+    global.__quizDbPool.on('error', (error: Error) => {
+      logError('db.pool.unexpected_error', error);
+    });
 
-  database.exec(CREATE_DAILY_QUIZ_HISTORY_TABLE_SQL);
-  ensureDailyQuizHistorySubjectColumn(database);
-}
-
-export function getDatabase(): SqliteDatabase {
-  // Goal: Reuse one process-wide connection to avoid duplicate handles.
-  if (!global.__quizDb) {
-    ensureDataDirectoryExists();
-    const database = new Database(DATABASE_PATH);
-    initializeDatabase(database);
-    global.__quizDb = database;
+    logInfo('db.pool.initialized', {
+      target: toSafeDatabaseTarget(databaseUrl),
+      ssl: shouldUseSsl(databaseUrl)
+    });
   }
 
-  return global.__quizDb;
+  return global.__quizDbPool;
+}
+
+async function initializeSchema(pool: Pool): Promise<void> {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS daily_quiz_history (
+        date TEXT PRIMARY KEY,
+        saved_at TEXT NOT NULL,
+        subject TEXT,
+        questions_json JSONB NOT NULL
+      );
+    `);
+
+    await pool.query(`
+      ALTER TABLE daily_quiz_history
+      ADD COLUMN IF NOT EXISTS subject TEXT;
+    `);
+
+    await pool.query(`
+      ALTER TABLE daily_quiz_history
+      ALTER COLUMN questions_json TYPE JSONB
+      USING questions_json::jsonb;
+    `);
+
+    logDebug('db.schema.ready', {
+      table: 'daily_quiz_history'
+    });
+  } catch (error) {
+    logError('db.schema.failed', error);
+    throw error;
+  }
+}
+
+export async function getDbPool(): Promise<Pool> {
+  const pool = getOrCreatePool();
+
+  if (!global.__quizSchemaReady) {
+    global.__quizSchemaReady = initializeSchema(pool).catch((error) => {
+      // If schema setup fails once, retry on next request instead of freezing forever.
+      global.__quizSchemaReady = undefined;
+      throw error;
+    });
+  }
+
+  await global.__quizSchemaReady;
+  return pool;
 }

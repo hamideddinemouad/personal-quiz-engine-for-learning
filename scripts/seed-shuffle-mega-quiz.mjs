@@ -1,17 +1,6 @@
 #!/usr/bin/env node
 
-import fs from 'node:fs';
-import path from 'node:path';
-import Database from 'better-sqlite3';
-
-const CREATE_DAILY_QUIZ_HISTORY_TABLE_SQL = `
-CREATE TABLE IF NOT EXISTS daily_quiz_history (
-  date TEXT PRIMARY KEY,
-  saved_at TEXT NOT NULL,
-  subject TEXT,
-  questions_json TEXT NOT NULL
-);
-`;
+import { Pool } from 'pg';
 
 function formatDateKey(date) {
   const year = date.getFullYear();
@@ -133,38 +122,87 @@ function buildSavedAt(dateKey) {
   return `${dateKey}T${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:${String(second).padStart(2, '0')}.000Z`;
 }
 
-function readSourceQuestions(database, sourceDateKey) {
-  const row = sourceDateKey
-    ? database
-        .prepare('SELECT date, questions_json FROM daily_quiz_history WHERE date = ? LIMIT 1')
-        .get(sourceDateKey)
-    : database
-        .prepare('SELECT date, questions_json FROM daily_quiz_history ORDER BY date DESC LIMIT 1')
-        .get();
+function parseQuestionsSnapshot(rawValue) {
+  if (Array.isArray(rawValue)) {
+    return rawValue;
+  }
 
-  if (!row || typeof row.questions_json !== 'string') {
+  if (typeof rawValue === 'string') {
+    try {
+      const parsed = JSON.parse(rawValue);
+      return Array.isArray(parsed) ? parsed : null;
+    } catch {
+      return null;
+    }
+  }
+
+  return null;
+}
+
+async function readSourceQuestions(pool, sourceDateKey) {
+  const result = sourceDateKey
+    ? await pool.query(
+        `
+          SELECT date, questions_json
+          FROM daily_quiz_history
+          WHERE date = $1
+          LIMIT 1;
+        `,
+        [sourceDateKey]
+      )
+    : await pool.query(
+        `
+          SELECT date, questions_json
+          FROM daily_quiz_history
+          ORDER BY date DESC
+          LIMIT 1;
+        `
+      );
+
+  const row = result.rows[0];
+  if (!row) {
     return null;
   }
 
+  const parsedQuestions = parseQuestionsSnapshot(row.questions_json);
+  if (!Array.isArray(parsedQuestions) || parsedQuestions.length === 0) {
+    return null;
+  }
+
+  return {
+    sourceDate: row.date,
+    questions: parsedQuestions
+  };
+}
+
+function shouldUseSsl(databaseUrl) {
   try {
-    const parsedQuestions = JSON.parse(row.questions_json);
-    if (!Array.isArray(parsedQuestions) || parsedQuestions.length === 0) {
-      return null;
+    const parsed = new URL(databaseUrl);
+    const host = parsed.hostname.toLowerCase();
+    const sslMode = parsed.searchParams.get('sslmode')?.toLowerCase();
+
+    if (host === 'localhost' || host === '127.0.0.1') {
+      return sslMode === 'require';
     }
 
-    return {
-      sourceDate: row.date,
-      questions: parsedQuestions
-    };
+    return true;
   } catch {
-    return null;
+    return false;
   }
 }
 
-function main() {
-  const projectRoot = process.cwd();
-  const dataDirectory = path.join(projectRoot, 'data');
-  const databasePath = path.join(dataDirectory, 'quiz-history.sqlite');
+async function main() {
+  const databaseUrl = process.env.DATABASE_URL?.trim();
+  if (!databaseUrl) {
+    console.error('Missing DATABASE_URL. Add it to your environment before seeding.');
+    process.exitCode = 1;
+    return;
+  }
+
+  const pool = new Pool({
+    connectionString: databaseUrl,
+    ssl: shouldUseSsl(databaseUrl) ? { rejectUnauthorized: false } : undefined
+  });
 
   const daysToSeed = parsePositiveInteger(readArg('--days'), 14);
   if (daysToSeed == null) {
@@ -190,35 +228,35 @@ function main() {
 
   const shouldOverwrite = process.argv.includes('--overwrite');
 
-  fs.mkdirSync(dataDirectory, { recursive: true });
-  const database = new Database(databasePath);
-  database.exec(CREATE_DAILY_QUIZ_HISTORY_TABLE_SQL);
+  try {
+    // Keep this script self-contained: it can run before the app server starts.
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS daily_quiz_history (
+        date TEXT PRIMARY KEY,
+        saved_at TEXT NOT NULL,
+        subject TEXT,
+        questions_json JSONB NOT NULL
+      );
+    `);
 
-  const sourceSnapshot = readSourceQuestions(database, sourceDateArg);
-  if (!sourceSnapshot) {
-    console.error(
-      'No usable quiz snapshot found to seed from. Load the app once (or provide --source-date) before running this script.'
-    );
-    process.exitCode = 1;
-    return;
-  }
+    const sourceSnapshot = await readSourceQuestions(pool, sourceDateArg);
+    if (!sourceSnapshot) {
+      console.error(
+        'No usable quiz snapshot found to seed from. Load the app once (or provide --source-date) before running this script.'
+      );
+      process.exitCode = 1;
+      return;
+    }
 
-  const existingDates = new Set(
-    database.prepare('SELECT date FROM daily_quiz_history').all().map((row) => row.date)
-  );
+    const existingResult = await pool.query(`
+      SELECT date
+      FROM daily_quiz_history;
+    `);
+    const existingDates = new Set(existingResult.rows.map((row) => row.date));
 
-  const upsertStatement = database.prepare(`
-    INSERT INTO daily_quiz_history (date, saved_at, questions_json)
-    VALUES (?, ?, ?)
-    ON CONFLICT(date) DO UPDATE SET
-      saved_at = excluded.saved_at,
-      questions_json = excluded.questions_json;
-  `);
+    const seededDates = [];
+    const skippedDates = [];
 
-  const seededDates = [];
-  const skippedDates = [];
-
-  const writeTransaction = database.transaction(() => {
     for (let offset = 1; offset <= daysToSeed; offset += 1) {
       const dateKey = formatDateKey(addDays(fromDate, -offset));
 
@@ -228,25 +266,33 @@ function main() {
       }
 
       const questions = buildDaySnapshot(sourceSnapshot.questions, dateKey);
-      upsertStatement.run(dateKey, buildSavedAt(dateKey), JSON.stringify(questions));
+      await pool.query(
+        `
+          INSERT INTO daily_quiz_history (date, saved_at, questions_json)
+          VALUES ($1, $2, $3::jsonb)
+          ON CONFLICT(date) DO UPDATE SET
+            saved_at = excluded.saved_at,
+            questions_json = excluded.questions_json;
+        `,
+        [dateKey, buildSavedAt(dateKey), JSON.stringify(questions)]
+      );
       seededDates.push(dateKey);
     }
-  });
 
-  writeTransaction();
-  database.close();
+    console.log(`Seed source date: ${sourceSnapshot.sourceDate}`);
+    console.log(`Reference day (--from): ${formatDateKey(fromDate)}`);
+    console.log(`Requested days: ${daysToSeed}`);
+    console.log(`Inserted/updated: ${seededDates.length}`);
+    if (skippedDates.length > 0) {
+      console.log(`Skipped existing: ${skippedDates.length}`);
+    }
 
-  console.log(`Seed source date: ${sourceSnapshot.sourceDate}`);
-  console.log(`Reference day (--from): ${formatDateKey(fromDate)}`);
-  console.log(`Requested days: ${daysToSeed}`);
-  console.log(`Inserted/updated: ${seededDates.length}`);
-  if (skippedDates.length > 0) {
-    console.log(`Skipped existing: ${skippedDates.length}`);
-  }
-
-  if (seededDates.length > 0) {
-    console.log(`Seeded range: ${seededDates[seededDates.length - 1]} -> ${seededDates[0]}`);
+    if (seededDates.length > 0) {
+      console.log(`Seeded range: ${seededDates[seededDates.length - 1]} -> ${seededDates[0]}`);
+    }
+  } finally {
+    await pool.end();
   }
 }
 
-main();
+void main();

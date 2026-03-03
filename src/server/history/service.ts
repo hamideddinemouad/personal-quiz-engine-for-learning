@@ -2,8 +2,8 @@ import { toLocalDateKey } from '@/lib/date';
 import { cloneQuestions, shuffleQuestionChoices } from '@/lib/quiz-transform';
 import { buildShuffledMegaQuizFromHistory } from '@/server/history/mega-quiz';
 import {
-  createDailyQuizHistoryEntry,
   buildMegaQuizFromDates as buildMegaQuizFromHistory,
+  createDailyQuizHistoryEntry,
   deleteDailyQuizHistoryEntryByDate,
   findDailyQuizHistoryEntryByDate,
   findLatestDailyQuizHistoryBeforeDate,
@@ -11,6 +11,7 @@ import {
   renameDailyQuizHistoryEntryDate,
   upsertDailyQuizHistoryEntry
 } from '@/server/history/repository';
+import { logDebug, logError } from '@/server/logging';
 import type { DailyQuizHistoryEntry, QuizQuestion, StudyStreakStats } from '@/types/quiz';
 
 export interface TodayQuizSnapshotResult {
@@ -23,116 +24,166 @@ export interface TodayQuizStateResult extends TodayQuizSnapshotResult {
   hasTodayQuiz: boolean;
 }
 
-export function createAndStoreTodayQuiz(
+export async function createAndStoreTodayQuiz(
   questions: QuizQuestion[],
   quizTransform?: (questions: QuizQuestion[]) => QuizQuestion[],
   subject: string | null = null
-): TodayQuizSnapshotResult {
-  // Goal: Create an isolated daily snapshot and persist it as today's canonical quiz.
+): Promise<TodayQuizSnapshotResult> {
   const todayDateKey = toLocalDateKey();
   const baseQuestions = Array.isArray(questions) ? cloneQuestions(questions) : [];
   const transformedQuestions =
     typeof quizTransform === 'function' ? quizTransform(baseQuestions) : baseQuestions;
   const questionsSnapshot = cloneQuestions(transformedQuestions);
 
-  const savedEntry = upsertDailyQuizHistoryEntry(todayDateKey, questionsSnapshot, subject);
+  try {
+    const savedEntry = await upsertDailyQuizHistoryEntry(todayDateKey, questionsSnapshot, subject);
 
-  return {
-    questions: questionsSnapshot,
-    subject: savedEntry.subject,
-    saveError: null
-  };
+    logDebug('today_quiz.store.success', {
+      date: todayDateKey,
+      questionCount: questionsSnapshot.length
+    });
+
+    return {
+      questions: questionsSnapshot,
+      subject: savedEntry.subject,
+      saveError: null
+    };
+  } catch (error) {
+    logError('today_quiz.store.failed', error, {
+      date: todayDateKey,
+      questionCount: questionsSnapshot.length
+    });
+
+    return {
+      questions: [],
+      subject: null,
+      saveError: 'Unable to save today quiz to database.'
+    };
+  }
 }
 
-export function getTodayQuizSnapshot(): TodayQuizStateResult {
-  // Goal: Read today's quiz from DB only without creating fallback snapshots.
+export async function getTodayQuizSnapshot(): Promise<TodayQuizStateResult> {
   const todayDateKey = toLocalDateKey();
-  const todayEntry = findDailyQuizHistoryEntryByDate(todayDateKey);
 
-  if (!todayEntry || todayEntry.questions.length === 0) {
+  try {
+    const todayEntry = await findDailyQuizHistoryEntryByDate(todayDateKey);
+
+    if (!todayEntry || todayEntry.questions.length === 0) {
+      return {
+        hasTodayQuiz: false,
+        questions: [],
+        subject: null,
+        saveError: null
+      };
+    }
+
+    return {
+      hasTodayQuiz: true,
+      questions: cloneQuestions(todayEntry.questions),
+      subject: todayEntry.subject,
+      saveError: null
+    };
+  } catch (error) {
+    logError('today_quiz.snapshot.failed', error, { date: todayDateKey });
     return {
       hasTodayQuiz: false,
       questions: [],
       subject: null,
-      saveError: null
+      saveError: 'Unable to read today quiz from database.'
     };
   }
-
-  return {
-    hasTodayQuiz: true,
-    questions: cloneQuestions(todayEntry.questions),
-    subject: todayEntry.subject,
-    saveError: null
-  };
 }
 
-export function createTodayQuizFromLatestHistory(subject: string | null = null): TodayQuizSnapshotResult {
-  // Goal: If today's row is missing, initialize it from the latest previous snapshot.
-  const todayDateKey = toLocalDateKey();
-  const todayEntry = findDailyQuizHistoryEntryByDate(todayDateKey);
-  if (todayEntry && todayEntry.questions.length > 0) {
-    return {
-      questions: cloneQuestions(todayEntry.questions),
-      subject: todayEntry.subject,
-      saveError: null
-    };
-  }
-
-  const sourceEntry = findLatestDailyQuizHistoryBeforeDate(todayDateKey);
-  if (!sourceEntry || sourceEntry.questions.length === 0) {
-    return {
-      questions: [],
-      subject: null,
-      saveError: 'No previous quiz history found. Create at least one day in history first.'
-    };
-  }
-
-  return createAndStoreTodayQuiz(
-    sourceEntry.questions,
-    shuffleQuestionChoices,
-    subject || sourceEntry.subject
-  );
-}
-
-export function createTodayQuizFromShuffledMegaQuiz(
+export async function createTodayQuizFromLatestHistory(
   subject: string | null = null
-): TodayQuizSnapshotResult {
-  // Goal: If today's row is missing, persist a mega quiz as today's canonical snapshot.
+): Promise<TodayQuizSnapshotResult> {
   const todayDateKey = toLocalDateKey();
-  const todayEntry = findDailyQuizHistoryEntryByDate(todayDateKey);
-  if (todayEntry && todayEntry.questions.length > 0) {
-    return {
-      questions: cloneQuestions(todayEntry.questions),
-      subject: todayEntry.subject,
-      saveError: null
-    };
-  }
 
-  const questions = buildShuffledMegaQuizFromPast();
-  if (questions.length === 0) {
+  try {
+    const todayEntry = await findDailyQuizHistoryEntryByDate(todayDateKey);
+    if (todayEntry && todayEntry.questions.length > 0) {
+      return {
+        questions: cloneQuestions(todayEntry.questions),
+        subject: todayEntry.subject,
+        saveError: null
+      };
+    }
+
+    const sourceEntry = await findLatestDailyQuizHistoryBeforeDate(todayDateKey);
+    if (!sourceEntry || sourceEntry.questions.length === 0) {
+      return {
+        questions: [],
+        subject: null,
+        saveError: 'No previous quiz history found. Create at least one day in history first.'
+      };
+    }
+
+    return await createAndStoreTodayQuiz(
+      sourceEntry.questions,
+      shuffleQuestionChoices,
+      subject || sourceEntry.subject
+    );
+  } catch (error) {
+    logError('today_quiz.create_from_latest.failed', error, {
+      date: todayDateKey
+    });
     return {
       questions: [],
       subject: null,
-      saveError: 'No past quiz history found. Complete quizzes on previous days first.'
+      saveError: 'Unable to create today quiz from latest history.'
     };
   }
-
-  return createAndStoreTodayQuiz(questions, undefined, subject || 'Shuffled Mega Quiz');
 }
 
-export function createTodayQuizFromJson(
+export async function createTodayQuizFromShuffledMegaQuiz(
+  subject: string | null = null
+): Promise<TodayQuizSnapshotResult> {
+  const todayDateKey = toLocalDateKey();
+
+  try {
+    const todayEntry = await findDailyQuizHistoryEntryByDate(todayDateKey);
+    if (todayEntry && todayEntry.questions.length > 0) {
+      return {
+        questions: cloneQuestions(todayEntry.questions),
+        subject: todayEntry.subject,
+        saveError: null
+      };
+    }
+
+    const questions = await buildShuffledMegaQuizFromPast();
+    if (questions.length === 0) {
+      return {
+        questions: [],
+        subject: null,
+        saveError: 'No past quiz history found. Complete quizzes on previous days first.'
+      };
+    }
+
+    return await createAndStoreTodayQuiz(questions, undefined, subject || 'Shuffled Mega Quiz');
+  } catch (error) {
+    logError('today_quiz.create_from_shuffle.failed', error, {
+      date: todayDateKey
+    });
+    return {
+      questions: [],
+      subject: null,
+      saveError: 'Unable to create today quiz from shuffled history.'
+    };
+  }
+}
+
+export async function createTodayQuizFromJson(
   questions: QuizQuestion[],
   subject: string | null = null
-): TodayQuizSnapshotResult {
-  // Goal: Persist a user-pasted JSON quiz as today's canonical quiz.
+): Promise<TodayQuizSnapshotResult> {
   return createAndStoreTodayQuiz(questions, undefined, subject || 'JSON Quiz');
 }
 
-export function getDailyQuizHistory(): DailyQuizHistoryEntry[] {
+export async function getDailyQuizHistory(): Promise<DailyQuizHistoryEntry[]> {
   return listDailyQuizHistoryEntries();
 }
 
-export function getDailyQuizByDate(date: string): DailyQuizHistoryEntry | null {
+export async function getDailyQuizByDate(date: string): Promise<DailyQuizHistoryEntry | null> {
   if (!date) {
     return null;
   }
@@ -140,20 +191,19 @@ export function getDailyQuizByDate(date: string): DailyQuizHistoryEntry | null {
   return findDailyQuizHistoryEntryByDate(date);
 }
 
-export function createDailyQuizByCopy(
+export async function createDailyQuizByCopy(
   date: string,
   sourceDate: string
 ):
-  | { kind: 'created'; entry: DailyQuizHistoryEntry }
-  | { kind: 'source_not_found' }
-  | { kind: 'date_conflict' } {
-  // Goal: Support admin-style history creation from an existing source snapshot.
-  const sourceEntry = findDailyQuizHistoryEntryByDate(sourceDate);
+  Promise<
+    { kind: 'created'; entry: DailyQuizHistoryEntry } | { kind: 'source_not_found' } | { kind: 'date_conflict' }
+  > {
+  const sourceEntry = await findDailyQuizHistoryEntryByDate(sourceDate);
   if (!sourceEntry) {
     return { kind: 'source_not_found' };
   }
 
-  const createdEntry = createDailyQuizHistoryEntry(date, sourceEntry.questions, sourceEntry.subject);
+  const createdEntry = await createDailyQuizHistoryEntry(date, sourceEntry.questions, sourceEntry.subject);
   if (!createdEntry) {
     return { kind: 'date_conflict' };
   }
@@ -161,24 +211,23 @@ export function createDailyQuizByCopy(
   return { kind: 'created', entry: createdEntry };
 }
 
-export function renameDailyQuizDate(
+export async function renameDailyQuizDate(
   currentDate: string,
   nextDate: string
-): 'updated' | 'not_found' | 'conflict' {
+): Promise<'updated' | 'not_found' | 'conflict'> {
   return renameDailyQuizHistoryEntryDate(currentDate, nextDate);
 }
 
-export function deleteDailyQuizByDate(date: string): boolean {
+export async function deleteDailyQuizByDate(date: string): Promise<boolean> {
   return deleteDailyQuizHistoryEntryByDate(date);
 }
 
-export function buildMegaQuizFromDates(dates: string[]): QuizQuestion[] {
+export async function buildMegaQuizFromDates(dates: string[]): Promise<QuizQuestion[]> {
   return buildMegaQuizFromHistory(dates);
 }
 
-export function buildShuffledMegaQuizFromPast(): QuizQuestion[] {
-  // Goal: Build a 35-question mega quiz from past days only (exclude today).
-  const historyEntries = listDailyQuizHistoryEntries();
+export async function buildShuffledMegaQuizFromPast(): Promise<QuizQuestion[]> {
+  const historyEntries = await listDailyQuizHistoryEntries();
 
   return buildShuffledMegaQuizFromHistory(historyEntries, {
     excludeDate: toLocalDateKey(),
@@ -187,24 +236,31 @@ export function buildShuffledMegaQuizFromPast(): QuizQuestion[] {
   });
 }
 
-export function getStudyStreakStats(today: Date = new Date()): StudyStreakStats {
-  // Goal: Compute current consecutive-day streak ending today.
-  // We walk backward day-by-day until the first missing date.
-  const historyEntries = listDailyQuizHistoryEntries();
-  const uniqueDates = [...new Set(historyEntries.map((entry) => entry.date).filter(Boolean))];
-  const dateSet = new Set(uniqueDates);
+export async function getStudyStreakStats(today: Date = new Date()): Promise<StudyStreakStats> {
+  try {
+    const historyEntries = await listDailyQuizHistoryEntries();
+    const uniqueDates = [...new Set(historyEntries.map((entry) => entry.date).filter(Boolean))];
+    const dateSet = new Set(uniqueDates);
 
-  let currentStreakDays = 0;
-  const cursor = new Date(today);
+    let currentStreakDays = 0;
+    const cursor = new Date(today);
 
-  while (dateSet.has(toLocalDateKey(cursor))) {
-    currentStreakDays += 1;
-    cursor.setDate(cursor.getDate() - 1);
+    while (dateSet.has(toLocalDateKey(cursor))) {
+      currentStreakDays += 1;
+      cursor.setDate(cursor.getDate() - 1);
+    }
+
+    return {
+      currentStreakDays,
+      studiedToday: dateSet.has(toLocalDateKey(today)),
+      totalStudyDays: uniqueDates.length
+    };
+  } catch (error) {
+    logError('study_streak.compute.failed', error);
+    return {
+      currentStreakDays: 0,
+      studiedToday: false,
+      totalStudyDays: 0
+    };
   }
-
-  return {
-    currentStreakDays,
-    studiedToday: dateSet.has(toLocalDateKey(today)),
-    totalStudyDays: uniqueDates.length
-  };
 }

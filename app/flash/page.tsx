@@ -4,9 +4,11 @@ import { getStudyStreakStats, getTodayQuizSnapshot } from '@/server/history/serv
 export const dynamic = 'force-dynamic';
 const DAILY_MASTERED_GOAL = 20;
 
-export default function FlashPage(): JSX.Element {
-  const todaySnapshot = getTodayQuizSnapshot();
-  const studyStreakStats = getStudyStreakStats();
+export default async function FlashPage(): Promise<JSX.Element> {
+  const [todaySnapshot, studyStreakStats] = await Promise.all([
+    getTodayQuizSnapshot(),
+    getStudyStreakStats()
+  ]);
 
   return (
     <QuizApp

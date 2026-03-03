@@ -1,4 +1,5 @@
 import { deleteDailyQuizByDate, getDailyQuizByDate, renameDailyQuizDate } from '@/server/history/service';
+import { logError, logInfo } from '@/server/logging';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -36,13 +37,20 @@ function isValidDateKey(value: unknown): value is string {
 }
 
 export async function GET(_request: Request, { params }: RouteContext): Promise<Response> {
-  const entry = getDailyQuizByDate(params.date);
+  try {
+    const entry = await getDailyQuizByDate(params.date);
 
-  if (!entry) {
-    return Response.json({ error: 'Quiz history not found for this date.' }, { status: 404 });
+    if (!entry) {
+      logInfo('api.history_by_date.get.not_found', { date: params.date });
+      return Response.json({ error: 'Quiz history not found for this date.' }, { status: 404 });
+    }
+
+    logInfo('api.history_by_date.get.success', { date: params.date });
+    return Response.json({ entry });
+  } catch (error) {
+    logError('api.history_by_date.get.failed', error, { date: params.date });
+    return Response.json({ error: 'Unable to load quiz history row.' }, { status: 500 });
   }
-
-  return Response.json({ entry });
 }
 
 export async function PUT(request: Request, { params }: RouteContext): Promise<Response> {
@@ -56,18 +64,26 @@ export async function PUT(request: Request, { params }: RouteContext): Promise<R
       return Response.json({ error: 'Body must include `nextDate` in YYYY-MM-DD format.' }, { status: 400 });
     }
 
-    const result = renameDailyQuizDate(params.date, body.nextDate);
+    const result = await renameDailyQuizDate(params.date, body.nextDate);
     if (result === 'not_found') {
+      logInfo('api.history_by_date.put.not_found', { date: params.date, nextDate: body.nextDate });
       return Response.json({ error: 'Quiz history not found for this date.' }, { status: 404 });
     }
 
     if (result === 'conflict') {
+      logInfo('api.history_by_date.put.conflict', { date: params.date, nextDate: body.nextDate });
       return Response.json({ error: 'Target date already exists.' }, { status: 409 });
     }
 
+    logInfo('api.history_by_date.put.success', { date: params.date, nextDate: body.nextDate });
     return Response.json({ success: true });
-  } catch {
-    return Response.json({ error: 'Invalid JSON payload.' }, { status: 400 });
+  } catch (error) {
+    if (error instanceof SyntaxError) {
+      return Response.json({ error: 'Invalid JSON payload.' }, { status: 400 });
+    }
+
+    logError('api.history_by_date.put.failed', error, { date: params.date });
+    return Response.json({ error: 'Unable to process request.' }, { status: 500 });
   }
 }
 
@@ -76,10 +92,17 @@ export async function DELETE(_request: Request, { params }: RouteContext): Promi
     return Response.json({ error: 'Invalid date parameter.' }, { status: 400 });
   }
 
-  const deleted = deleteDailyQuizByDate(params.date);
-  if (!deleted) {
-    return Response.json({ error: 'Quiz history not found for this date.' }, { status: 404 });
-  }
+  try {
+    const deleted = await deleteDailyQuizByDate(params.date);
+    if (!deleted) {
+      logInfo('api.history_by_date.delete.not_found', { date: params.date });
+      return Response.json({ error: 'Quiz history not found for this date.' }, { status: 404 });
+    }
 
-  return Response.json({ success: true });
+    logInfo('api.history_by_date.delete.success', { date: params.date });
+    return Response.json({ success: true });
+  } catch (error) {
+    logError('api.history_by_date.delete.failed', error, { date: params.date });
+    return Response.json({ error: 'Unable to delete history row.' }, { status: 500 });
+  }
 }

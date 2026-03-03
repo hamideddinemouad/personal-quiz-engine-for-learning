@@ -1,4 +1,5 @@
 import { buildMegaQuizFromDates, buildShuffledMegaQuizFromPast } from '@/server/history/service';
+import { logError, logInfo } from '@/server/logging';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -21,15 +22,20 @@ export async function POST(request: Request): Promise<Response> {
     const body = (await request.json()) as MegaQuizRequestBody;
 
     if (body.mode === 'shuffle') {
-      const questions = buildShuffledMegaQuizFromPast();
+      const questions = await buildShuffledMegaQuizFromPast();
 
       if (questions.length === 0) {
+        logInfo('api.mega.post.empty_shuffle', { mode: body.mode });
         return Response.json(
           { error: 'No past quiz history found. Complete quizzes on previous days first.' },
           { status: 400 }
         );
       }
 
+      logInfo('api.mega.post.success', {
+        mode: body.mode,
+        questionCount: questions.length
+      });
       return Response.json({ questions });
     }
 
@@ -40,9 +46,19 @@ export async function POST(request: Request): Promise<Response> {
       );
     }
 
-    const questions = buildMegaQuizFromDates(body.dates);
+    const questions = await buildMegaQuizFromDates(body.dates);
+    logInfo('api.mega.post.success', {
+      mode: 'dates',
+      dateCount: body.dates.length,
+      questionCount: questions.length
+    });
     return Response.json({ questions });
-  } catch {
-    return Response.json({ error: 'Invalid JSON payload.' }, { status: 400 });
+  } catch (error) {
+    if (error instanceof SyntaxError) {
+      return Response.json({ error: 'Invalid JSON payload.' }, { status: 400 });
+    }
+
+    logError('api.mega.post.failed', error);
+    return Response.json({ error: 'Unable to process request.' }, { status: 500 });
   }
 }

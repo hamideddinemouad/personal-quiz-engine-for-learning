@@ -1,58 +1,133 @@
 # Personal Quiz Engine (Next.js + TypeScript)
 
-A daily quiz app with server-side history APIs and SQLite storage.
+A daily quiz app with server-side history APIs backed by Postgres (works with local Docker Postgres and Neon).
 
-## Features
+## Prerequisites
 
-- Two-step flow per question (`main` then `why`)
-- Retry on incorrect answers
-- Locking after correct answers
-- Daily quiz snapshots with subject labels
-- History CRUD modal (create/read/update/delete by date)
-- Shuffle Mega Quiz from past snapshots
+- Node.js 20+
+- npm
+- Docker Desktop (or Docker Engine)
 
-## Local development
+## Quick Start (Local)
+
+1. Install dependencies:
 
 ```bash
 npm install
+```
+
+2. Start local Postgres container:
+
+```bash
+docker run --name quiz-pg \
+  -e POSTGRES_USER=quiz \
+  -e POSTGRES_PASSWORD=quizpass \
+  -e POSTGRES_DB=quizdb \
+  -p 5433:5432 \
+  -v quiz_pg_data:/var/lib/postgresql/data \
+  -d postgres:16
+```
+
+3. Create `.env.local`:
+
+```env
+DATABASE_URL=postgresql://quiz:quizpass@localhost:5433/quizdb
+QUIZ_LOG_LEVEL=debug
+```
+
+4. Run app:
+
+```bash
 npm run dev
 ```
 
-Open `http://localhost:3000`.
+5. Open:
 
-## Build
-
-```bash
-npm run build
-npm start
+```text
+http://localhost:3000
+http://localhost:3000/flash
 ```
 
-## Vercel deployment (Free tier)
+## Local Testing Checklist
 
-### What is configured in this repo
+1. Go to `/flash`.
+2. Create a quiz of the day from JSON or using your existing flow.
+3. Refresh the page and confirm the quiz is loaded directly (no setup prompt).
+4. Restart app server (`Ctrl+C`, then `npm run dev`) and confirm data still exists.
+5. Verify directly in Postgres:
 
-- Next.js App Router project (Vercel auto-detects it)
-- API routes are forced to Node runtime (`runtime = 'nodejs'`)
-- On Vercel, SQLite automatically uses `/tmp/quiz-history.sqlite`
+```bash
+docker exec -it quiz-pg psql -U quiz -d quizdb -c "SELECT date, subject, saved_at FROM daily_quiz_history ORDER BY date DESC;"
+```
 
-### Deploy steps
+## Docker Container Management
 
-1. Push this repo to GitHub/GitLab/Bitbucket.
-2. Import the repo in Vercel.
-3. Keep defaults (`Framework Preset: Next.js`, `Build Command: npm run build`).
-4. Deploy.
+Start existing container:
 
-### Optional environment variables
+```bash
+docker start quiz-pg
+```
 
-- `QUIZ_DB_PATH`: custom sqlite file path (absolute or relative). If omitted, Vercel defaults to `/tmp/quiz-history.sqlite`.
+Stop container:
 
-## Important storage note for Vercel Free tier
+```bash
+docker stop quiz-pg
+```
 
-Vercel serverless filesystem storage is ephemeral. That means quiz history stored in SQLite can reset when instances restart or scale.
+View logs:
 
-If you need durable, cross-instance history, move storage to a managed database (for example Vercel Postgres or KV) and keep this SQLite path for local development only.
+```bash
+docker logs -f quiz-pg
+```
 
-## Seed past-day history (local)
+Delete container (keeps volume data):
+
+```bash
+docker rm quiz-pg
+```
+
+Delete container and volume data (destructive):
+
+```bash
+docker rm -f quiz-pg
+docker volume rm quiz_pg_data
+```
+
+## Environment Variables
+
+- `DATABASE_URL` (required): Postgres connection string.
+- `QUIZ_LOG_LEVEL` (optional): `debug`, `info`, or `error`.
+
+## Build / Production Check
+
+```bash
+npm run typecheck
+npm run build
+```
+
+## Neon + Vercel Deployment
+
+1. Create a Neon project and copy its connection string.
+2. In Vercel project settings, add:
+   - `DATABASE_URL`
+   - `QUIZ_LOG_LEVEL=info` (optional)
+3. Deploy.
+
+The app initializes the `daily_quiz_history` table automatically on first request.
+
+## Debugging Logs
+
+Server logs are JSON lines; filter by `event`.
+
+Common events:
+
+- `db.pool.initialized`
+- `db.schema.ready`
+- `api.today.post.success`
+- `history.upsert.success`
+- `db.schema.failed`
+
+## Seed Past-Day History
 
 ```bash
 npm run seed:shuffle-mega
@@ -62,6 +137,7 @@ Optional flags:
 
 - `--days 21`
 - `--from 2026-03-01`
+- `--source-date 2026-02-28`
 - `--overwrite`
 
 Example:

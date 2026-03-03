@@ -6,7 +6,7 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'Personal Quiz Engine (Next.js)',
   description:
-    'Two-phase quiz engine in Next.js + TypeScript with SQLite-backed daily quiz history.'
+    'Two-phase quiz engine in Next.js + TypeScript with Postgres-backed daily quiz history.'
 };
 
 interface RootLayoutProps {
