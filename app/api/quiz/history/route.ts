@@ -1,4 +1,5 @@
-import { createDailyQuizByCopy, getDailyQuizHistory } from '@/server/history/service';
+import { normalizeQuizSubject, parseJsonQuizQuestions } from '@/server/history/quiz-json';
+import { createDailyQuizByCopy, createDailyQuizByJson, getDailyQuizHistory } from '@/server/history/service';
 import { logError, logInfo } from '@/server/logging';
 
 export const runtime = 'nodejs';
@@ -7,6 +8,8 @@ export const dynamic = 'force-dynamic';
 interface CreateHistoryRequestBody {
   date?: unknown;
   sourceDate?: unknown;
+  questions?: unknown;
+  subject?: unknown;
 }
 
 function isValidDateKey(value: unknown): value is string {
@@ -46,36 +49,73 @@ export async function GET(): Promise<Response> {
 export async function POST(request: Request): Promise<Response> {
   try {
     const body = (await request.json()) as CreateHistoryRequestBody;
-    if (!isValidDateKey(body.date) || !isValidDateKey(body.sourceDate)) {
+    if (!isValidDateKey(body.date)) {
       return Response.json(
-        { error: 'Body must include valid `date` and `sourceDate` in YYYY-MM-DD format.' },
+        { error: 'Body must include valid `date` in YYYY-MM-DD format.' },
         { status: 400 }
       );
     }
 
-    const result = await createDailyQuizByCopy(body.date, body.sourceDate);
+    if (typeof body.questions !== 'undefined') {
+      const parsedJsonQuiz = parseJsonQuizQuestions(body.questions);
+      if (parsedJsonQuiz.error) {
+        return Response.json({ error: parsedJsonQuiz.error }, { status: 400 });
+      }
 
-    if (result.kind === 'source_not_found') {
-      logInfo('api.history.post.source_not_found', {
-        date: body.date,
-        sourceDate: body.sourceDate
+      const result = await createDailyQuizByJson(
+        body.date,
+        parsedJsonQuiz.questions,
+        normalizeQuizSubject(body.subject)
+      );
+
+      if (result.kind === 'date_conflict') {
+        logInfo('api.history.post.date_conflict', {
+          date: body.date,
+          createMode: 'json'
+        });
+        return Response.json({ error: 'Target date already exists.' }, { status: 409 });
+      }
+
+      logInfo('api.history.post.success', {
+        date: result.entry.date,
+        createMode: 'json',
+        questionCount: result.entry.questions.length
       });
-      return Response.json({ error: 'Source date was not found in history.' }, { status: 404 });
+      return Response.json({ entry: result.entry }, { status: 201 });
     }
 
-    if (result.kind === 'date_conflict') {
-      logInfo('api.history.post.date_conflict', {
-        date: body.date,
-        sourceDate: body.sourceDate
+    if (isValidDateKey(body.sourceDate)) {
+      const result = await createDailyQuizByCopy(body.date, body.sourceDate);
+
+      if (result.kind === 'source_not_found') {
+        logInfo('api.history.post.source_not_found', {
+          date: body.date,
+          sourceDate: body.sourceDate
+        });
+        return Response.json({ error: 'Source date was not found in history.' }, { status: 404 });
+      }
+
+      if (result.kind === 'date_conflict') {
+        logInfo('api.history.post.date_conflict', {
+          date: body.date,
+          sourceDate: body.sourceDate,
+          createMode: 'copy'
+        });
+        return Response.json({ error: 'Target date already exists.' }, { status: 409 });
+      }
+
+      logInfo('api.history.post.success', {
+        date: result.entry.date,
+        sourceDate: body.sourceDate,
+        createMode: 'copy'
       });
-      return Response.json({ error: 'Target date already exists.' }, { status: 409 });
+      return Response.json({ entry: result.entry }, { status: 201 });
     }
 
-    logInfo('api.history.post.success', {
-      date: result.entry.date,
-      sourceDate: body.sourceDate
-    });
-    return Response.json({ entry: result.entry }, { status: 201 });
+    return Response.json(
+      { error: 'Body must include either valid `sourceDate` or `questions` payload.' },
+      { status: 400 }
+    );
   } catch (error) {
     if (error instanceof SyntaxError) {
       return Response.json({ error: 'Invalid JSON payload.' }, { status: 400 });

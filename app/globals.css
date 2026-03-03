@@ -178,6 +178,10 @@ body {
   gap: 0.34rem;
 }
 
+.history-field--full {
+  grid-column: 1 / -1;
+}
+
 .history-field__label {
   color: var(--muted);
   font-size: 0.78rem;
@@ -253,18 +257,19 @@ body {
   gap: 0.5rem;
 }
 
-.history-json__pre {
-  margin: 0;
-  border: 1px solid rgba(71, 85, 105, 0.75);
-  border-radius: 0.7rem;
-  background: rgba(2, 6, 23, 0.62);
-  color: #cbd5e1;
-  padding: 0.7rem;
-  max-height: 280px;
-  overflow: auto;
-  font-size: 0.77rem;
+.history-json__textarea {
+  width: 100%;
+  min-height: 180px;
+  resize: vertical;
+  font-size: 0.8rem;
   line-height: 1.45;
   font-family: var(--font-mono-stack);
+}
+
+.history-json__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .quiz-page {

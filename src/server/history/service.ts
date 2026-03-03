@@ -9,6 +9,7 @@ import {
   findLatestDailyQuizHistoryBeforeDate,
   listDailyQuizHistoryEntries,
   renameDailyQuizHistoryEntryDate,
+  updateDailyQuizHistoryEntryByDate,
   upsertDailyQuizHistoryEntry
 } from '@/server/history/repository';
 import { logDebug, logError } from '@/server/logging';
@@ -211,11 +212,35 @@ export async function createDailyQuizByCopy(
   return { kind: 'created', entry: createdEntry };
 }
 
+export async function createDailyQuizByJson(
+  date: string,
+  questions: QuizQuestion[],
+  subject: string | null = null
+):
+  Promise<
+    { kind: 'created'; entry: DailyQuizHistoryEntry } | { kind: 'date_conflict' }
+  > {
+  const createdEntry = await createDailyQuizHistoryEntry(date, questions, subject);
+  if (!createdEntry) {
+    return { kind: 'date_conflict' };
+  }
+
+  return { kind: 'created', entry: createdEntry };
+}
+
 export async function renameDailyQuizDate(
   currentDate: string,
   nextDate: string
 ): Promise<'updated' | 'not_found' | 'conflict'> {
   return renameDailyQuizHistoryEntryDate(currentDate, nextDate);
+}
+
+export async function updateDailyQuizByDate(
+  date: string,
+  questions: QuizQuestion[],
+  subject: string | null = null
+): Promise<DailyQuizHistoryEntry | null> {
+  return updateDailyQuizHistoryEntryByDate(date, questions, subject);
 }
 
 export async function deleteDailyQuizByDate(date: string): Promise<boolean> {

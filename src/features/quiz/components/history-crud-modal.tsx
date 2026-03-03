@@ -16,6 +16,7 @@ interface HistoryApiResponse {
 }
 
 interface MutationApiResponse {
+  entry?: DailyQuizHistoryEntry;
   error?: string;
 }
 
@@ -44,6 +45,10 @@ function toSummaryRows(entries: DailyQuizHistoryEntry[]): HistorySummaryRow[] {
     .sort((left, right) => right.date.localeCompare(left.date));
 }
 
+function formatQuestionsJson(entry: DailyQuizHistoryEntry): string {
+  return JSON.stringify(entry.questions, null, 2);
+}
+
 export default function HistoryCrudModal({ isOpen, onClose }: HistoryCrudModalProps): JSX.Element | null {
   const [rows, setRows] = useState<HistorySummaryRow[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -56,6 +61,10 @@ export default function HistoryCrudModal({ isOpen, onClose }: HistoryCrudModalPr
   );
   const [createDate, setCreateDate] = useState(toLocalDateKey());
   const [sourceDate, setSourceDate] = useState('');
+  const [createSubjectInput, setCreateSubjectInput] = useState('');
+  const [createQuestionsInput, setCreateQuestionsInput] = useState('');
+  const [selectedSubjectInput, setSelectedSubjectInput] = useState('');
+  const [selectedQuestionsInput, setSelectedQuestionsInput] = useState('');
   const [renameInputs, setRenameInputs] = useState<Record<string, string>>({});
 
   const sourceOptions = useMemo(() => rows.map((row) => row.date), [rows]);
@@ -85,6 +94,8 @@ export default function HistoryCrudModal({ isOpen, onClose }: HistoryCrudModalPr
       // Goal: If selected entry was deleted/renamed, clear stale JSON preview.
       if (selectedEntry && !summaryRows.some((row) => row.date === selectedEntry.date)) {
         setSelectedEntry(null);
+        setSelectedSubjectInput('');
+        setSelectedQuestionsInput('');
       }
 
       if (summaryRows.length > 0) {
@@ -146,11 +157,20 @@ export default function HistoryCrudModal({ isOpen, onClose }: HistoryCrudModalPr
 
   const handleCreate = async (): Promise<void> => {
     setModalFeedback(null);
+    const hasJsonInput = Boolean(createQuestionsInput.trim());
 
-    if (!createDate || !sourceDate) {
+    if (!createDate) {
       setModalFeedback({
         tone: 'error',
-        text: 'Select both a target date and a source date.'
+        text: 'Select a target date.'
+      });
+      return;
+    }
+
+    if (!hasJsonInput && !sourceDate) {
+      setModalFeedback({
+        tone: 'error',
+        text: 'Choose a source date or paste JSON questions.'
       });
       return;
     }
@@ -158,15 +178,40 @@ export default function HistoryCrudModal({ isOpen, onClose }: HistoryCrudModalPr
     setIsCreating(true);
 
     try {
+      let requestBody: Record<string, unknown> = {
+        date: createDate
+      };
+
+      if (hasJsonInput) {
+        let parsedQuestions: unknown;
+        try {
+          parsedQuestions = JSON.parse(createQuestionsInput);
+        } catch {
+          setModalFeedback({
+            tone: 'error',
+            text: 'Create JSON is invalid. Fix the JSON syntax first.'
+          });
+          return;
+        }
+
+        requestBody = {
+          ...requestBody,
+          subject: createSubjectInput,
+          questions: parsedQuestions
+        };
+      } else {
+        requestBody = {
+          ...requestBody,
+          sourceDate
+        };
+      }
+
       const response = await fetch('/api/quiz/history', {
         method: 'POST',
         headers: {
           'content-type': 'application/json'
         },
-        body: JSON.stringify({
-          date: createDate,
-          sourceDate
-        })
+        body: JSON.stringify(requestBody)
       });
       const payload = (await response.json()) as MutationApiResponse;
 
@@ -181,8 +226,15 @@ export default function HistoryCrudModal({ isOpen, onClose }: HistoryCrudModalPr
       await refreshHistory();
       setModalFeedback({
         tone: 'success',
-        text: `Created ${createDate} from source ${sourceDate}.`
+        text: hasJsonInput
+          ? `Created ${createDate} from pasted JSON.`
+          : `Created ${createDate} from source ${sourceDate}.`
       });
+
+      if (hasJsonInput) {
+        setCreateQuestionsInput('');
+        setCreateSubjectInput('');
+      }
     } catch {
       setModalFeedback({
         tone: 'error',
@@ -268,6 +320,8 @@ export default function HistoryCrudModal({ isOpen, onClose }: HistoryCrudModalPr
       });
       if (selectedEntry?.date === date) {
         setSelectedEntry(null);
+        setSelectedSubjectInput('');
+        setSelectedQuestionsInput('');
       }
     } catch {
       setModalFeedback({
@@ -298,6 +352,8 @@ export default function HistoryCrudModal({ isOpen, onClose }: HistoryCrudModalPr
       }
 
       setSelectedEntry(payload.entry);
+      setSelectedSubjectInput(payload.entry.subject || '');
+      setSelectedQuestionsInput(formatQuestionsJson(payload.entry));
       setModalFeedback({
         tone: 'success',
         text: `Loaded JSON for ${date}.`
@@ -309,6 +365,77 @@ export default function HistoryCrudModal({ isOpen, onClose }: HistoryCrudModalPr
       });
     } finally {
       setReadingDate(null);
+    }
+  };
+
+  const handleSaveSelectedJson = async (): Promise<void> => {
+    setModalFeedback(null);
+
+    if (!selectedEntry) {
+      setModalFeedback({
+        tone: 'error',
+        text: 'Load a row first.'
+      });
+      return;
+    }
+
+    if (!selectedQuestionsInput.trim()) {
+      setModalFeedback({
+        tone: 'error',
+        text: 'Questions JSON cannot be empty.'
+      });
+      return;
+    }
+
+    let parsedQuestions: unknown;
+    try {
+      parsedQuestions = JSON.parse(selectedQuestionsInput);
+    } catch {
+      setModalFeedback({
+        tone: 'error',
+        text: 'Questions JSON is invalid. Fix syntax before saving.'
+      });
+      return;
+    }
+
+    setActiveRowAction(`save-json:${selectedEntry.date}`);
+
+    try {
+      const response = await fetch(`/api/quiz/history/${encodeURIComponent(selectedEntry.date)}`, {
+        method: 'PATCH',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          subject: selectedSubjectInput,
+          questions: parsedQuestions
+        })
+      });
+      const payload = (await response.json()) as MutationApiResponse;
+
+      if (!response.ok || !payload.entry) {
+        setModalFeedback({
+          tone: 'error',
+          text: payload.error || 'Unable to save JSON changes.'
+        });
+        return;
+      }
+
+      setSelectedEntry(payload.entry);
+      setSelectedSubjectInput(payload.entry.subject || '');
+      setSelectedQuestionsInput(formatQuestionsJson(payload.entry));
+      await refreshHistory();
+      setModalFeedback({
+        tone: 'success',
+        text: `Saved JSON for ${selectedEntry.date}.`
+      });
+    } catch {
+      setModalFeedback({
+        tone: 'error',
+        text: 'Network error while saving JSON changes.'
+      });
+    } finally {
+      setActiveRowAction(null);
     }
   };
 
@@ -369,10 +496,43 @@ export default function HistoryCrudModal({ isOpen, onClose }: HistoryCrudModalPr
                 ))}
               </select>
             </label>
+            <label className="history-field">
+              <span className="history-field__label">Subject (optional)</span>
+              <input
+                className="history-input"
+                onChange={(event) => setCreateSubjectInput(event.target.value)}
+                placeholder="JSON Quiz"
+                type="text"
+                value={createSubjectInput}
+              />
+            </label>
+            <label className="history-field history-field--full">
+              <span className="history-field__label">Questions JSON (optional)</span>
+              <textarea
+                className="history-input history-json__textarea"
+                onChange={(event) => setCreateQuestionsInput(event.target.value)}
+                placeholder="Paste a JSON array of questions to create without copying another date."
+                rows={9}
+                spellCheck={false}
+                value={createQuestionsInput}
+              />
+            </label>
           </div>
+          <p className="muted-text">
+            If Questions JSON is filled, create will use that JSON and ignore source date copy.
+          </p>
 
-          <button className="button button--primary" disabled={isBusy || !sourceDate} onClick={handleCreate} type="button">
-            {isCreating ? 'Creating...' : 'Create Row'}
+          <button
+            className="button button--primary"
+            disabled={isBusy || (!sourceDate && !createQuestionsInput.trim())}
+            onClick={handleCreate}
+            type="button"
+          >
+            {isCreating
+              ? 'Creating...'
+              : createQuestionsInput.trim()
+                ? 'Create Row From JSON'
+                : 'Create Row'}
           </button>
         </section>
 
@@ -454,25 +614,52 @@ export default function HistoryCrudModal({ isOpen, onClose }: HistoryCrudModalPr
           {selectedEntry ? (
             <div className="history-json">
               <p className="muted-text">
-                Date: {selectedEntry.date} • Subject:{' '}
-                {selectedEntry.subject || LEGACY_SUBJECT_PLACEHOLDER} • Saved:{' '}
+                Date: {selectedEntry.date} • Saved:{' '}
                 {new Date(selectedEntry.savedAt).toLocaleString()}
               </p>
-              <pre className="history-json__pre">
-                {JSON.stringify(
-                  {
-                    date: selectedEntry.date,
-                    savedAt: selectedEntry.savedAt,
-                    subject: selectedEntry.subject,
-                    questions: selectedEntry.questions
-                  },
-                  null,
-                  2
-                )}
-              </pre>
+              <label className="history-field">
+                <span className="history-field__label">Subject</span>
+                <input
+                  className="history-input"
+                  onChange={(event) => setSelectedSubjectInput(event.target.value)}
+                  type="text"
+                  value={selectedSubjectInput}
+                />
+              </label>
+              <label className="history-field">
+                <span className="history-field__label">Questions JSON</span>
+                <textarea
+                  className="history-input history-json__textarea"
+                  onChange={(event) => setSelectedQuestionsInput(event.target.value)}
+                  rows={13}
+                  spellCheck={false}
+                  value={selectedQuestionsInput}
+                />
+              </label>
+              <div className="history-json__actions">
+                <button
+                  className="button button--primary"
+                  disabled={isBusy}
+                  onClick={() => void handleSaveSelectedJson()}
+                  type="button"
+                >
+                  {activeRowAction === `save-json:${selectedEntry.date}` ? 'Saving...' : 'Save JSON'}
+                </button>
+                <button
+                  className="button button--ghost"
+                  disabled={isBusy}
+                  onClick={() => {
+                    setSelectedSubjectInput(selectedEntry.subject || '');
+                    setSelectedQuestionsInput(formatQuestionsJson(selectedEntry));
+                  }}
+                  type="button"
+                >
+                  Reset
+                </button>
+              </div>
             </div>
           ) : (
-            <p className="muted-text">Click `Read JSON` on any row to inspect full content.</p>
+            <p className="muted-text">Click `Read JSON` on any row to load and edit full content.</p>
           )}
         </section>
 

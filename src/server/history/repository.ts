@@ -189,6 +189,57 @@ export async function createDailyQuizHistoryEntry(
   }
 }
 
+export async function updateDailyQuizHistoryEntryByDate(
+  date: string,
+  questionsSnapshot: QuizQuestion[],
+  subject: string | null = null
+): Promise<DailyQuizHistoryEntry | null> {
+  const pool = await getDbPool();
+  const snapshot = cloneQuestions(questionsSnapshot);
+  const savedAt = new Date().toISOString();
+  const normalizedSubject = normalizeSubject(subject);
+
+  try {
+    const result = await pool.query<HistoryRow>(
+      `
+        UPDATE daily_quiz_history
+        SET saved_at = $2,
+            subject = $3,
+            questions_json = $4::jsonb
+        WHERE date = $1
+        RETURNING date, saved_at, subject, questions_json;
+      `,
+      [date, savedAt, normalizedSubject, JSON.stringify(snapshot)]
+    );
+
+    if (result.rows.length === 0) {
+      logDebug('history.update_by_date.not_found', { date });
+      return null;
+    }
+
+    const mappedEntry = result.rows
+      .map(mapRowToEntry)
+      .find((entry: DailyQuizHistoryEntry | null): entry is DailyQuizHistoryEntry => Boolean(entry));
+
+    if (!mappedEntry) {
+      throw new Error('Updated history row is invalid.');
+    }
+
+    logDebug('history.update_by_date.success', {
+      date,
+      questionCount: snapshot.length
+    });
+
+    return mappedEntry;
+  } catch (error) {
+    logError('history.update_by_date.failed', error, {
+      date,
+      questionCount: snapshot.length
+    });
+    throw error;
+  }
+}
+
 export async function listDailyQuizHistoryEntries(): Promise<DailyQuizHistoryEntry[]> {
   const pool = await getDbPool();
 

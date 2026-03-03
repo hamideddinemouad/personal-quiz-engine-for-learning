@@ -1,4 +1,10 @@
-import { deleteDailyQuizByDate, getDailyQuizByDate, renameDailyQuizDate } from '@/server/history/service';
+import { normalizeQuizSubject, parseJsonQuizQuestions } from '@/server/history/quiz-json';
+import {
+  deleteDailyQuizByDate,
+  getDailyQuizByDate,
+  renameDailyQuizDate,
+  updateDailyQuizByDate
+} from '@/server/history/service';
 import { logError, logInfo } from '@/server/logging';
 
 export const runtime = 'nodejs';
@@ -12,6 +18,11 @@ interface RouteContext {
 
 interface RenameHistoryRequestBody {
   nextDate?: unknown;
+}
+
+interface UpdateHistoryRequestBody {
+  questions?: unknown;
+  subject?: unknown;
 }
 
 function isValidDateKey(value: unknown): value is string {
@@ -83,6 +94,44 @@ export async function PUT(request: Request, { params }: RouteContext): Promise<R
     }
 
     logError('api.history_by_date.put.failed', error, { date: params.date });
+    return Response.json({ error: 'Unable to process request.' }, { status: 500 });
+  }
+}
+
+export async function PATCH(request: Request, { params }: RouteContext): Promise<Response> {
+  if (!isValidDateKey(params.date)) {
+    return Response.json({ error: 'Invalid date parameter.' }, { status: 400 });
+  }
+
+  try {
+    const body = (await request.json()) as UpdateHistoryRequestBody;
+    const parsedJsonQuiz = parseJsonQuizQuestions(body.questions);
+    if (parsedJsonQuiz.error) {
+      return Response.json({ error: parsedJsonQuiz.error }, { status: 400 });
+    }
+
+    const updatedEntry = await updateDailyQuizByDate(
+      params.date,
+      parsedJsonQuiz.questions,
+      normalizeQuizSubject(body.subject)
+    );
+
+    if (!updatedEntry) {
+      logInfo('api.history_by_date.patch.not_found', { date: params.date });
+      return Response.json({ error: 'Quiz history not found for this date.' }, { status: 404 });
+    }
+
+    logInfo('api.history_by_date.patch.success', {
+      date: params.date,
+      questionCount: updatedEntry.questions.length
+    });
+    return Response.json({ entry: updatedEntry });
+  } catch (error) {
+    if (error instanceof SyntaxError) {
+      return Response.json({ error: 'Invalid JSON payload.' }, { status: 400 });
+    }
+
+    logError('api.history_by_date.patch.failed', error, { date: params.date });
     return Response.json({ error: 'Unable to process request.' }, { status: 500 });
   }
 }
