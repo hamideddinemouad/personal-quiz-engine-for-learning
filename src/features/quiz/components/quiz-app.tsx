@@ -408,6 +408,19 @@ export default function QuizApp({
     }
   };
 
+  const handleLoadQuizTemporarily = (questions: QuizQuestion[], subject: string | null): void => {
+    if (!Array.isArray(questions) || questions.length === 0) {
+      setShuffleError('Unable to load temporary quiz: no questions available.');
+      return;
+    }
+
+    setShuffleError(null);
+    setDailySnapshotError(null);
+    setQuizQuestions(questions);
+    setQuizSubject(subject);
+    setQuizSessionVersion((current) => current + 1);
+  };
+
   if (needsDailySetup) {
     return (
       <main className="quiz-page">
@@ -580,6 +593,7 @@ export default function QuizApp({
         backupFeedback={backupFeedback}
         onShuffleMegaQuiz={handleShuffleMegaQuiz}
         onCreateGithubBackup={handleCreateGithubBackup}
+        onLoadQuizTemporarily={handleLoadQuizTemporarily}
         shuffleError={shuffleError}
       />
     </QuizProvider>

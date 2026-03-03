@@ -2,12 +2,13 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { toLocalDateKey } from '@/lib/date';
-import type { DailyQuizHistoryEntry } from '@/types/quiz';
+import type { DailyQuizHistoryEntry, QuizQuestion } from '@/types/quiz';
 import { AlertCircleIcon, CheckCircleIcon } from './icons';
 
 interface HistoryCrudModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onLoadQuizTemporarily: (questions: QuizQuestion[], subject: string | null) => void;
 }
 
 interface HistoryApiResponse {
@@ -62,7 +63,11 @@ function formatQuestionsJson(entry: DailyQuizHistoryEntry): string {
   return JSON.stringify(entry.questions, null, 2);
 }
 
-export default function HistoryCrudModal({ isOpen, onClose }: HistoryCrudModalProps): JSX.Element | null {
+export default function HistoryCrudModal({
+  isOpen,
+  onClose,
+  onLoadQuizTemporarily
+}: HistoryCrudModalProps): JSX.Element | null {
   const [rows, setRows] = useState<HistorySummaryRow[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
@@ -497,6 +502,49 @@ export default function HistoryCrudModal({ isOpen, onClose }: HistoryCrudModalPr
     }
   };
 
+  const handleLoadSelectedQuizTemporarily = (): void => {
+    setModalFeedback(null);
+
+    if (!selectedEntry) {
+      setModalFeedback({
+        tone: 'error',
+        text: 'Load a row first.'
+      });
+      return;
+    }
+
+    if (!selectedQuestionsInput.trim()) {
+      setModalFeedback({
+        tone: 'error',
+        text: 'Questions JSON cannot be empty.'
+      });
+      return;
+    }
+
+    let parsedQuestions: unknown;
+    try {
+      parsedQuestions = JSON.parse(selectedQuestionsInput);
+    } catch {
+      setModalFeedback({
+        tone: 'error',
+        text: 'Questions JSON is invalid. Fix syntax before loading.'
+      });
+      return;
+    }
+
+    if (!Array.isArray(parsedQuestions) || parsedQuestions.length === 0) {
+      setModalFeedback({
+        tone: 'error',
+        text: 'Questions JSON must be a non-empty array.'
+      });
+      return;
+    }
+
+    const sessionSubject = selectedSubjectInput.trim() || selectedEntry.subject || 'Temporary Quiz';
+    onLoadQuizTemporarily(parsedQuestions as QuizQuestion[], sessionSubject);
+    onClose();
+  };
+
   return (
     <div
       aria-hidden="true"
@@ -715,6 +763,14 @@ export default function HistoryCrudModal({ isOpen, onClose }: HistoryCrudModalPr
                   type="button"
                 >
                   {activeRowAction === `save-json:${selectedEntry.date}` ? 'Saving...' : 'Save JSON'}
+                </button>
+                <button
+                  className="button button--ghost"
+                  disabled={isBusy}
+                  onClick={handleLoadSelectedQuizTemporarily}
+                  type="button"
+                >
+                  Load In UI (Temporary)
                 </button>
                 <button
                   className="button button--ghost"

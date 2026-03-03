@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useQuizContext } from '@/features/quiz/context/quiz-context';
 import type { ChoiceUiMode } from '@/features/quiz/types';
+import type { QuizQuestion } from '@/types/quiz';
 import { AlertCircleIcon } from './icons';
 import HistoryCrudModal from './history-crud-modal';
 import QuestionCard from './question-card';
@@ -19,6 +20,7 @@ interface QuizEngineProps {
   isCreatingGithubBackup: boolean;
   backupFeedback: { tone: 'success' | 'error' | 'neutral'; text: string } | null;
   onCreateGithubBackup: () => Promise<void>;
+  onLoadQuizTemporarily: (questions: QuizQuestion[], subject: string | null) => void;
   choiceUi: ChoiceUiMode;
 }
 
@@ -33,6 +35,7 @@ export default function QuizEngine({
   isCreatingGithubBackup,
   backupFeedback,
   onCreateGithubBackup,
+  onLoadQuizTemporarily,
   choiceUi
 }: QuizEngineProps): JSX.Element {
   // Goal: Compose quiz content + sidebar controls from shared context state.
@@ -70,7 +73,11 @@ export default function QuizEngine({
           shuffleError={shuffleError}
         />
       </div>
-      <HistoryCrudModal isOpen={isHistoryCrudOpen} onClose={() => setIsHistoryCrudOpen(false)} />
+      <HistoryCrudModal
+        isOpen={isHistoryCrudOpen}
+        onClose={() => setIsHistoryCrudOpen(false)}
+        onLoadQuizTemporarily={onLoadQuizTemporarily}
+      />
     </main>
   );
 }
