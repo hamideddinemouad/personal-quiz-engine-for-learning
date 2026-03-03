@@ -437,6 +437,19 @@ body {
   margin-top: 1rem;
 }
 
+.question-card-actions {
+  border-top: 1px solid var(--border);
+  padding-top: 0.75rem;
+  margin-top: 0.2rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.65rem;
+}
+
+.question-card-actions .button {
+  flex: 1;
+}
+
 .section-label {
   margin: 0;
   font-size: 0.72rem;
