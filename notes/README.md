@@ -1,5 +1,8 @@
 # Notes JSON Output
 
+These files are a previous backup.
+If you want to add other backups, put them in a directory called `old-backups`.
+
 Store one quiz JSON file per source note in this directory.
 
 ## Naming
