@@ -4,7 +4,7 @@ import {
   createTodayQuizFromShuffledMegaQuiz,
   getTodayQuizSnapshot
 } from '@/server/history/service';
-import { normalizeQuizSubject, parseJsonQuizQuestions } from '@/server/history/quiz-json';
+import { normalizeQuizSubject, parseJsonQuizPayload } from '@/server/history/quiz-json';
 import { logError, logInfo } from '@/server/logging';
 
 export const runtime = 'nodejs';
@@ -44,26 +44,28 @@ export async function POST(request: Request): Promise<Response> {
       );
     }
 
-    const subject = normalizeQuizSubject(body.subject);
+    const requestSubject = normalizeQuizSubject(body.subject);
     let result;
+    let effectiveSubject = requestSubject;
 
     if (body.mode === 'load') {
-      result = await createTodayQuizFromLatestHistory(subject);
+      result = await createTodayQuizFromLatestHistory(requestSubject);
     } else if (body.mode === 'shuffle') {
-      result = await createTodayQuizFromShuffledMegaQuiz(subject);
+      result = await createTodayQuizFromShuffledMegaQuiz(requestSubject);
     } else {
-      const parsedJsonQuiz = parseJsonQuizQuestions(body.questions);
+      const parsedJsonQuiz = parseJsonQuizPayload(body.questions);
       if (parsedJsonQuiz.error) {
         return Response.json({ error: parsedJsonQuiz.error }, { status: 400 });
       }
 
-      result = await createTodayQuizFromJson(parsedJsonQuiz.questions, subject);
+      effectiveSubject = requestSubject || parsedJsonQuiz.subject;
+      result = await createTodayQuizFromJson(parsedJsonQuiz.questions, effectiveSubject);
     }
 
     if (result.saveError || result.questions.length === 0) {
       logInfo('api.today.post.failed_validation', {
         mode: body.mode,
-        subject,
+        subject: effectiveSubject,
         saveError: result.saveError,
         questionCount: result.questions.length
       });

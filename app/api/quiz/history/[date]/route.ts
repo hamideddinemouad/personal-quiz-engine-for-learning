@@ -1,4 +1,4 @@
-import { normalizeQuizSubject, parseJsonQuizQuestions } from '@/server/history/quiz-json';
+import { normalizeQuizSubject, parseJsonQuizPayload } from '@/server/history/quiz-json';
 import {
   deleteDailyQuizByDate,
   getDailyQuizByDate,
@@ -105,15 +105,16 @@ export async function PATCH(request: Request, { params }: RouteContext): Promise
 
   try {
     const body = (await request.json()) as UpdateHistoryRequestBody;
-    const parsedJsonQuiz = parseJsonQuizQuestions(body.questions);
+    const parsedJsonQuiz = parseJsonQuizPayload(body.questions);
     if (parsedJsonQuiz.error) {
       return Response.json({ error: parsedJsonQuiz.error }, { status: 400 });
     }
 
+    const resolvedSubject = normalizeQuizSubject(body.subject) || parsedJsonQuiz.subject;
     const updatedEntry = await updateDailyQuizByDate(
       params.date,
       parsedJsonQuiz.questions,
-      normalizeQuizSubject(body.subject)
+      resolvedSubject
     );
 
     if (!updatedEntry) {

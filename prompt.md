@@ -3,17 +3,20 @@
 Copy this entire prompt into your AI tool, then replace the `Raw notes` section.
 
 ```text
-You are converting raw study notes into quiz JSON for a strict validator.
+You are converting raw study notes into quiz JSON files for a strict validator.
 
 Task:
-- Convert the notes into one JSON array of quiz questions.
+- Convert the 
 
 Hard output rules (must follow):
-- all in a directory called allnotes
-- each note its own  JSON file.
+- Create one file per note at "notes/<note-slug>.json".
+- Each file must contain JSON only (no comments or extra text).
+- output in code fences.
 - Do not include comments or explanations.
 - Use double quotes for all keys and string values.
 - Ensure the result can be parsed with JSON.parse (no trailing commas).
+- In each file, the top-level value must be one non-empty JSON array of questions.
+- IDs restart per file and must be unique in order: q1, q2, q3, ...
 
 Question schema (exact field names):
 [
@@ -39,8 +42,8 @@ Question schema (exact field names):
 ]
 
 Non-negotiable validation constraints:
-- Top-level value must be a non-empty array.
-- Use unique IDs in order: q1, q2, q3, ...
+- Each file top-level value must be a non-empty array.
+- IDs in each file must be unique in order: q1, q2, q3, ...
 - Every question must have a non-empty "question" string.
 - Every question must set "requiresWhy": true.
 - Every question must include non-empty "whyQuestion".
@@ -70,7 +73,7 @@ Before finalizing, silently self-check:
 1. Every question has whyQuestion + 4 whyOptions.
 2. Every options/whyOptions array has exactly 4 items.
 3. Exactly one isCorrect=true in each options and each whyOptions array.
-4. JSON is valid and parseable.
+4. Every file JSON is valid and parseable.
 
 JSON structure example:
 [
@@ -128,5 +131,14 @@ JSON structure example:
 ]
 
 Raw notes:
-<PASTE YOUR NOTES HERE>
+monorepo is when your entire application codebase(backend frontend) is in one repo
+when u use quotes in a search you are saying use this exact term when you dont its more of a broad search
+to pass an emotion a little trick touch your heart and then touch the heart of the other person you want to pass the emotion to
+.push returns the new length of the array by default
+ts is a bit picky with access objects with dynamic properties basically it doesnt trust the properties you are accessing the objects with and requires you to narrrow the type agressivly sometimes even the if clause to check the nature of the property isnt enough  ts prefers “?” 
+
+ acc[current.category]? (acc[current.category].push(current), acc) : (acc[current.category] = [current], acc) in this example acc[current.category]? check isnt enough acc[current.category]?.push(current), the ? needs to be added 
+
+this synta is correct when we have only one thing to do after if clause no need for {} : if (condition) doSomething();
+when ai gives you code in that rectangle ready to copy its called a code fence
 ```

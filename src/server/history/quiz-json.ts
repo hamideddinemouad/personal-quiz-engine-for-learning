@@ -128,3 +128,45 @@ export function parseJsonQuizQuestions(value: unknown): { questions: QuizQuestio
 
   return { questions, error: null };
 }
+
+export function parseJsonQuizPayload(value: unknown): {
+  subject: string | null;
+  questions: QuizQuestion[];
+  error: string | null;
+} {
+  if (Array.isArray(value)) {
+    const parsedQuestions = parseJsonQuizQuestions(value);
+    return {
+      subject: null,
+      questions: parsedQuestions.questions,
+      error: parsedQuestions.error
+    };
+  }
+
+  if (value && typeof value === 'object') {
+    const payload = value as Record<string, unknown>;
+    const parsedQuestions = parseJsonQuizQuestions(payload.questions);
+    if (parsedQuestions.error) {
+      return {
+        subject: null,
+        questions: [],
+        error:
+          parsedQuestions.error === '`questions` must be a non-empty array.'
+            ? 'Object JSON payload must include a non-empty `questions` array.'
+            : parsedQuestions.error
+      };
+    }
+
+    return {
+      subject: normalizeQuizSubject(payload.subject),
+      questions: parsedQuestions.questions,
+      error: null
+    };
+  }
+
+  return {
+    subject: null,
+    questions: [],
+    error: 'Quiz JSON must be a non-empty questions array or an object with `questions`.'
+  };
+}

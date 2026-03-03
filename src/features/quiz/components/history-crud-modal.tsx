@@ -532,16 +532,36 @@ export default function HistoryCrudModal({
       return;
     }
 
-    if (!Array.isArray(parsedQuestions) || parsedQuestions.length === 0) {
+    let questionsForSession: QuizQuestion[] | null = null;
+    let embeddedSubject: string | null = null;
+
+    if (Array.isArray(parsedQuestions) && parsedQuestions.length > 0) {
+      questionsForSession = parsedQuestions as QuizQuestion[];
+    } else if (parsedQuestions && typeof parsedQuestions === 'object') {
+      const payload = parsedQuestions as Record<string, unknown>;
+      const payloadQuestions = payload.questions;
+      const payloadSubject = payload.subject;
+
+      if (Array.isArray(payloadQuestions) && payloadQuestions.length > 0) {
+        questionsForSession = payloadQuestions as QuizQuestion[];
+      }
+
+      if (typeof payloadSubject === 'string' && payloadSubject.trim()) {
+        embeddedSubject = payloadSubject.trim();
+      }
+    }
+
+    if (!questionsForSession) {
       setModalFeedback({
         tone: 'error',
-        text: 'Questions JSON must be a non-empty array.'
+        text: 'Questions JSON must be a non-empty array or an object with non-empty `questions`.'
       });
       return;
     }
 
-    const sessionSubject = selectedSubjectInput.trim() || selectedEntry.subject || 'Temporary Quiz';
-    onLoadQuizTemporarily(parsedQuestions as QuizQuestion[], sessionSubject);
+    const sessionSubject =
+      selectedSubjectInput.trim() || embeddedSubject || selectedEntry.subject || 'Temporary Quiz';
+    onLoadQuizTemporarily(questionsForSession, sessionSubject);
     onClose();
   };
 

@@ -1,4 +1,4 @@
-import { normalizeQuizSubject, parseJsonQuizQuestions } from '@/server/history/quiz-json';
+import { normalizeQuizSubject, parseJsonQuizPayload } from '@/server/history/quiz-json';
 import { createDailyQuizByCopy, createDailyQuizByJson, getDailyQuizHistory } from '@/server/history/service';
 import { logError, logInfo } from '@/server/logging';
 
@@ -57,15 +57,16 @@ export async function POST(request: Request): Promise<Response> {
     }
 
     if (typeof body.questions !== 'undefined') {
-      const parsedJsonQuiz = parseJsonQuizQuestions(body.questions);
+      const parsedJsonQuiz = parseJsonQuizPayload(body.questions);
       if (parsedJsonQuiz.error) {
         return Response.json({ error: parsedJsonQuiz.error }, { status: 400 });
       }
 
+      const resolvedSubject = normalizeQuizSubject(body.subject) || parsedJsonQuiz.subject;
       const result = await createDailyQuizByJson(
         body.date,
         parsedJsonQuiz.questions,
-        normalizeQuizSubject(body.subject)
+        resolvedSubject
       );
 
       if (result.kind === 'date_conflict') {

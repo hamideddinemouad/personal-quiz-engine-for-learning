@@ -283,7 +283,7 @@ export default function QuizApp({
 
   const handleCreateTodayQuizFromJson = async (): Promise<void> => {
     if (!jsonQuizInput.trim()) {
-      setDailySnapshotError('Paste a quiz JSON array first.');
+      setDailySnapshotError('Paste quiz JSON first.');
       return;
     }
 
@@ -469,7 +469,7 @@ export default function QuizApp({
             <textarea
               className="history-input daily-setup__json"
               onChange={(event) => setJsonQuizInput(event.target.value)}
-              placeholder='[{ "id": "q1", "question": "...", "options": [...] }]'
+              placeholder='[{...}] or {"subject":"TypeScript","questions":[...]}'
               value={jsonQuizInput}
             />
           </label>
