@@ -1,13 +1,10 @@
 import { cloneQuestion, shuffleArray } from '@/lib/quiz-transform';
 import type { DailyQuizHistoryEntry, QuizQuestion } from '@/types/quiz';
 
-// Goal: Keep mega-quiz size and day contribution explicit in one place.
-const DEFAULT_QUESTIONS_PER_QUIZ = 5;
-const DEFAULT_TOTAL_QUESTIONS = 35;
+const DEFAULT_TOTAL_QUESTIONS = 20;
 
 interface BuildShuffledMegaQuizOptions {
   excludeDate?: string;
-  questionsPerQuiz?: number;
   totalQuestions?: number;
 }
 
@@ -19,47 +16,59 @@ function withMegaId(question: QuizQuestion, sourceDate: string, token: string): 
   };
 }
 
-// Goal: Pick enough source quiz days to satisfy the target question count.
-// If history is small, we cycle through shuffled entries instead of failing.
-function pickQuizGroups(
-  entries: DailyQuizHistoryEntry[],
-  totalQuestions: number,
-  questionsPerQuiz: number
-): DailyQuizHistoryEntry[] {
-  const quizzesNeeded = Math.max(1, Math.ceil(totalQuestions / questionsPerQuiz));
-  const shuffledEntries = shuffleArray(entries);
-  const groups: DailyQuizHistoryEntry[] = [];
-
-  let index = 0;
-  while (groups.length < quizzesNeeded) {
-    if (index >= shuffledEntries.length) {
-      index = 0;
-    }
-
-    groups.push(shuffledEntries[index]);
-    index += 1;
+function normalizeForFingerprint(value: string | undefined): string {
+  if (typeof value !== 'string') {
+    return '';
   }
 
-  return groups;
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, ' ');
+}
+
+function normalizedOptionTexts(options: QuizQuestion['options'] | undefined): string[] {
+  if (!Array.isArray(options)) {
+    return [];
+  }
+
+  return options
+    .map((option) => normalizeForFingerprint(option.text))
+    .filter(Boolean)
+    .sort();
+}
+
+function normalizedWhyOptionTexts(options: QuizQuestion['whyOptions'] | undefined): string[] {
+  if (!Array.isArray(options)) {
+    return [];
+  }
+
+  return options
+    .map((option) => normalizeForFingerprint(option.text))
+    .filter(Boolean)
+    .sort();
+}
+
+function getQuestionFingerprint(question: QuizQuestion): string {
+  const questionText = normalizeForFingerprint(question.question);
+  const whyQuestionText = normalizeForFingerprint(question.whyQuestion);
+  const optionTexts = normalizedOptionTexts(question.options).join('|');
+  const whyOptionTexts = normalizedWhyOptionTexts(question.whyOptions).join('|');
+
+  return [questionText, whyQuestionText, optionTexts, whyOptionTexts].join('::');
 }
 
 export function buildShuffledMegaQuizFromHistory(
   entries: DailyQuizHistoryEntry[],
   options: BuildShuffledMegaQuizOptions = {}
 ): QuizQuestion[] {
-  // Goal: Build a 35-question mega quiz from past snapshots,
-  // using 5 random questions per selected day whenever possible.
-
-  // Step 1: Resolve config with safe defaults.
-  const questionsPerQuiz = options.questionsPerQuiz ?? DEFAULT_QUESTIONS_PER_QUIZ;
   const totalQuestions = options.totalQuestions ?? DEFAULT_TOTAL_QUESTIONS;
 
-  // Step 2: Reject invalid config early to avoid surprising partial output.
-  if (questionsPerQuiz <= 0 || totalQuestions <= 0) {
+  if (totalQuestions <= 0) {
     return [];
   }
 
-  // Step 3: Keep only valid source days and optionally exclude today.
+  // Step 1: Keep only valid source days and optionally exclude one date.
   const eligibleEntries = entries.filter(
     (entry) => entry.date !== options.excludeDate && entry.questions.length > 0
   );
@@ -68,44 +77,34 @@ export function buildShuffledMegaQuizFromHistory(
     return [];
   }
 
-  // Step 4: Choose day groups and pick up to N random questions from each.
-  const groups = pickQuizGroups(eligibleEntries, totalQuestions, questionsPerQuiz);
-  const selectedQuestions: QuizQuestion[] = [];
+  // Step 2: Build a global unique pool across every quiz entry.
+  const seenFingerprints = new Set<string>();
+  const uniquePool: Array<{ sourceDate: string; question: QuizQuestion }> = [];
 
-  groups.forEach((entry, groupIndex) => {
-    const shuffledQuestions = shuffleArray(entry.questions);
-    const count = Math.min(questionsPerQuiz, shuffledQuestions.length);
+  eligibleEntries.forEach((entry) => {
+    entry.questions.forEach((question) => {
+      const fingerprint = getQuestionFingerprint(question);
+      if (!fingerprint || seenFingerprints.has(fingerprint)) {
+        return;
+      }
 
-    for (let index = 0; index < count; index += 1) {
-      const token = `g${groupIndex + 1}-q${index + 1}-${selectedQuestions.length + 1}`;
-      selectedQuestions.push(withMegaId(shuffledQuestions[index], entry.date, token));
-    }
+      seenFingerprints.add(fingerprint);
+      uniquePool.push({
+        sourceDate: entry.date,
+        question
+      });
+    });
   });
 
-  // Step 5: If some days had fewer than N questions, fill from all past questions.
-  // We still assign unique ids because the same source question may be reused.
-  if (selectedQuestions.length < totalQuestions) {
-    const fallbackPool = shuffleArray(
-      eligibleEntries.flatMap((entry) =>
-        entry.questions.map((question, index) => ({
-          sourceDate: entry.date,
-          question,
-          index
-        }))
-      )
-    );
-
-    if (fallbackPool.length > 0) {
-      let cursor = 0;
-      while (selectedQuestions.length < totalQuestions) {
-        const source = fallbackPool[cursor % fallbackPool.length];
-        const token = `f${cursor + 1}-${selectedQuestions.length + 1}-${source.index + 1}`;
-        selectedQuestions.push(withMegaId(source.question, source.sourceDate, token));
-        cursor += 1;
-      }
-    }
+  if (uniquePool.length === 0) {
+    return [];
   }
 
-  // Step 6: Shuffle final order so questions are mixed across source days.
-  return shuffleArray(selectedQuestions).slice(0, totalQuestions);
+  // Step 3: Sample up to N unique questions randomly from the global pool.
+  const sampledQuestions = shuffleArray(uniquePool).slice(0, totalQuestions);
+
+  return sampledQuestions.map((item, index) => {
+    const token = `u${index + 1}`;
+    return withMegaId(item.question, item.sourceDate, token);
+  });
 }

@@ -16,7 +16,7 @@ function isValidDateArray(value: unknown): value is string[] {
 
 export async function POST(request: Request): Promise<Response> {
   // Goal: Support two mega quiz modes from one endpoint:
-  // 1) mode: "shuffle" => random 35-question mega quiz from past history
+  // 1) mode: "shuffle" => random 20-question mega quiz from all history
   // 2) dates: string[] => deterministic mega quiz from explicit dates
   try {
     const body = (await request.json()) as MegaQuizRequestBody;

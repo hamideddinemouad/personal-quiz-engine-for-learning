@@ -255,9 +255,7 @@ export async function buildShuffledMegaQuizFromPast(): Promise<QuizQuestion[]> {
   const historyEntries = await listDailyQuizHistoryEntries();
 
   return buildShuffledMegaQuizFromHistory(historyEntries, {
-    excludeDate: toLocalDateKey(),
-    questionsPerQuiz: 5,
-    totalQuestions: 35
+    totalQuestions: 20
   });
 }
 
