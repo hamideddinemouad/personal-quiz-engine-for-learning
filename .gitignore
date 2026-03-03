@@ -6,3 +6,6 @@ out
 *.tsbuildinfo
 data/*.sqlite
 data/*.sqlite-*
+v2-next/data/*.sqlite
+v2-next/data/*.sqlite-*
+.vercel
