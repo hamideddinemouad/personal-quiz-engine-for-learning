@@ -19,6 +19,7 @@ npm install
 2. Start local Postgres container:
 
 ```bash
+
 docker run --name quiz-pg \
   -e POSTGRES_USER=quiz \
   -e POSTGRES_PASSWORD=quizpass \
