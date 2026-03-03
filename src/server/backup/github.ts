@@ -1,3 +1,4 @@
+import { getWishListState } from '@/server/data-safety/service';
 import { getDailyQuizHistory } from '@/server/history/service';
 
 interface GithubBackupConfig {
@@ -26,10 +27,16 @@ export interface GithubBackupResult {
 }
 
 interface QuizHistoryBackupPayload {
-  schemaVersion: 1;
+  // Bumped from v1 because we now include a separate `dataSafety` section.
+  schemaVersion: 2;
   generatedAt: string;
   rowCount: number;
   history: unknown[];
+  dataSafety: {
+    wishCount: number;
+    updatedAt: string | null;
+    wishList: string[];
+  };
 }
 
 function requireEnv(name: string): string {
@@ -117,13 +124,18 @@ async function uploadJsonSnapshot(
 
 export async function createGithubQuizHistoryBackup(now: Date = new Date()): Promise<GithubBackupResult> {
   const config = resolveConfig();
-  const history = await getDailyQuizHistory();
+  const [history, wishListState] = await Promise.all([getDailyQuizHistory(), getWishListState()]);
   const filePath = buildBackupFilePath(config.baseDir, now);
 
   return uploadJsonSnapshot(config, filePath, {
-    schemaVersion: 1,
+    schemaVersion: 2,
     generatedAt: now.toISOString(),
     rowCount: history.length,
-    history
+    history,
+    dataSafety: {
+      wishCount: wishListState.wishList.length,
+      updatedAt: wishListState.updatedAt,
+      wishList: wishListState.wishList
+    }
   });
 }

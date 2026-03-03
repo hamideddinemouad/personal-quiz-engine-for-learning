@@ -72,7 +72,7 @@ Feedback quality constraints (important):
 
 Content quality constraints:
 - Keep wording clear and concise.
-- Use plausible distractors tied to common confusion from the notes.
+- Use plausible distractors tied to common confusion.
 - Make options and whyOptions equally plausible: avoid obvious giveaways like one choice being much longer, more specific, or more polished than the others.
 - Do not output placeholders like "TBD", "...", or "<...>".
 

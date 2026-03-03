@@ -126,7 +126,7 @@ npm run build
    - `BACKUP_GITHUB_DIR=quiz-backups` (optional)
 3. Deploy.
 
-The app initializes the `daily_quiz_history` table automatically on first request.
+The app initializes the `daily_quiz_history` and `data_safety_state` tables automatically on first request.
 
 ## Free GitHub Backups (Every 2 Days)
 
@@ -136,7 +136,7 @@ This project includes a scheduled backup endpoint:
 - protected by `CRON_SECRET`
 - scheduled by `vercel.json` with `0 3 */2 * *` (every 2nd day at 03:00 UTC)
 
-Each run exports full `daily_quiz_history` data from Postgres and commits a JSON snapshot to your GitHub repo under:
+Each run exports full `daily_quiz_history` data plus `data_safety_state.wish_list` from Postgres and commits a JSON snapshot to your GitHub repo under:
 
 - `quiz-backups/YYYY/MM/DD/quiz-history-<timestamp>.json` (or your `BACKUP_GITHUB_DIR`)
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -17,6 +17,12 @@ interface BackupApiResponse {
   error?: string;
 }
 
+interface WishListApiResponse {
+  wishList?: string[];
+  updatedAt?: string | null;
+  error?: string;
+}
+
 export default function AppModeNav(): JSX.Element {
   const pathname = usePathname();
   const [isCreatingGithubBackup, setIsCreatingGithubBackup] = useState(false);
@@ -24,6 +30,54 @@ export default function AppModeNav(): JSX.Element {
     tone: 'success' | 'error' | 'neutral';
     text: string;
   } | null>(null);
+  const [wishInput, setWishInput] = useState('');
+  const [wishList, setWishList] = useState<string[]>([]);
+  const [wishListUpdatedAt, setWishListUpdatedAt] = useState<string | null>(null);
+  const [isLoadingWishList, setIsLoadingWishList] = useState(false);
+  const [isSavingWish, setIsSavingWish] = useState(false);
+  const [isWishListVisible, setIsWishListVisible] = useState(false);
+  const [wishFeedback, setWishFeedback] = useState<{
+    tone: 'success' | 'error' | 'neutral';
+    text: string;
+  } | null>(null);
+
+  const loadWishList = async (showErrorFeedback = true): Promise<void> => {
+    setIsLoadingWishList(true);
+
+    try {
+      const response = await fetch('/api/data-safety/wishlist', {
+        cache: 'no-store'
+      });
+      const payload = (await response.json()) as WishListApiResponse;
+
+      if (!response.ok || !Array.isArray(payload.wishList)) {
+        if (showErrorFeedback) {
+          setWishFeedback({
+            tone: 'error',
+            text: payload.error || 'Unable to load wish list.'
+          });
+        }
+        return;
+      }
+
+      setWishList(payload.wishList);
+      setWishListUpdatedAt(payload.updatedAt ?? null);
+    } catch {
+      if (showErrorFeedback) {
+        setWishFeedback({
+          tone: 'error',
+          text: 'Network error while loading wish list.'
+        });
+      }
+    } finally {
+      setIsLoadingWishList(false);
+    }
+  };
+
+  useEffect(() => {
+    // On initial mount we hydrate local state quietly: no noisy error toast if API is temporarily unavailable.
+    void loadWishList(false);
+  }, []);
 
   const handleCreateGithubBackup = async (): Promise<void> => {
     if (isCreatingGithubBackup) {
@@ -65,6 +119,69 @@ export default function AppModeNav(): JSX.Element {
     }
   };
 
+  const handleSaveWish = async (): Promise<void> => {
+    if (isSavingWish) {
+      return;
+    }
+
+    const normalizedWish = wishInput.trim();
+    if (!normalizedWish) {
+      setWishFeedback({
+        tone: 'error',
+        text: 'Type a wish first.'
+      });
+      return;
+    }
+
+    setIsSavingWish(true);
+    setWishFeedback(null);
+
+    try {
+      const response = await fetch('/api/data-safety/wishlist', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          wish: normalizedWish
+        })
+      });
+      const payload = (await response.json()) as WishListApiResponse;
+
+      if (!response.ok || !Array.isArray(payload.wishList)) {
+        setWishFeedback({
+          tone: 'error',
+          text: payload.error || 'Unable to save wish.'
+        });
+        return;
+      }
+
+      setWishList(payload.wishList);
+      setWishListUpdatedAt(payload.updatedAt ?? null);
+      setWishInput('');
+      setWishFeedback({
+        tone: 'success',
+        text: 'Wish saved to database. It will be included in GitHub backups.'
+      });
+    } catch {
+      setWishFeedback({
+        tone: 'error',
+        text: 'Network error while saving wish.'
+      });
+    } finally {
+      setIsSavingWish(false);
+    }
+  };
+
+  const handleToggleWishList = (): void => {
+    const willShow = !isWishListVisible;
+    setIsWishListVisible(willShow);
+    if (willShow) {
+      // Refresh when opening so the list reflects latest DB data, not only local state.
+      void loadWishList();
+    }
+  };
+
   return (
     <nav aria-label="Quiz mode navigation" className="app-mode-nav">
       <p className="app-mode-nav__eyebrow">Mode</p>
@@ -101,6 +218,64 @@ export default function AppModeNav(): JSX.Element {
           <p className={`feedback feedback--${backupFeedback.tone} app-mode-nav__backup-feedback`}>
             {backupFeedback.text}
           </p>
+        ) : null}
+        <label className="app-mode-nav__wish-field">
+          <span className="app-mode-nav__wish-label">Wish list</span>
+          <input
+            className="history-input app-mode-nav__wish-input"
+            onChange={(event) => setWishInput(event.target.value)}
+            placeholder="Type one wish to implement later"
+            type="text"
+            value={wishInput}
+          />
+        </label>
+        <div className="app-mode-nav__wish-actions">
+          <button
+            className="button button--ghost app-mode-nav__wish-button"
+            disabled={isSavingWish}
+            onClick={() => {
+              void handleSaveWish();
+            }}
+            type="button"
+          >
+            {isSavingWish ? 'Saving...' : 'Save Wish'}
+          </button>
+          <button
+            className="button button--ghost app-mode-nav__wish-button"
+            onClick={handleToggleWishList}
+            type="button"
+          >
+            {isWishListVisible ? 'Hide Wish List' : 'Show Wish List'}
+          </button>
+        </div>
+        {wishFeedback ? (
+          <p className={`feedback feedback--${wishFeedback.tone} app-mode-nav__backup-feedback`}>
+            {wishFeedback.text}
+          </p>
+        ) : null}
+        {isWishListVisible ? (
+          <div className="app-mode-nav__wish-list-shell">
+            {isLoadingWishList ? (
+              <p className="muted-text">Loading wishes...</p>
+            ) : wishList.length > 0 ? (
+              <>
+                {wishListUpdatedAt ? (
+                  <p className="muted-text">
+                    Last updated: {new Date(wishListUpdatedAt).toLocaleString()}
+                  </p>
+                ) : null}
+                <ul className="app-mode-nav__wish-list">
+                  {wishList.map((wish, index) => (
+                    <li className="app-mode-nav__wish-item" key={`${wish}-${index}`}>
+                      {wish}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <p className="muted-text">No wishes saved yet.</p>
+            )}
+          </div>
         ) : null}
       </div>
     </nav>

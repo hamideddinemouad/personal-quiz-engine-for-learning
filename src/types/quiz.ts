@@ -45,6 +45,11 @@ export interface DailyQuizHistoryEntry {
   questions: QuizQuestion[];
 }
 
+export interface DataSafetyState {
+  wishList: string[];
+  updatedAt: string | null;
+}
+
 export interface StudyStreakStats {
   currentStreakDays: number;
   studiedToday: boolean;

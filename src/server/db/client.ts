@@ -96,8 +96,34 @@ async function initializeSchema(pool: Pool): Promise<void> {
       USING questions_json::jsonb;
     `);
 
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS data_safety_state (
+        singleton_key TEXT PRIMARY KEY,
+        updated_at TEXT NOT NULL,
+        wish_list_json JSONB NOT NULL DEFAULT '[]'::jsonb
+      );
+    `);
+    // Keep migration style consistent with the rest of this app:
+    // CREATE + additive ALTER statements let old DBs upgrade in-place safely.
+
+    await pool.query(`
+      ALTER TABLE data_safety_state
+      ADD COLUMN IF NOT EXISTS updated_at TEXT;
+    `);
+
+    await pool.query(`
+      ALTER TABLE data_safety_state
+      ADD COLUMN IF NOT EXISTS wish_list_json JSONB NOT NULL DEFAULT '[]'::jsonb;
+    `);
+
+    await pool.query(`
+      ALTER TABLE data_safety_state
+      ALTER COLUMN wish_list_json TYPE JSONB
+      USING wish_list_json::jsonb;
+    `);
+
     logDebug('db.schema.ready', {
-      table: 'daily_quiz_history'
+      tables: ['daily_quiz_history', 'data_safety_state']
     });
   } catch (error) {
     logError('db.schema.failed', error);
