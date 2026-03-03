@@ -1,0 +1,52 @@
+[
+  {
+    "id": "q1",
+    "question": "A user is authenticated but lacks permission for the action. Which Nest exception fits?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "`ForbiddenException` with HTTP 403.",
+        "isCorrect": true,
+        "feedback": "Correct: user identity is valid, but policy denies requested resource access."
+      },
+      {
+        "text": "`UnauthorizedException` with HTTP 401.",
+        "isCorrect": false,
+        "feedback": "401 means missing or invalid authentication credentials, not denied authorization."
+      },
+      {
+        "text": "`NotFoundException` with HTTP 404.",
+        "isCorrect": false,
+        "feedback": "404 indicates missing resource, not insufficient permission for existing resource."
+      },
+      {
+        "text": "`ConflictException` with HTTP 409.",
+        "isCorrect": false,
+        "feedback": "409 represents state conflicts, such as duplicate records, not access control."
+      }
+    ],
+    "whyQuestion": "Why is 403 distinct from 401 in access-control flows?",
+    "whyOptions": [
+      {
+        "text": "403 means authenticated identity exists, but allowed action checks failed.",
+        "isCorrect": true,
+        "feedback": "Exactly: authentication succeeded, yet authorization policy blocks the operation."
+      },
+      {
+        "text": "403 means token is malformed and cannot be decoded by server.",
+        "isCorrect": false,
+        "feedback": "Malformed or missing credentials map to 401 authentication failures instead."
+      },
+      {
+        "text": "403 means requested route does not exist in controller mapping.",
+        "isCorrect": false,
+        "feedback": "Missing routes typically return 404, unrelated to permissions."
+      },
+      {
+        "text": "403 means request body failed semantic validation and needs 422.",
+        "isCorrect": false,
+        "feedback": "Validation semantics are separate from authorization outcomes and status codes."
+      }
+    ]
+  }
+]

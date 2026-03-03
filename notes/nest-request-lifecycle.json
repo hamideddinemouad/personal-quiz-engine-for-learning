@@ -1,0 +1,52 @@
+[
+  {
+    "id": "q1",
+    "question": "Which NestJS component is responsible for route-level authorization decisions?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Guard, because it allows or blocks execution using auth and role logic.",
+        "isCorrect": true,
+        "feedback": "Correct: guards enforce access policy before controller handler execution."
+      },
+      {
+        "text": "Middleware, because it always has access to route metadata and roles.",
+        "isCorrect": false,
+        "feedback": "Middleware runs earlier and is route-agnostic, so metadata access is limited."
+      },
+      {
+        "text": "Interceptor, because it only runs after responses are serialized.",
+        "isCorrect": false,
+        "feedback": "Interceptors wrap execution pre/post handler; they are not primary authorization gates."
+      },
+      {
+        "text": "Pipe, because it transforms and validates request body authorization rules.",
+        "isCorrect": false,
+        "feedback": "Pipes validate or transform data, not decide permissions for route access."
+      }
+    ],
+    "whyQuestion": "Why use a guard instead of middleware for role checks?",
+    "whyOptions": [
+      {
+        "text": "Because guards integrate with execution context and route-specific metadata.",
+        "isCorrect": true,
+        "feedback": "Exactly: guards can read decorators and apply per-handler authorization policies."
+      },
+      {
+        "text": "Because middleware executes after controllers and can inspect return values.",
+        "isCorrect": false,
+        "feedback": "Middleware executes before routing, not after controller return processing."
+      },
+      {
+        "text": "Because interceptors cannot access request objects in NestJS.",
+        "isCorrect": false,
+        "feedback": "Interceptors can access context, but authorization remains a guard concern."
+      },
+      {
+        "text": "Because pipes are disabled when `transform: true` is enabled.",
+        "isCorrect": false,
+        "feedback": "Transform option belongs to validation pipe behavior and does not disable pipes."
+      }
+    ]
+  }
+]

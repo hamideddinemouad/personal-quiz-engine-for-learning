@@ -1,0 +1,52 @@
+[
+  {
+    "id": "q1",
+    "question": "How does `safeParse` behave when environment values fail schema validation?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "It returns `{ success: false }` metadata instead of throwing by default.",
+        "isCorrect": true,
+        "feedback": "Correct: safeParse returns a result object and avoids exception-based control flow."
+      },
+      {
+        "text": "It rewrites `.env` file entries to satisfy the schema automatically.",
+        "isCorrect": false,
+        "feedback": "SafeParse validates runtime values; it never edits your `.env` file."
+      },
+      {
+        "text": "It always throws immediately when any key is undefined.",
+        "isCorrect": false,
+        "feedback": "That behavior matches parse, not safeParse's non-throwing result contract."
+      },
+      {
+        "text": "It mutates `process.env` types so all keys become numbers.",
+        "isCorrect": false,
+        "feedback": "Validation returns parsed output; it does not globally mutate env source types."
+      }
+    ],
+    "whyQuestion": "Why validate `process.env` against a schema at startup?",
+    "whyOptions": [
+      {
+        "text": "Because env inputs are strings or undefined and need explicit constraints.",
+        "isCorrect": true,
+        "feedback": "Exactly: schema validation prevents hidden misconfiguration from reaching runtime logic."
+      },
+      {
+        "text": "Because Node cannot access environment variables without Zod middleware.",
+        "isCorrect": false,
+        "feedback": "Node reads env variables directly; Zod adds safety, not access."
+      },
+      {
+        "text": "Because coercion only works after routes are registered in Nest.",
+        "isCorrect": false,
+        "feedback": "Coercion works during parsing and is independent from route registration."
+      },
+      {
+        "text": "Because schema checks reduce bundle size by stripping unused variables.",
+        "isCorrect": false,
+        "feedback": "Validation improves correctness, not bundle optimization or dead-code elimination."
+      }
+    ]
+  }
+]

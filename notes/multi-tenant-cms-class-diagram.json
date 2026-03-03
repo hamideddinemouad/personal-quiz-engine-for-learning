@@ -1,0 +1,52 @@
+[
+  {
+    "id": "q1",
+    "question": "Why does the CMS note store content definitions as JSON schema/config objects?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "To let tenants add content types without running database migrations.",
+        "isCorrect": true,
+        "feedback": "Correct: schema flexibility moves model evolution into tenant-level configuration."
+      },
+      {
+        "text": "To guarantee strict compile-time typing directly inside PostgreSQL rows.",
+        "isCorrect": false,
+        "feedback": "JSONB is flexible runtime data, not compile-time static typing enforcement."
+      },
+      {
+        "text": "To remove the need for relational links between entries and definitions.",
+        "isCorrect": false,
+        "feedback": "Entries still reference definitions through identifiers to maintain structure mapping."
+      },
+      {
+        "text": "To force every tenant to share one immutable global content model.",
+        "isCorrect": false,
+        "feedback": "The design exists to support tenant-specific models, not one rigid schema."
+      }
+    ],
+    "whyQuestion": "How do `content_definitions` and `content_entries` work together in this design?",
+    "whyOptions": [
+      {
+        "text": "Definitions store field blueprint; entries store item data referencing that blueprint.",
+        "isCorrect": true,
+        "feedback": "Exactly: one defines structure, the other stores actual records and values."
+      },
+      {
+        "text": "Definitions store published posts, while entries only store tenant membership roles.",
+        "isCorrect": false,
+        "feedback": "Membership is separate; entries hold content items tied to definitions."
+      },
+      {
+        "text": "Definitions and entries are duplicates kept for backup and rollback only.",
+        "isCorrect": false,
+        "feedback": "They represent distinct responsibilities, not redundant backup copies."
+      },
+      {
+        "text": "Definitions are static SQL views, while entries are temporary cache rows.",
+        "isCorrect": false,
+        "feedback": "The note describes JSON-backed domain entities, not view-cache architecture."
+      }
+    ]
+  }
+]

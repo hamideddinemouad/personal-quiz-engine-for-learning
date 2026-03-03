@@ -1,0 +1,52 @@
+[
+  {
+    "id": "q1",
+    "question": "When is indexing a column usually a bad tradeoff according to the notes?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "When writes dominate and the column is rarely filtered or joined.",
+        "isCorrect": true,
+        "feedback": "Correct: index maintenance adds write overhead without enough query benefit."
+      },
+      {
+        "text": "When queries frequently use selective `WHERE` conditions on that column.",
+        "isCorrect": false,
+        "feedback": "That is a strong indexing case because selective reads gain speed."
+      },
+      {
+        "text": "When the column appears in join predicates across large tables.",
+        "isCorrect": false,
+        "feedback": "Join keys are common index targets to reduce expensive table scans."
+      },
+      {
+        "text": "When reads heavily outnumber writes and latency is query-bound.",
+        "isCorrect": false,
+        "feedback": "Read-heavy selective workloads typically benefit from proper indexing."
+      }
+    ],
+    "whyQuestion": "Why can an index hurt write-heavy workloads?",
+    "whyOptions": [
+      {
+        "text": "Because inserts and updates must also maintain index structures on each write.",
+        "isCorrect": true,
+        "feedback": "Exactly: every write now updates extra data structures, increasing total cost."
+      },
+      {
+        "text": "Because indexes disable transaction commits until manual vacuum runs.",
+        "isCorrect": false,
+        "feedback": "Transactions commit normally; index cost is maintenance, not commit disabling."
+      },
+      {
+        "text": "Because query planners ignore indexed columns for equality comparisons.",
+        "isCorrect": false,
+        "feedback": "Planners often prefer indexes for selective equality predicates, not ignore them."
+      },
+      {
+        "text": "Because indexes only accelerate sorting and never help filtering operations.",
+        "isCorrect": false,
+        "feedback": "Indexes often speed filtering and joins, not just sort operations."
+      }
+    ]
+  }
+]

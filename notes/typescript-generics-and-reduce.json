@@ -1,0 +1,52 @@
+[
+  {
+    "id": "q1",
+    "question": "Why does `reduce` with an initial value of `{}` often need explicit accumulator typing in TypeScript?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Because `{}` is inferred too vaguely, so indexed writes need a defined shape.",
+        "isCorrect": true,
+        "feedback": "Correct: empty object inference lacks index/value info, so property updates are unsafe."
+      },
+      {
+        "text": "Because `reduce` never supports generic inference under any circumstances.",
+        "isCorrect": false,
+        "feedback": "Reduce can infer types in many cases, especially with precise initial values."
+      },
+      {
+        "text": "Because callbacks passed to `reduce` must always return `Promise` values.",
+        "isCorrect": false,
+        "feedback": "Reduce callbacks can be synchronous; async return is optional and unrelated here."
+      },
+      {
+        "text": "Because object literals cannot be used as `reduce` initial values in TypeScript.",
+        "isCorrect": false,
+        "feedback": "Object initial values are valid; the issue is missing explicit structural typing."
+      }
+    ],
+    "whyQuestion": "Why does an untyped `{}` initializer produce friction with dynamic keys like `acc[current]`?",
+    "whyOptions": [
+      {
+        "text": "Because the compiler cannot guarantee key existence or value type from bare `{}`.",
+        "isCorrect": true,
+        "feedback": "Exactly: without an index signature, dynamic property access remains type-unsafe."
+      },
+      {
+        "text": "Because TypeScript disables bracket notation unless `any` is globally enabled.",
+        "isCorrect": false,
+        "feedback": "Bracket notation is allowed; safety checks fail when structure is undefined."
+      },
+      {
+        "text": "Because generic `U` only works with primitive accumulator types.",
+        "isCorrect": false,
+        "feedback": "Generic accumulators can be objects; they just need a concrete declared shape."
+      },
+      {
+        "text": "Because `reduce` always narrows accumulator types to `never` during iteration.",
+        "isCorrect": false,
+        "feedback": "TypeScript does not force `never` here; constraints come from initial inference."
+      }
+    ]
+  }
+]

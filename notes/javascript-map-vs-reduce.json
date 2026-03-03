@@ -1,0 +1,52 @@
+[
+  {
+    "id": "q1",
+    "question": "Which statement best captures the difference between `map()` and `reduce()`?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "`map` returns a same-length array, while `reduce` can return any accumulated type.",
+        "isCorrect": true,
+        "feedback": "Correct: map transforms each item, but reduce folds into a chosen result."
+      },
+      {
+        "text": "`map` always mutates the original array, while `reduce` never does.",
+        "isCorrect": false,
+        "feedback": "Map returns a new array; mutation behavior depends on callback side effects."
+      },
+      {
+        "text": "`reduce` must return an array of identical length to the input.",
+        "isCorrect": false,
+        "feedback": "Reduce may return objects, numbers, strings, or arrays of different sizes."
+      },
+      {
+        "text": "`map` is only for numbers, and `reduce` is only for objects.",
+        "isCorrect": false,
+        "feedback": "Both work on any element type; purpose differs by transformation strategy."
+      }
+    ],
+    "whyQuestion": "Why can `reduce` change the output data type while `map` usually does not?",
+    "whyOptions": [
+      {
+        "text": "Because `reduce` is driven by accumulator type and callback return contract.",
+        "isCorrect": true,
+        "feedback": "Exactly: accumulator initialization defines the destination shape of the fold."
+      },
+      {
+        "text": "Because `map` forbids callback returns and only reuses existing values.",
+        "isCorrect": false,
+        "feedback": "Map requires callback returns; they fill each slot in a new array."
+      },
+      {
+        "text": "Because `reduce` skips callback execution for non-primitive array entries.",
+        "isCorrect": false,
+        "feedback": "Reduce processes elements normally; entry primitiveness is irrelevant here."
+      },
+      {
+        "text": "Because `map` automatically infers object keys from array indexes.",
+        "isCorrect": false,
+        "feedback": "Map does index-wise transformation, not key projection into arbitrary objects."
+      }
+    ]
+  }
+]

@@ -1,0 +1,52 @@
+[
+  {
+    "id": "q1",
+    "question": "In the CMS flow, where should a user with existing sites go right after login?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Directly to the manage websites dashboard showing created site snapshots.",
+        "isCorrect": true,
+        "feedback": "Correct: returning users should resume management from their existing sites dashboard."
+      },
+      {
+        "text": "Back to the marketing home page to read product presentation again.",
+        "isCorrect": false,
+        "feedback": "Post-login flow should prioritize task continuation, not repeated landing content."
+      },
+      {
+        "text": "Immediately into a forced new-site wizard for every login session.",
+        "isCorrect": false,
+        "feedback": "Forcing creation ignores existing assets and adds unnecessary workflow friction."
+      },
+      {
+        "text": "A generic account settings page with no website context.",
+        "isCorrect": false,
+        "feedback": "Settings-first navigation delays core objective of managing current websites."
+      }
+    ],
+    "whyQuestion": "Why is direct dashboard routing better for users with existing websites?",
+    "whyOptions": [
+      {
+        "text": "It reduces friction and moves users immediately to relevant management actions.",
+        "isCorrect": true,
+        "feedback": "Exactly: contextual routing shortens time-to-task and improves product usability."
+      },
+      {
+        "text": "It prevents users from creating any additional sites after first login.",
+        "isCorrect": false,
+        "feedback": "The goal is efficient access, not restricting future site creation."
+      },
+      {
+        "text": "It is required because CMS products cannot render public landing pages.",
+        "isCorrect": false,
+        "feedback": "Landing pages remain useful; routing choice depends on authenticated context."
+      },
+      {
+        "text": "It removes the need for per-site dashboards and blog management screens.",
+        "isCorrect": false,
+        "feedback": "Per-site dashboards remain essential after selecting a specific website."
+      }
+    ]
+  }
+]

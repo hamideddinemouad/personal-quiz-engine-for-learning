@@ -9,8 +9,8 @@ Task:
 - Convert the notes into one JSON array of quiz questions.
 
 Hard output rules (must follow):
-- Return one markdown code fence with language tag `json`.
-- Inside that fence, include JSON only (no extra text before or after).
+- all in a directory called allnotes
+- each note its own  JSON file.
 - Do not include comments or explanations.
 - Use double quotes for all keys and string values.
 - Ensure the result can be parsed with JSON.parse (no trailing commas).

@@ -1,0 +1,52 @@
+[
+  {
+    "id": "q1",
+    "question": "What is a database migration in backend development practice?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "A versioned script that applies and can roll back schema changes.",
+        "isCorrect": true,
+        "feedback": "Correct: migrations track schema evolution and support controlled rollback history."
+      },
+      {
+        "text": "A runtime query optimizer that rewrites SQL during every request.",
+        "isCorrect": false,
+        "feedback": "Query optimization is database engine behavior, not migration tooling purpose."
+      },
+      {
+        "text": "A backup snapshot used only when production crashes irrecoverably.",
+        "isCorrect": false,
+        "feedback": "Backups store data states; migrations define schema transition steps."
+      },
+      {
+        "text": "A script that resets all tables before each deployment automatically.",
+        "isCorrect": false,
+        "feedback": "Migrations evolve schema safely, not destructive reset-by-default deployment behavior."
+      }
+    ],
+    "whyQuestion": "Why are migrations preferred over manual schema edits?",
+    "whyOptions": [
+      {
+        "text": "Because they provide reproducible, auditable, and reversible schema evolution.",
+        "isCorrect": true,
+        "feedback": "Exactly: teams can synchronize environments and undo problematic changes safely."
+      },
+      {
+        "text": "Because manual edits cannot create foreign keys in SQL databases.",
+        "isCorrect": false,
+        "feedback": "Manual SQL can create constraints; migrations improve process reliability."
+      },
+      {
+        "text": "Because migrations eliminate the need for transactions in all data operations.",
+        "isCorrect": false,
+        "feedback": "Transactions remain essential for atomic data changes regardless of migrations."
+      },
+      {
+        "text": "Because migrations automatically optimize every query execution plan permanently.",
+        "isCorrect": false,
+        "feedback": "Execution plans are runtime concerns and not guaranteed by migrations."
+      }
+    ]
+  }
+]

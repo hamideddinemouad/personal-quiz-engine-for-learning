@@ -1,0 +1,53 @@
+[
+  {
+    "id": "q1",
+    "question": "In JavaScript, what does `array.push(item)` return?",
+    "hint": "It is not the modified array object.",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "The new length of the array after insertion.",
+        "isCorrect": true,
+        "feedback": "Correct: push mutates the array and returns the updated element count."
+      },
+      {
+        "text": "A new array containing only the pushed item.",
+        "isCorrect": false,
+        "feedback": "Push mutates in place; creating a separate array is not its behavior."
+      },
+      {
+        "text": "The array itself, so methods can always be chained.",
+        "isCorrect": false,
+        "feedback": "This confuses push with fluent APIs; push returns a number, not array."
+      },
+      {
+        "text": "The element that was previously at the last index.",
+        "isCorrect": false,
+        "feedback": "Push does not expose prior tail values; it reports resulting array length."
+      }
+    ],
+    "whyQuestion": "Why does `push` return length instead of the array value?",
+    "whyOptions": [
+      {
+        "text": "Because the operation's primary immediate result is the updated array size.",
+        "isCorrect": true,
+        "feedback": "Exactly: the method signals post-mutation size, which callers often need immediately."
+      },
+      {
+        "text": "Because JavaScript forbids returning reference types from mutating methods.",
+        "isCorrect": false,
+        "feedback": "JavaScript allows returning references; this is a specific API design choice."
+      },
+      {
+        "text": "Because `push` internally clones arrays and hides the original reference.",
+        "isCorrect": false,
+        "feedback": "Push does not clone by default; it mutates the same array instance."
+      },
+      {
+        "text": "Because returning arrays would break garbage collection in V8.",
+        "isCorrect": false,
+        "feedback": "Garbage collection is unrelated to this return contract and method semantics."
+      }
+    ]
+  }
+]

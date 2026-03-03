@@ -25,6 +25,19 @@ interface HistoryByDateApiResponse {
   error?: string;
 }
 
+interface ImportNotesApiResponse {
+  created?: Array<{
+    slug: string;
+    subject: string;
+    date: string;
+  }>;
+  skippedSubjects?: string[];
+  createdCount?: number;
+  skippedCount?: number;
+  total?: number;
+  error?: string;
+}
+
 interface HistorySummaryRow {
   date: string;
   subject: string | null;
@@ -53,6 +66,7 @@ export default function HistoryCrudModal({ isOpen, onClose }: HistoryCrudModalPr
   const [rows, setRows] = useState<HistorySummaryRow[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
+  const [isImportingNotes, setIsImportingNotes] = useState(false);
   const [activeRowAction, setActiveRowAction] = useState<string | null>(null);
   const [readingDate, setReadingDate] = useState<string | null>(null);
   const [selectedEntry, setSelectedEntry] = useState<DailyQuizHistoryEntry | null>(null);
@@ -153,7 +167,8 @@ export default function HistoryCrudModal({ isOpen, onClose }: HistoryCrudModalPr
     return null;
   }
 
-  const isBusy = isLoading || isCreating || Boolean(activeRowAction) || Boolean(readingDate);
+  const isBusy =
+    isLoading || isCreating || isImportingNotes || Boolean(activeRowAction) || Boolean(readingDate);
 
   const handleCreate = async (): Promise<void> => {
     setModalFeedback(null);
@@ -242,6 +257,48 @@ export default function HistoryCrudModal({ isOpen, onClose }: HistoryCrudModalPr
       });
     } finally {
       setIsCreating(false);
+    }
+  };
+
+  const handleImportNotes = async (): Promise<void> => {
+    setModalFeedback(null);
+
+    if (!window.confirm('Import all quiz JSON files from notes/ into history now?')) {
+      return;
+    }
+
+    setIsImportingNotes(true);
+
+    try {
+      const response = await fetch('/api/quiz/history/import-notes', {
+        method: 'POST'
+      });
+      const payload = (await response.json()) as ImportNotesApiResponse;
+
+      if (!response.ok) {
+        setModalFeedback({
+          tone: 'error',
+          text: payload.error || 'Unable to import note quiz files.'
+        });
+        return;
+      }
+
+      await refreshHistory();
+
+      const createdCount = payload.createdCount ?? 0;
+      const skippedCount = payload.skippedCount ?? 0;
+
+      setModalFeedback({
+        tone: 'success',
+        text: `Imported notes: ${createdCount} created, ${skippedCount} skipped.`
+      });
+    } catch {
+      setModalFeedback({
+        tone: 'error',
+        text: 'Network error while importing note quizzes.'
+      });
+    } finally {
+      setIsImportingNotes(false);
     }
   };
 
@@ -522,18 +579,31 @@ export default function HistoryCrudModal({ isOpen, onClose }: HistoryCrudModalPr
             If Questions JSON is filled, create will use that JSON and ignore source date copy.
           </p>
 
-          <button
-            className="button button--primary"
-            disabled={isBusy || (!sourceDate && !createQuestionsInput.trim())}
-            onClick={handleCreate}
-            type="button"
-          >
-            {isCreating
-              ? 'Creating...'
-              : createQuestionsInput.trim()
-                ? 'Create Row From JSON'
-                : 'Create Row'}
-          </button>
+          <div className="history-json__actions">
+            <button
+              className="button button--primary"
+              disabled={isBusy || (!sourceDate && !createQuestionsInput.trim())}
+              onClick={handleCreate}
+              type="button"
+            >
+              {isCreating
+                ? 'Creating...'
+                : createQuestionsInput.trim()
+                  ? 'Create Row From JSON'
+                  : 'Create Row'}
+            </button>
+            <button
+              className="button button--ghost"
+              disabled={isBusy}
+              onClick={() => void handleImportNotes()}
+              type="button"
+            >
+              {isImportingNotes ? 'Importing Notes...' : 'Import Notes JSON Files'}
+            </button>
+          </div>
+          <p className="muted-text">
+            Import creates one history row per notes file and skips subjects already present.
+          </p>
         </section>
 
         <section className="history-modal__section">

@@ -1,0 +1,52 @@
+[
+  {
+    "id": "q1",
+    "question": "In the notes, what is a predicate?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "An expression that evaluates to either true or false.",
+        "isCorrect": true,
+        "feedback": "Correct: predicates produce boolean outcomes used by conditional logic."
+      },
+      {
+        "text": "A function signature listing parameter and return data types.",
+        "isCorrect": false,
+        "feedback": "Signatures describe contracts; they do not themselves evaluate boolean outcomes."
+      },
+      {
+        "text": "A global constant written in uppercase to avoid mutation.",
+        "isCorrect": false,
+        "feedback": "Uppercase naming is convention, but predicate definition concerns evaluation result."
+      },
+      {
+        "text": "An operator like `+` or `&&` used inside expressions.",
+        "isCorrect": false,
+        "feedback": "Operators are symbols; predicates are full expressions yielding boolean values."
+      }
+    ],
+    "whyQuestion": "Why are predicates central when designing function logic?",
+    "whyOptions": [
+      {
+        "text": "Because they drive branching decisions and filtering based on explicit conditions.",
+        "isCorrect": true,
+        "feedback": "Exactly: reliable condition checks control execution paths and expected outcomes."
+      },
+      {
+        "text": "Because predicates automatically convert all function outputs to constants.",
+        "isCorrect": false,
+        "feedback": "Predicates evaluate conditions; they do not rewrite output mutability semantics."
+      },
+      {
+        "text": "Because predicates replace the need for tests in HTDF workflow.",
+        "isCorrect": false,
+        "feedback": "Tests remain required; predicates only define decision conditions within logic."
+      },
+      {
+        "text": "Because predicates eliminate boundary cases by ignoring edge inputs.",
+        "isCorrect": false,
+        "feedback": "Boundary cases still exist and must be tested explicitly in design."
+      }
+    ]
+  }
+]

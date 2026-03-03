@@ -1,0 +1,52 @@
+[
+  {
+    "id": "q1",
+    "question": "What does Retrieval-Augmented Generation (RAG) do according to the notes?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Retrieves external context at query time without retraining the base model.",
+        "isCorrect": true,
+        "feedback": "Correct: RAG injects retrieved knowledge dynamically during answer generation."
+      },
+      {
+        "text": "Retrains the language model on every user query for personalization.",
+        "isCorrect": false,
+        "feedback": "Per-query retraining is impractical; RAG uses retrieval, not model updates."
+      },
+      {
+        "text": "Disables retrieval and relies only on parametric model memory.",
+        "isCorrect": false,
+        "feedback": "That is the opposite of RAG, which explicitly depends on retrieval."
+      },
+      {
+        "text": "Compresses vector indexes into static prompts before deployment.",
+        "isCorrect": false,
+        "feedback": "RAG performs runtime retrieval rather than one-time prompt compression."
+      }
+    ],
+    "whyQuestion": "Why is RAG useful for personalized or current answers?",
+    "whyOptions": [
+      {
+        "text": "Because it can inject relevant private or recent data during inference.",
+        "isCorrect": true,
+        "feedback": "Exactly: retrieval supplies fresh context that base training may not include."
+      },
+      {
+        "text": "Because it guarantees factual accuracy without retrieval quality concerns.",
+        "isCorrect": false,
+        "feedback": "Accuracy still depends on retrieval relevance and source reliability."
+      },
+      {
+        "text": "Because it permanently writes fetched documents into model weights.",
+        "isCorrect": false,
+        "feedback": "RAG context is transient and does not alter core model parameters."
+      },
+      {
+        "text": "Because it removes token limits by bypassing context windows entirely.",
+        "isCorrect": false,
+        "feedback": "RAG helps relevance, but generated prompts still respect context limits."
+      }
+    ]
+  }
+]

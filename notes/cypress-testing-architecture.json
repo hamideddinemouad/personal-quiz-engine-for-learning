@@ -1,0 +1,52 @@
+[
+  {
+    "id": "q1",
+    "question": "What is the primary purpose of smoke tests in a Cypress suite?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "Quickly verify critical user journeys before running deeper test coverage.",
+        "isCorrect": true,
+        "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
+      },
+      {
+        "text": "Replace all regression tests so full suites become unnecessary.",
+        "isCorrect": false,
+        "feedback": "Smoke tests are minimal checks and cannot replace comprehensive behavior coverage."
+      },
+      {
+        "text": "Benchmark frontend performance metrics with statistically significant confidence.",
+        "isCorrect": false,
+        "feedback": "Performance benchmarking requires dedicated tooling, not basic smoke scenarios."
+      },
+      {
+        "text": "Validate only fixture file schemas and ignore UI interactions entirely.",
+        "isCorrect": false,
+        "feedback": "Smoke tests focus on user-critical flows, not schema-only fixture validation."
+      }
+    ],
+    "whyQuestion": "Why run smoke tests before full end-to-end suites?",
+    "whyOptions": [
+      {
+        "text": "They fail fast on major outages, saving time and debugging effort.",
+        "isCorrect": true,
+        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites."
+      },
+      {
+        "text": "They automatically fix flaky tests by rerunning failing commands silently.",
+        "isCorrect": false,
+        "feedback": "Smoke strategy improves sequencing, but does not auto-heal flaky test logic."
+      },
+      {
+        "text": "They guarantee every edge case is covered before release.",
+        "isCorrect": false,
+        "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage."
+      },
+      {
+        "text": "They remove the need for reusable commands and page objects.",
+        "isCorrect": false,
+        "feedback": "Abstractions still reduce duplication and improve maintainability across suites."
+      }
+    ]
+  }
+]

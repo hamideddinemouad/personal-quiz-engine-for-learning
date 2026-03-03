@@ -91,17 +91,20 @@ const JSON_QUIZ_TEMPLATE = `[
   }
 ]`;
 
-const AI_GENERATOR_PROMPT_TEMPLATE = `You are converting raw study notes into quiz JSON for a strict validator.
+const AI_GENERATOR_PROMPT_TEMPLATE = `You are converting raw study notes into quiz JSON files for a strict validator.
 
 Task:
-- Convert the notes into one JSON array of quiz questions.
+- Convert each note into its own standalone JSON file in the "notes" directory.
 
 Hard output rules (must follow):
-- Return one markdown code fence with language tag "json".
-- Inside the fence, include JSON only (no comments or extra text).
+- Create one file per note at "notes/<note-slug>.json".
+- Each file must contain JSON only (no comments or extra text).
+- Do not use markdown code fences.
 - Do not include comments or explanations.
 - Use double quotes for all keys and string values.
 - Ensure the result can be parsed with JSON.parse (no trailing commas).
+- In each file, the top-level value must be one non-empty JSON array of questions.
+- IDs restart per file and must be unique in order: q1, q2, q3, ...
 
 Question schema (exact field names):
 [
@@ -127,8 +130,8 @@ Question schema (exact field names):
 ]
 
 Non-negotiable validation constraints:
-- Top-level value must be a non-empty array.
-- Use unique IDs in order: q1, q2, q3, ...
+- Each file top-level value must be a non-empty array.
+- IDs in each file must be unique in order: q1, q2, q3, ...
 - Every question must have a non-empty "question" string.
 - Every question must set "requiresWhy": true.
 - Every question must include non-empty "whyQuestion".
@@ -158,7 +161,7 @@ Before finalizing, silently self-check:
 1. Every question has whyQuestion + 4 whyOptions.
 2. Every options/whyOptions array has exactly 4 items.
 3. Exactly one isCorrect=true in each options and each whyOptions array.
-4. JSON is valid and parseable.
+4. Every file JSON is valid and parseable.
 
 JSON structure example:
 ${JSON_QUIZ_TEMPLATE}

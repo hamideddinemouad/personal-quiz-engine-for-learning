@@ -1,0 +1,52 @@
+[
+  {
+    "id": "q1",
+    "question": "In the notes, what is described as a serialization error in Zod-based APIs?",
+    "requiresWhy": true,
+    "options": [
+      {
+        "text": "The server response shape does not match the defined response schema.",
+        "isCorrect": true,
+        "feedback": "Correct: serialization issues occur when outgoing data violates response contract shape."
+      },
+      {
+        "text": "The client sends extra request fields blocked by whitelist settings.",
+        "isCorrect": false,
+        "feedback": "That is request validation failure, not response serialization mismatch."
+      },
+      {
+        "text": "Docker rebuilds an unchanged image without modifying the Dockerfile.",
+        "isCorrect": false,
+        "feedback": "Compose build behavior is unrelated to API serialization or response schemas."
+      },
+      {
+        "text": "A user omits authentication headers on a protected endpoint.",
+        "isCorrect": false,
+        "feedback": "Missing auth is authorization or authentication failure, not serialization."
+      }
+    ],
+    "whyQuestion": "Why is a validation exception treated as user error in this note context?",
+    "whyOptions": [
+      {
+        "text": "Because the incoming payload violated the input schema expected by the API.",
+        "isCorrect": true,
+        "feedback": "Exactly: client-supplied data failed agreed constraints, so request is invalid."
+      },
+      {
+        "text": "Because the server cannot validate schemas unless Docker image is rebuilt.",
+        "isCorrect": false,
+        "feedback": "Schema validation is runtime logic and does not require image rebuilds."
+      },
+      {
+        "text": "Because response serialization always runs before request parsing in Nest.",
+        "isCorrect": false,
+        "feedback": "Request parsing precedes response serialization; lifecycle order is opposite here."
+      },
+      {
+        "text": "Because Zod only validates string fields and ignores other types.",
+        "isCorrect": false,
+        "feedback": "Zod validates many types, including objects, numbers, unions, and arrays."
+      }
+    ]
+  }
+]
