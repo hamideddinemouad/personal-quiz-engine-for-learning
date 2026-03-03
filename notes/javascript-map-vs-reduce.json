@@ -5,32 +5,32 @@
     "requiresWhy": true,
     "options": [
       {
-        "text": "`map` returns a same-length array, while `reduce` can return any accumulated type.",
-        "isCorrect": true,
-        "feedback": "Correct: map transforms each item, but reduce folds into a chosen result."
-      },
-      {
         "text": "`map` always mutates the original array, while `reduce` never does.",
         "isCorrect": false,
         "feedback": "Map returns a new array; mutation behavior depends on callback side effects."
       },
       {
-        "text": "`reduce` must return an array of identical length to the input.",
-        "isCorrect": false,
-        "feedback": "Reduce may return objects, numbers, strings, or arrays of different sizes."
+        "text": "`map` returns a same-length array, while `reduce` can return any accumulated type.",
+        "isCorrect": true,
+        "feedback": "Correct: map transforms each item, but reduce folds into a chosen result."
       },
       {
         "text": "`map` is only for numbers, and `reduce` is only for objects.",
         "isCorrect": false,
         "feedback": "Both work on any element type; purpose differs by transformation strategy."
+      },
+      {
+        "text": "`reduce` must return an array of identical length to the input.",
+        "isCorrect": false,
+        "feedback": "Reduce may return objects, numbers, strings, or arrays of different sizes."
       }
     ],
     "whyQuestion": "Why can `reduce` change the output data type while `map` usually does not?",
     "whyOptions": [
       {
-        "text": "Because `reduce` is driven by accumulator type and callback return contract.",
-        "isCorrect": true,
-        "feedback": "Exactly: accumulator initialization defines the destination shape of the fold."
+        "text": "Because `reduce` skips callback execution for non-primitive array entries.",
+        "isCorrect": false,
+        "feedback": "Reduce processes elements normally; entry primitiveness is irrelevant here."
       },
       {
         "text": "Because `map` forbids callback returns and only reuses existing values.",
@@ -38,9 +38,9 @@
         "feedback": "Map requires callback returns; they fill each slot in a new array."
       },
       {
-        "text": "Because `reduce` skips callback execution for non-primitive array entries.",
-        "isCorrect": false,
-        "feedback": "Reduce processes elements normally; entry primitiveness is irrelevant here."
+        "text": "Because `reduce` is driven by accumulator type and callback return contract.",
+        "isCorrect": true,
+        "feedback": "Exactly: accumulator initialization defines the destination shape of the fold."
       },
       {
         "text": "Because `map` automatically infers object keys from array indexes.",
@@ -55,9 +55,9 @@
     "requiresWhy": true,
     "options": [
       {
-        "text": "`map` returns a same-length array, while `reduce` can return any accumulated type.",
-        "isCorrect": true,
-        "feedback": "Correct: map transforms each item, but reduce folds into a chosen result."
+        "text": "`map` is only for numbers, and `reduce` is only for objects.",
+        "isCorrect": false,
+        "feedback": "Both work on any element type; purpose differs by transformation strategy."
       },
       {
         "text": "`map` always mutates the original array, while `reduce` never does.",
@@ -70,32 +70,32 @@
         "feedback": "Reduce may return objects, numbers, strings, or arrays of different sizes."
       },
       {
-        "text": "`map` is only for numbers, and `reduce` is only for objects.",
-        "isCorrect": false,
-        "feedback": "Both work on any element type; purpose differs by transformation strategy."
+        "text": "`map` returns a same-length array, while `reduce` can return any accumulated type.",
+        "isCorrect": true,
+        "feedback": "Correct: map transforms each item, but reduce folds into a chosen result."
       }
     ],
     "whyQuestion": "Why is that answer the strongest technically? Why can `reduce` change the output data type while `map` usually does not?",
     "whyOptions": [
-      {
-        "text": "Because `reduce` is driven by accumulator type and callback return contract.",
-        "isCorrect": true,
-        "feedback": "Exactly: accumulator initialization defines the destination shape of the fold."
-      },
-      {
-        "text": "Because `map` forbids callback returns and only reuses existing values.",
-        "isCorrect": false,
-        "feedback": "Map requires callback returns; they fill each slot in a new array."
-      },
       {
         "text": "Because `reduce` skips callback execution for non-primitive array entries.",
         "isCorrect": false,
         "feedback": "Reduce processes elements normally; entry primitiveness is irrelevant here."
       },
       {
+        "text": "Because `reduce` is driven by accumulator type and callback return contract.",
+        "isCorrect": true,
+        "feedback": "Exactly: accumulator initialization defines the destination shape of the fold."
+      },
+      {
         "text": "Because `map` automatically infers object keys from array indexes.",
         "isCorrect": false,
         "feedback": "Map does index-wise transformation, not key projection into arbitrary objects."
+      },
+      {
+        "text": "Because `map` forbids callback returns and only reuses existing values.",
+        "isCorrect": false,
+        "feedback": "Map requires callback returns; they fill each slot in a new array."
       }
     ]
   },
@@ -105,14 +105,14 @@
     "requiresWhy": true,
     "options": [
       {
-        "text": "`map` returns a same-length array, while `reduce` can return any accumulated type.",
-        "isCorrect": true,
-        "feedback": "Correct: map transforms each item, but reduce folds into a chosen result."
-      },
-      {
         "text": "`map` always mutates the original array, while `reduce` never does.",
         "isCorrect": false,
         "feedback": "Map returns a new array; mutation behavior depends on callback side effects."
+      },
+      {
+        "text": "`map` is only for numbers, and `reduce` is only for objects.",
+        "isCorrect": false,
+        "feedback": "Both work on any element type; purpose differs by transformation strategy."
       },
       {
         "text": "`reduce` must return an array of identical length to the input.",
@@ -120,17 +120,17 @@
         "feedback": "Reduce may return objects, numbers, strings, or arrays of different sizes."
       },
       {
-        "text": "`map` is only for numbers, and `reduce` is only for objects.",
-        "isCorrect": false,
-        "feedback": "Both work on any element type; purpose differs by transformation strategy."
+        "text": "`map` returns a same-length array, while `reduce` can return any accumulated type.",
+        "isCorrect": true,
+        "feedback": "Correct: map transforms each item, but reduce folds into a chosen result."
       }
     ],
     "whyQuestion": "Why does this option hold in real usage? Why can `reduce` change the output data type while `map` usually does not?",
     "whyOptions": [
       {
-        "text": "Because `reduce` is driven by accumulator type and callback return contract.",
-        "isCorrect": true,
-        "feedback": "Exactly: accumulator initialization defines the destination shape of the fold."
+        "text": "Because `reduce` skips callback execution for non-primitive array entries.",
+        "isCorrect": false,
+        "feedback": "Reduce processes elements normally; entry primitiveness is irrelevant here."
       },
       {
         "text": "Because `map` forbids callback returns and only reuses existing values.",
@@ -138,14 +138,14 @@
         "feedback": "Map requires callback returns; they fill each slot in a new array."
       },
       {
-        "text": "Because `reduce` skips callback execution for non-primitive array entries.",
-        "isCorrect": false,
-        "feedback": "Reduce processes elements normally; entry primitiveness is irrelevant here."
-      },
-      {
         "text": "Because `map` automatically infers object keys from array indexes.",
         "isCorrect": false,
         "feedback": "Map does index-wise transformation, not key projection into arbitrary objects."
+      },
+      {
+        "text": "Because `reduce` is driven by accumulator type and callback return contract.",
+        "isCorrect": true,
+        "feedback": "Exactly: accumulator initialization defines the destination shape of the fold."
       }
     ]
   },
@@ -155,9 +155,9 @@
     "requiresWhy": true,
     "options": [
       {
-        "text": "`map` returns a same-length array, while `reduce` can return any accumulated type.",
-        "isCorrect": true,
-        "feedback": "Correct: map transforms each item, but reduce folds into a chosen result."
+        "text": "`map` is only for numbers, and `reduce` is only for objects.",
+        "isCorrect": false,
+        "feedback": "Both work on any element type; purpose differs by transformation strategy."
       },
       {
         "text": "`map` always mutates the original array, while `reduce` never does.",
@@ -165,27 +165,27 @@
         "feedback": "Map returns a new array; mutation behavior depends on callback side effects."
       },
       {
+        "text": "`map` returns a same-length array, while `reduce` can return any accumulated type.",
+        "isCorrect": true,
+        "feedback": "Correct: map transforms each item, but reduce folds into a chosen result."
+      },
+      {
         "text": "`reduce` must return an array of identical length to the input.",
         "isCorrect": false,
         "feedback": "Reduce may return objects, numbers, strings, or arrays of different sizes."
-      },
-      {
-        "text": "`map` is only for numbers, and `reduce` is only for objects.",
-        "isCorrect": false,
-        "feedback": "Both work on any element type; purpose differs by transformation strategy."
       }
     ],
     "whyQuestion": "Why is this interpretation more reliable? Why can `reduce` change the output data type while `map` usually does not?",
     "whyOptions": [
       {
-        "text": "Because `reduce` is driven by accumulator type and callback return contract.",
-        "isCorrect": true,
-        "feedback": "Exactly: accumulator initialization defines the destination shape of the fold."
-      },
-      {
         "text": "Because `map` forbids callback returns and only reuses existing values.",
         "isCorrect": false,
         "feedback": "Map requires callback returns; they fill each slot in a new array."
+      },
+      {
+        "text": "Because `reduce` is driven by accumulator type and callback return contract.",
+        "isCorrect": true,
+        "feedback": "Exactly: accumulator initialization defines the destination shape of the fold."
       },
       {
         "text": "Because `reduce` skips callback execution for non-primitive array entries.",
@@ -205,16 +205,6 @@
     "requiresWhy": true,
     "options": [
       {
-        "text": "`map` returns a same-length array, while `reduce` can return any accumulated type.",
-        "isCorrect": true,
-        "feedback": "Correct: map transforms each item, but reduce folds into a chosen result."
-      },
-      {
-        "text": "`map` always mutates the original array, while `reduce` never does.",
-        "isCorrect": false,
-        "feedback": "Map returns a new array; mutation behavior depends on callback side effects."
-      },
-      {
         "text": "`reduce` must return an array of identical length to the input.",
         "isCorrect": false,
         "feedback": "Reduce may return objects, numbers, strings, or arrays of different sizes."
@@ -223,19 +213,29 @@
         "text": "`map` is only for numbers, and `reduce` is only for objects.",
         "isCorrect": false,
         "feedback": "Both work on any element type; purpose differs by transformation strategy."
+      },
+      {
+        "text": "`map` returns a same-length array, while `reduce` can return any accumulated type.",
+        "isCorrect": true,
+        "feedback": "Correct: map transforms each item, but reduce folds into a chosen result."
+      },
+      {
+        "text": "`map` always mutates the original array, while `reduce` never does.",
+        "isCorrect": false,
+        "feedback": "Map returns a new array; mutation behavior depends on callback side effects."
       }
     ],
     "whyQuestion": "Why is this rule preferred in practice? Why can `reduce` change the output data type while `map` usually does not?",
     "whyOptions": [
       {
-        "text": "Because `reduce` is driven by accumulator type and callback return contract.",
-        "isCorrect": true,
-        "feedback": "Exactly: accumulator initialization defines the destination shape of the fold."
-      },
-      {
         "text": "Because `map` forbids callback returns and only reuses existing values.",
         "isCorrect": false,
         "feedback": "Map requires callback returns; they fill each slot in a new array."
+      },
+      {
+        "text": "Because `map` automatically infers object keys from array indexes.",
+        "isCorrect": false,
+        "feedback": "Map does index-wise transformation, not key projection into arbitrary objects."
       },
       {
         "text": "Because `reduce` skips callback execution for non-primitive array entries.",
@@ -243,9 +243,9 @@
         "feedback": "Reduce processes elements normally; entry primitiveness is irrelevant here."
       },
       {
-        "text": "Because `map` automatically infers object keys from array indexes.",
-        "isCorrect": false,
-        "feedback": "Map does index-wise transformation, not key projection into arbitrary objects."
+        "text": "Because `reduce` is driven by accumulator type and callback return contract.",
+        "isCorrect": true,
+        "feedback": "Exactly: accumulator initialization defines the destination shape of the fold."
       }
     ]
   },
@@ -255,14 +255,14 @@
     "requiresWhy": true,
     "options": [
       {
-        "text": "`map` returns a same-length array, while `reduce` can return any accumulated type.",
-        "isCorrect": true,
-        "feedback": "Correct: map transforms each item, but reduce folds into a chosen result."
-      },
-      {
         "text": "`map` always mutates the original array, while `reduce` never does.",
         "isCorrect": false,
         "feedback": "Map returns a new array; mutation behavior depends on callback side effects."
+      },
+      {
+        "text": "`map` is only for numbers, and `reduce` is only for objects.",
+        "isCorrect": false,
+        "feedback": "Both work on any element type; purpose differs by transformation strategy."
       },
       {
         "text": "`reduce` must return an array of identical length to the input.",
@@ -270,9 +270,9 @@
         "feedback": "Reduce may return objects, numbers, strings, or arrays of different sizes."
       },
       {
-        "text": "`map` is only for numbers, and `reduce` is only for objects.",
-        "isCorrect": false,
-        "feedback": "Both work on any element type; purpose differs by transformation strategy."
+        "text": "`map` returns a same-length array, while `reduce` can return any accumulated type.",
+        "isCorrect": true,
+        "feedback": "Correct: map transforms each item, but reduce folds into a chosen result."
       }
     ],
     "whyQuestion": "Why does this avoid the common misconception? Why can `reduce` change the output data type while `map` usually does not?",
@@ -283,6 +283,11 @@
         "feedback": "Exactly: accumulator initialization defines the destination shape of the fold."
       },
       {
+        "text": "Because `map` automatically infers object keys from array indexes.",
+        "isCorrect": false,
+        "feedback": "Map does index-wise transformation, not key projection into arbitrary objects."
+      },
+      {
         "text": "Because `map` forbids callback returns and only reuses existing values.",
         "isCorrect": false,
         "feedback": "Map requires callback returns; they fill each slot in a new array."
@@ -291,11 +296,6 @@
         "text": "Because `reduce` skips callback execution for non-primitive array entries.",
         "isCorrect": false,
         "feedback": "Reduce processes elements normally; entry primitiveness is irrelevant here."
-      },
-      {
-        "text": "Because `map` automatically infers object keys from array indexes.",
-        "isCorrect": false,
-        "feedback": "Map does index-wise transformation, not key projection into arbitrary objects."
       }
     ]
   },
@@ -304,6 +304,11 @@
     "question": "Which choice avoids the common misunderstanding: Which statement best captures the difference between `map()` and `reduce()`?",
     "requiresWhy": true,
     "options": [
+      {
+        "text": "`reduce` must return an array of identical length to the input.",
+        "isCorrect": false,
+        "feedback": "Reduce may return objects, numbers, strings, or arrays of different sizes."
+      },
       {
         "text": "`map` returns a same-length array, while `reduce` can return any accumulated type.",
         "isCorrect": true,
@@ -315,11 +320,6 @@
         "feedback": "Map returns a new array; mutation behavior depends on callback side effects."
       },
       {
-        "text": "`reduce` must return an array of identical length to the input.",
-        "isCorrect": false,
-        "feedback": "Reduce may return objects, numbers, strings, or arrays of different sizes."
-      },
-      {
         "text": "`map` is only for numbers, and `reduce` is only for objects.",
         "isCorrect": false,
         "feedback": "Both work on any element type; purpose differs by transformation strategy."
@@ -327,11 +327,6 @@
     ],
     "whyQuestion": "Why is this the most defensible reasoning? Why can `reduce` change the output data type while `map` usually does not?",
     "whyOptions": [
-      {
-        "text": "Because `reduce` is driven by accumulator type and callback return contract.",
-        "isCorrect": true,
-        "feedback": "Exactly: accumulator initialization defines the destination shape of the fold."
-      },
       {
         "text": "Because `map` forbids callback returns and only reuses existing values.",
         "isCorrect": false,
@@ -341,6 +336,11 @@
         "text": "Because `reduce` skips callback execution for non-primitive array entries.",
         "isCorrect": false,
         "feedback": "Reduce processes elements normally; entry primitiveness is irrelevant here."
+      },
+      {
+        "text": "Because `reduce` is driven by accumulator type and callback return contract.",
+        "isCorrect": true,
+        "feedback": "Exactly: accumulator initialization defines the destination shape of the fold."
       },
       {
         "text": "Because `map` automatically infers object keys from array indexes.",
@@ -360,11 +360,6 @@
         "feedback": "Correct: map transforms each item, but reduce folds into a chosen result."
       },
       {
-        "text": "`map` always mutates the original array, while `reduce` never does.",
-        "isCorrect": false,
-        "feedback": "Map returns a new array; mutation behavior depends on callback side effects."
-      },
-      {
         "text": "`reduce` must return an array of identical length to the input.",
         "isCorrect": false,
         "feedback": "Reduce may return objects, numbers, strings, or arrays of different sizes."
@@ -373,10 +368,20 @@
         "text": "`map` is only for numbers, and `reduce` is only for objects.",
         "isCorrect": false,
         "feedback": "Both work on any element type; purpose differs by transformation strategy."
+      },
+      {
+        "text": "`map` always mutates the original array, while `reduce` never does.",
+        "isCorrect": false,
+        "feedback": "Map returns a new array; mutation behavior depends on callback side effects."
       }
     ],
     "whyQuestion": "Why does this align with the note intent? Why can `reduce` change the output data type while `map` usually does not?",
     "whyOptions": [
+      {
+        "text": "Because `reduce` skips callback execution for non-primitive array entries.",
+        "isCorrect": false,
+        "feedback": "Reduce processes elements normally; entry primitiveness is irrelevant here."
+      },
       {
         "text": "Because `reduce` is driven by accumulator type and callback return contract.",
         "isCorrect": true,
@@ -386,11 +391,6 @@
         "text": "Because `map` forbids callback returns and only reuses existing values.",
         "isCorrect": false,
         "feedback": "Map requires callback returns; they fill each slot in a new array."
-      },
-      {
-        "text": "Because `reduce` skips callback execution for non-primitive array entries.",
-        "isCorrect": false,
-        "feedback": "Reduce processes elements normally; entry primitiveness is irrelevant here."
       },
       {
         "text": "Because `map` automatically infers object keys from array indexes.",
@@ -405,14 +405,9 @@
     "requiresWhy": true,
     "options": [
       {
-        "text": "`map` returns a same-length array, while `reduce` can return any accumulated type.",
-        "isCorrect": true,
-        "feedback": "Correct: map transforms each item, but reduce folds into a chosen result."
-      },
-      {
-        "text": "`map` always mutates the original array, while `reduce` never does.",
+        "text": "`map` is only for numbers, and `reduce` is only for objects.",
         "isCorrect": false,
-        "feedback": "Map returns a new array; mutation behavior depends on callback side effects."
+        "feedback": "Both work on any element type; purpose differs by transformation strategy."
       },
       {
         "text": "`reduce` must return an array of identical length to the input.",
@@ -420,23 +415,18 @@
         "feedback": "Reduce may return objects, numbers, strings, or arrays of different sizes."
       },
       {
-        "text": "`map` is only for numbers, and `reduce` is only for objects.",
+        "text": "`map` always mutates the original array, while `reduce` never does.",
         "isCorrect": false,
-        "feedback": "Both work on any element type; purpose differs by transformation strategy."
+        "feedback": "Map returns a new array; mutation behavior depends on callback side effects."
+      },
+      {
+        "text": "`map` returns a same-length array, while `reduce` can return any accumulated type.",
+        "isCorrect": true,
+        "feedback": "Correct: map transforms each item, but reduce folds into a chosen result."
       }
     ],
     "whyQuestion": "Why should engineers trust this explanation? Why can `reduce` change the output data type while `map` usually does not?",
     "whyOptions": [
-      {
-        "text": "Because `reduce` is driven by accumulator type and callback return contract.",
-        "isCorrect": true,
-        "feedback": "Exactly: accumulator initialization defines the destination shape of the fold."
-      },
-      {
-        "text": "Because `map` forbids callback returns and only reuses existing values.",
-        "isCorrect": false,
-        "feedback": "Map requires callback returns; they fill each slot in a new array."
-      },
       {
         "text": "Because `reduce` skips callback execution for non-primitive array entries.",
         "isCorrect": false,
@@ -446,6 +436,16 @@
         "text": "Because `map` automatically infers object keys from array indexes.",
         "isCorrect": false,
         "feedback": "Map does index-wise transformation, not key projection into arbitrary objects."
+      },
+      {
+        "text": "Because `reduce` is driven by accumulator type and callback return contract.",
+        "isCorrect": true,
+        "feedback": "Exactly: accumulator initialization defines the destination shape of the fold."
+      },
+      {
+        "text": "Because `map` forbids callback returns and only reuses existing values.",
+        "isCorrect": false,
+        "feedback": "Map requires callback returns; they fill each slot in a new array."
       }
     ]
   },
@@ -455,6 +455,11 @@
     "requiresWhy": true,
     "options": [
       {
+        "text": "`reduce` must return an array of identical length to the input.",
+        "isCorrect": false,
+        "feedback": "Reduce may return objects, numbers, strings, or arrays of different sizes."
+      },
+      {
         "text": "`map` returns a same-length array, while `reduce` can return any accumulated type.",
         "isCorrect": true,
         "feedback": "Correct: map transforms each item, but reduce folds into a chosen result."
@@ -463,11 +468,6 @@
         "text": "`map` always mutates the original array, while `reduce` never does.",
         "isCorrect": false,
         "feedback": "Map returns a new array; mutation behavior depends on callback side effects."
-      },
-      {
-        "text": "`reduce` must return an array of identical length to the input.",
-        "isCorrect": false,
-        "feedback": "Reduce may return objects, numbers, strings, or arrays of different sizes."
       },
       {
         "text": "`map` is only for numbers, and `reduce` is only for objects.",
@@ -478,9 +478,9 @@
     "whyQuestion": "Why is this the correct conceptual takeaway? Why can `reduce` change the output data type while `map` usually does not?",
     "whyOptions": [
       {
-        "text": "Because `reduce` is driven by accumulator type and callback return contract.",
-        "isCorrect": true,
-        "feedback": "Exactly: accumulator initialization defines the destination shape of the fold."
+        "text": "Because `map` automatically infers object keys from array indexes.",
+        "isCorrect": false,
+        "feedback": "Map does index-wise transformation, not key projection into arbitrary objects."
       },
       {
         "text": "Because `map` forbids callback returns and only reuses existing values.",
@@ -493,9 +493,9 @@
         "feedback": "Reduce processes elements normally; entry primitiveness is irrelevant here."
       },
       {
-        "text": "Because `map` automatically infers object keys from array indexes.",
-        "isCorrect": false,
-        "feedback": "Map does index-wise transformation, not key projection into arbitrary objects."
+        "text": "Because `reduce` is driven by accumulator type and callback return contract.",
+        "isCorrect": true,
+        "feedback": "Exactly: accumulator initialization defines the destination shape of the fold."
       }
     ]
   }

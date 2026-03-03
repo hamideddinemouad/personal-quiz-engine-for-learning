@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Personal Quiz Engine icon">
+  <defs>
+    <linearGradient id="bg" x1="24" y1="24" x2="232" y2="232" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0EA5E9" />
+      <stop offset="1" stop-color="#10B981" />
+    </linearGradient>
+    <linearGradient id="ring" x1="48" y1="48" x2="208" y2="208" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#BAE6FD" />
+      <stop offset="1" stop-color="#A7F3D0" />
+    </linearGradient>
+  </defs>
+
+  <rect x="12" y="12" width="232" height="232" rx="56" fill="url(#bg)" />
+  <rect x="20" y="20" width="216" height="216" rx="48" fill="none" stroke="url(#ring)" stroke-width="6" opacity="0.9" />
+
+  <path
+    d="M92 104C92 84 108 70 129 70C150 70 164 83 164 101C164 116 156 125 144 133C136 138 133 143 133 153V158"
+    fill="none"
+    stroke="#ECFEFF"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="18"
+  />
+  <circle cx="132" cy="185" r="11" fill="#ECFEFF" />
+
+  <path
+    d="M66 146L92 172L118 146"
+    fill="none"
+    stroke="#052E2B"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="13"
+    opacity="0.95"
+  />
+</svg>

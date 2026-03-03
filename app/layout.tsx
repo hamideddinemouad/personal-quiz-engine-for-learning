@@ -6,7 +6,11 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'Personal Quiz Engine (Next.js)',
   description:
-    'Two-phase quiz engine in Next.js + TypeScript with Postgres-backed daily quiz history.'
+    'Two-phase quiz engine in Next.js + TypeScript with Postgres-backed daily quiz history.',
+  icons: {
+    icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
+    shortcut: ['/icon.svg']
+  }
 };
 
 interface RootLayoutProps {

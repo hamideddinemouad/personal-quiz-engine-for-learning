@@ -10,9 +10,9 @@
         "feedback": "Correct: serialization issues occur when outgoing data violates response contract shape."
       },
       {
-        "text": "The client sends extra request fields blocked by whitelist settings.",
+        "text": "A user omits authentication headers on a protected endpoint.",
         "isCorrect": false,
-        "feedback": "That is request validation failure, not response serialization mismatch."
+        "feedback": "Missing auth is authorization or authentication failure, not serialization."
       },
       {
         "text": "Docker rebuilds an unchanged image without modifying the Dockerfile.",
@@ -20,32 +20,32 @@
         "feedback": "Compose build behavior is unrelated to API serialization or response schemas."
       },
       {
-        "text": "A user omits authentication headers on a protected endpoint.",
+        "text": "The client sends extra request fields blocked by whitelist settings.",
         "isCorrect": false,
-        "feedback": "Missing auth is authorization or authentication failure, not serialization."
+        "feedback": "That is request validation failure, not response serialization mismatch."
       }
     ],
     "whyQuestion": "Why is a validation exception treated as user error in this note context?",
     "whyOptions": [
-      {
-        "text": "Because the incoming payload violated the input schema expected by the API.",
-        "isCorrect": true,
-        "feedback": "Exactly: client-supplied data failed agreed constraints, so request is invalid."
-      },
-      {
-        "text": "Because the server cannot validate schemas unless Docker image is rebuilt.",
-        "isCorrect": false,
-        "feedback": "Schema validation is runtime logic and does not require image rebuilds."
-      },
       {
         "text": "Because response serialization always runs before request parsing in Nest.",
         "isCorrect": false,
         "feedback": "Request parsing precedes response serialization; lifecycle order is opposite here."
       },
       {
+        "text": "Because the incoming payload violated the input schema expected by the API.",
+        "isCorrect": true,
+        "feedback": "Exactly: client-supplied data failed agreed constraints, so request is invalid."
+      },
+      {
         "text": "Because Zod only validates string fields and ignores other types.",
         "isCorrect": false,
         "feedback": "Zod validates many types, including objects, numbers, unions, and arrays."
+      },
+      {
+        "text": "Because the server cannot validate schemas unless Docker image is rebuilt.",
+        "isCorrect": false,
+        "feedback": "Schema validation is runtime logic and does not require image rebuilds."
       }
     ]
   },
@@ -55,6 +55,16 @@
     "requiresWhy": true,
     "options": [
       {
+        "text": "A user omits authentication headers on a protected endpoint.",
+        "isCorrect": false,
+        "feedback": "Missing auth is authorization or authentication failure, not serialization."
+      },
+      {
+        "text": "Docker rebuilds an unchanged image without modifying the Dockerfile.",
+        "isCorrect": false,
+        "feedback": "Compose build behavior is unrelated to API serialization or response schemas."
+      },
+      {
         "text": "The server response shape does not match the defined response schema.",
         "isCorrect": true,
         "feedback": "Correct: serialization issues occur when outgoing data violates response contract shape."
@@ -63,24 +73,14 @@
         "text": "The client sends extra request fields blocked by whitelist settings.",
         "isCorrect": false,
         "feedback": "That is request validation failure, not response serialization mismatch."
-      },
-      {
-        "text": "Docker rebuilds an unchanged image without modifying the Dockerfile.",
-        "isCorrect": false,
-        "feedback": "Compose build behavior is unrelated to API serialization or response schemas."
-      },
-      {
-        "text": "A user omits authentication headers on a protected endpoint.",
-        "isCorrect": false,
-        "feedback": "Missing auth is authorization or authentication failure, not serialization."
       }
     ],
     "whyQuestion": "Why is that answer the strongest technically? Why is a validation exception treated as user error in this note context?",
     "whyOptions": [
       {
-        "text": "Because the incoming payload violated the input schema expected by the API.",
-        "isCorrect": true,
-        "feedback": "Exactly: client-supplied data failed agreed constraints, so request is invalid."
+        "text": "Because response serialization always runs before request parsing in Nest.",
+        "isCorrect": false,
+        "feedback": "Request parsing precedes response serialization; lifecycle order is opposite here."
       },
       {
         "text": "Because the server cannot validate schemas unless Docker image is rebuilt.",
@@ -88,9 +88,9 @@
         "feedback": "Schema validation is runtime logic and does not require image rebuilds."
       },
       {
-        "text": "Because response serialization always runs before request parsing in Nest.",
-        "isCorrect": false,
-        "feedback": "Request parsing precedes response serialization; lifecycle order is opposite here."
+        "text": "Because the incoming payload violated the input schema expected by the API.",
+        "isCorrect": true,
+        "feedback": "Exactly: client-supplied data failed agreed constraints, so request is invalid."
       },
       {
         "text": "Because Zod only validates string fields and ignores other types.",
@@ -105,6 +105,11 @@
     "requiresWhy": true,
     "options": [
       {
+        "text": "A user omits authentication headers on a protected endpoint.",
+        "isCorrect": false,
+        "feedback": "Missing auth is authorization or authentication failure, not serialization."
+      },
+      {
         "text": "The server response shape does not match the defined response schema.",
         "isCorrect": true,
         "feedback": "Correct: serialization issues occur when outgoing data violates response contract shape."
@@ -118,15 +123,15 @@
         "text": "Docker rebuilds an unchanged image without modifying the Dockerfile.",
         "isCorrect": false,
         "feedback": "Compose build behavior is unrelated to API serialization or response schemas."
-      },
-      {
-        "text": "A user omits authentication headers on a protected endpoint.",
-        "isCorrect": false,
-        "feedback": "Missing auth is authorization or authentication failure, not serialization."
       }
     ],
     "whyQuestion": "Why does this option hold in real usage? Why is a validation exception treated as user error in this note context?",
     "whyOptions": [
+      {
+        "text": "Because Zod only validates string fields and ignores other types.",
+        "isCorrect": false,
+        "feedback": "Zod validates many types, including objects, numbers, unions, and arrays."
+      },
       {
         "text": "Because the incoming payload violated the input schema expected by the API.",
         "isCorrect": true,
@@ -141,11 +146,6 @@
         "text": "Because response serialization always runs before request parsing in Nest.",
         "isCorrect": false,
         "feedback": "Request parsing precedes response serialization; lifecycle order is opposite here."
-      },
-      {
-        "text": "Because Zod only validates string fields and ignores other types.",
-        "isCorrect": false,
-        "feedback": "Zod validates many types, including objects, numbers, unions, and arrays."
       }
     ]
   },
@@ -160,14 +160,14 @@
         "feedback": "Correct: serialization issues occur when outgoing data violates response contract shape."
       },
       {
-        "text": "The client sends extra request fields blocked by whitelist settings.",
-        "isCorrect": false,
-        "feedback": "That is request validation failure, not response serialization mismatch."
-      },
-      {
         "text": "Docker rebuilds an unchanged image without modifying the Dockerfile.",
         "isCorrect": false,
         "feedback": "Compose build behavior is unrelated to API serialization or response schemas."
+      },
+      {
+        "text": "The client sends extra request fields blocked by whitelist settings.",
+        "isCorrect": false,
+        "feedback": "That is request validation failure, not response serialization mismatch."
       },
       {
         "text": "A user omits authentication headers on a protected endpoint.",
@@ -188,14 +188,14 @@
         "feedback": "Schema validation is runtime logic and does not require image rebuilds."
       },
       {
-        "text": "Because response serialization always runs before request parsing in Nest.",
-        "isCorrect": false,
-        "feedback": "Request parsing precedes response serialization; lifecycle order is opposite here."
-      },
-      {
         "text": "Because Zod only validates string fields and ignores other types.",
         "isCorrect": false,
         "feedback": "Zod validates many types, including objects, numbers, unions, and arrays."
+      },
+      {
+        "text": "Because response serialization always runs before request parsing in Nest.",
+        "isCorrect": false,
+        "feedback": "Request parsing precedes response serialization; lifecycle order is opposite here."
       }
     ]
   },
@@ -210,14 +210,14 @@
         "feedback": "Correct: serialization issues occur when outgoing data violates response contract shape."
       },
       {
-        "text": "The client sends extra request fields blocked by whitelist settings.",
-        "isCorrect": false,
-        "feedback": "That is request validation failure, not response serialization mismatch."
-      },
-      {
         "text": "Docker rebuilds an unchanged image without modifying the Dockerfile.",
         "isCorrect": false,
         "feedback": "Compose build behavior is unrelated to API serialization or response schemas."
+      },
+      {
+        "text": "The client sends extra request fields blocked by whitelist settings.",
+        "isCorrect": false,
+        "feedback": "That is request validation failure, not response serialization mismatch."
       },
       {
         "text": "A user omits authentication headers on a protected endpoint.",
@@ -233,11 +233,6 @@
         "feedback": "Exactly: client-supplied data failed agreed constraints, so request is invalid."
       },
       {
-        "text": "Because the server cannot validate schemas unless Docker image is rebuilt.",
-        "isCorrect": false,
-        "feedback": "Schema validation is runtime logic and does not require image rebuilds."
-      },
-      {
         "text": "Because response serialization always runs before request parsing in Nest.",
         "isCorrect": false,
         "feedback": "Request parsing precedes response serialization; lifecycle order is opposite here."
@@ -246,6 +241,11 @@
         "text": "Because Zod only validates string fields and ignores other types.",
         "isCorrect": false,
         "feedback": "Zod validates many types, including objects, numbers, unions, and arrays."
+      },
+      {
+        "text": "Because the server cannot validate schemas unless Docker image is rebuilt.",
+        "isCorrect": false,
+        "feedback": "Schema validation is runtime logic and does not require image rebuilds."
       }
     ]
   },
@@ -254,6 +254,11 @@
     "question": "In a code review, which statement holds: In the notes, what is described as a serialization error in Zod-based APIs?",
     "requiresWhy": true,
     "options": [
+      {
+        "text": "A user omits authentication headers on a protected endpoint.",
+        "isCorrect": false,
+        "feedback": "Missing auth is authorization or authentication failure, not serialization."
+      },
       {
         "text": "The server response shape does not match the defined response schema.",
         "isCorrect": true,
@@ -268,19 +273,14 @@
         "text": "Docker rebuilds an unchanged image without modifying the Dockerfile.",
         "isCorrect": false,
         "feedback": "Compose build behavior is unrelated to API serialization or response schemas."
-      },
-      {
-        "text": "A user omits authentication headers on a protected endpoint.",
-        "isCorrect": false,
-        "feedback": "Missing auth is authorization or authentication failure, not serialization."
       }
     ],
     "whyQuestion": "Why does this avoid the common misconception? Why is a validation exception treated as user error in this note context?",
     "whyOptions": [
       {
-        "text": "Because the incoming payload violated the input schema expected by the API.",
-        "isCorrect": true,
-        "feedback": "Exactly: client-supplied data failed agreed constraints, so request is invalid."
+        "text": "Because response serialization always runs before request parsing in Nest.",
+        "isCorrect": false,
+        "feedback": "Request parsing precedes response serialization; lifecycle order is opposite here."
       },
       {
         "text": "Because the server cannot validate schemas unless Docker image is rebuilt.",
@@ -288,9 +288,9 @@
         "feedback": "Schema validation is runtime logic and does not require image rebuilds."
       },
       {
-        "text": "Because response serialization always runs before request parsing in Nest.",
-        "isCorrect": false,
-        "feedback": "Request parsing precedes response serialization; lifecycle order is opposite here."
+        "text": "Because the incoming payload violated the input schema expected by the API.",
+        "isCorrect": true,
+        "feedback": "Exactly: client-supplied data failed agreed constraints, so request is invalid."
       },
       {
         "text": "Because Zod only validates string fields and ignores other types.",
@@ -305,6 +305,11 @@
     "requiresWhy": true,
     "options": [
       {
+        "text": "Docker rebuilds an unchanged image without modifying the Dockerfile.",
+        "isCorrect": false,
+        "feedback": "Compose build behavior is unrelated to API serialization or response schemas."
+      },
+      {
         "text": "The server response shape does not match the defined response schema.",
         "isCorrect": true,
         "feedback": "Correct: serialization issues occur when outgoing data violates response contract shape."
@@ -315,11 +320,6 @@
         "feedback": "That is request validation failure, not response serialization mismatch."
       },
       {
-        "text": "Docker rebuilds an unchanged image without modifying the Dockerfile.",
-        "isCorrect": false,
-        "feedback": "Compose build behavior is unrelated to API serialization or response schemas."
-      },
-      {
         "text": "A user omits authentication headers on a protected endpoint.",
         "isCorrect": false,
         "feedback": "Missing auth is authorization or authentication failure, not serialization."
@@ -328,9 +328,9 @@
     "whyQuestion": "Why is this the most defensible reasoning? Why is a validation exception treated as user error in this note context?",
     "whyOptions": [
       {
-        "text": "Because the incoming payload violated the input schema expected by the API.",
-        "isCorrect": true,
-        "feedback": "Exactly: client-supplied data failed agreed constraints, so request is invalid."
+        "text": "Because Zod only validates string fields and ignores other types.",
+        "isCorrect": false,
+        "feedback": "Zod validates many types, including objects, numbers, unions, and arrays."
       },
       {
         "text": "Because the server cannot validate schemas unless Docker image is rebuilt.",
@@ -343,9 +343,9 @@
         "feedback": "Request parsing precedes response serialization; lifecycle order is opposite here."
       },
       {
-        "text": "Because Zod only validates string fields and ignores other types.",
-        "isCorrect": false,
-        "feedback": "Zod validates many types, including objects, numbers, unions, and arrays."
+        "text": "Because the incoming payload violated the input schema expected by the API.",
+        "isCorrect": true,
+        "feedback": "Exactly: client-supplied data failed agreed constraints, so request is invalid."
       }
     ]
   },
@@ -360,11 +360,6 @@
         "feedback": "Correct: serialization issues occur when outgoing data violates response contract shape."
       },
       {
-        "text": "The client sends extra request fields blocked by whitelist settings.",
-        "isCorrect": false,
-        "feedback": "That is request validation failure, not response serialization mismatch."
-      },
-      {
         "text": "Docker rebuilds an unchanged image without modifying the Dockerfile.",
         "isCorrect": false,
         "feedback": "Compose build behavior is unrelated to API serialization or response schemas."
@@ -373,15 +368,15 @@
         "text": "A user omits authentication headers on a protected endpoint.",
         "isCorrect": false,
         "feedback": "Missing auth is authorization or authentication failure, not serialization."
+      },
+      {
+        "text": "The client sends extra request fields blocked by whitelist settings.",
+        "isCorrect": false,
+        "feedback": "That is request validation failure, not response serialization mismatch."
       }
     ],
     "whyQuestion": "Why does this align with the note intent? Why is a validation exception treated as user error in this note context?",
     "whyOptions": [
-      {
-        "text": "Because the incoming payload violated the input schema expected by the API.",
-        "isCorrect": true,
-        "feedback": "Exactly: client-supplied data failed agreed constraints, so request is invalid."
-      },
       {
         "text": "Because the server cannot validate schemas unless Docker image is rebuilt.",
         "isCorrect": false,
@@ -396,6 +391,11 @@
         "text": "Because Zod only validates string fields and ignores other types.",
         "isCorrect": false,
         "feedback": "Zod validates many types, including objects, numbers, unions, and arrays."
+      },
+      {
+        "text": "Because the incoming payload violated the input schema expected by the API.",
+        "isCorrect": true,
+        "feedback": "Exactly: client-supplied data failed agreed constraints, so request is invalid."
       }
     ]
   },
@@ -405,11 +405,6 @@
     "requiresWhy": true,
     "options": [
       {
-        "text": "The server response shape does not match the defined response schema.",
-        "isCorrect": true,
-        "feedback": "Correct: serialization issues occur when outgoing data violates response contract shape."
-      },
-      {
         "text": "The client sends extra request fields blocked by whitelist settings.",
         "isCorrect": false,
         "feedback": "That is request validation failure, not response serialization mismatch."
@@ -418,6 +413,11 @@
         "text": "Docker rebuilds an unchanged image without modifying the Dockerfile.",
         "isCorrect": false,
         "feedback": "Compose build behavior is unrelated to API serialization or response schemas."
+      },
+      {
+        "text": "The server response shape does not match the defined response schema.",
+        "isCorrect": true,
+        "feedback": "Correct: serialization issues occur when outgoing data violates response contract shape."
       },
       {
         "text": "A user omits authentication headers on a protected endpoint.",
@@ -428,9 +428,9 @@
     "whyQuestion": "Why should engineers trust this explanation? Why is a validation exception treated as user error in this note context?",
     "whyOptions": [
       {
-        "text": "Because the incoming payload violated the input schema expected by the API.",
-        "isCorrect": true,
-        "feedback": "Exactly: client-supplied data failed agreed constraints, so request is invalid."
+        "text": "Because Zod only validates string fields and ignores other types.",
+        "isCorrect": false,
+        "feedback": "Zod validates many types, including objects, numbers, unions, and arrays."
       },
       {
         "text": "Because the server cannot validate schemas unless Docker image is rebuilt.",
@@ -438,14 +438,14 @@
         "feedback": "Schema validation is runtime logic and does not require image rebuilds."
       },
       {
+        "text": "Because the incoming payload violated the input schema expected by the API.",
+        "isCorrect": true,
+        "feedback": "Exactly: client-supplied data failed agreed constraints, so request is invalid."
+      },
+      {
         "text": "Because response serialization always runs before request parsing in Nest.",
         "isCorrect": false,
         "feedback": "Request parsing precedes response serialization; lifecycle order is opposite here."
-      },
-      {
-        "text": "Because Zod only validates string fields and ignores other types.",
-        "isCorrect": false,
-        "feedback": "Zod validates many types, including objects, numbers, unions, and arrays."
       }
     ]
   },
@@ -460,6 +460,11 @@
         "feedback": "Correct: serialization issues occur when outgoing data violates response contract shape."
       },
       {
+        "text": "A user omits authentication headers on a protected endpoint.",
+        "isCorrect": false,
+        "feedback": "Missing auth is authorization or authentication failure, not serialization."
+      },
+      {
         "text": "The client sends extra request fields blocked by whitelist settings.",
         "isCorrect": false,
         "feedback": "That is request validation failure, not response serialization mismatch."
@@ -468,24 +473,14 @@
         "text": "Docker rebuilds an unchanged image without modifying the Dockerfile.",
         "isCorrect": false,
         "feedback": "Compose build behavior is unrelated to API serialization or response schemas."
-      },
-      {
-        "text": "A user omits authentication headers on a protected endpoint.",
-        "isCorrect": false,
-        "feedback": "Missing auth is authorization or authentication failure, not serialization."
       }
     ],
     "whyQuestion": "Why is this the correct conceptual takeaway? Why is a validation exception treated as user error in this note context?",
     "whyOptions": [
       {
-        "text": "Because the incoming payload violated the input schema expected by the API.",
-        "isCorrect": true,
-        "feedback": "Exactly: client-supplied data failed agreed constraints, so request is invalid."
-      },
-      {
-        "text": "Because the server cannot validate schemas unless Docker image is rebuilt.",
+        "text": "Because Zod only validates string fields and ignores other types.",
         "isCorrect": false,
-        "feedback": "Schema validation is runtime logic and does not require image rebuilds."
+        "feedback": "Zod validates many types, including objects, numbers, unions, and arrays."
       },
       {
         "text": "Because response serialization always runs before request parsing in Nest.",
@@ -493,9 +488,14 @@
         "feedback": "Request parsing precedes response serialization; lifecycle order is opposite here."
       },
       {
-        "text": "Because Zod only validates string fields and ignores other types.",
+        "text": "Because the server cannot validate schemas unless Docker image is rebuilt.",
         "isCorrect": false,
-        "feedback": "Zod validates many types, including objects, numbers, unions, and arrays."
+        "feedback": "Schema validation is runtime logic and does not require image rebuilds."
+      },
+      {
+        "text": "Because the incoming payload violated the input schema expected by the API.",
+        "isCorrect": true,
+        "feedback": "Exactly: client-supplied data failed agreed constraints, so request is invalid."
       }
     ]
   }

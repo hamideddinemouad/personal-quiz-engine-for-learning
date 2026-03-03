@@ -5,14 +5,9 @@
     "requiresWhy": true,
     "options": [
       {
-        "text": "Directly to the manage websites dashboard showing created site snapshots.",
-        "isCorrect": true,
-        "feedback": "Correct: returning users should resume management from their existing sites dashboard."
-      },
-      {
-        "text": "Back to the marketing home page to read product presentation again.",
+        "text": "A generic account settings page with no website context.",
         "isCorrect": false,
-        "feedback": "Post-login flow should prioritize task continuation, not repeated landing content."
+        "feedback": "Settings-first navigation delays core objective of managing current websites."
       },
       {
         "text": "Immediately into a forced new-site wizard for every login session.",
@@ -20,17 +15,22 @@
         "feedback": "Forcing creation ignores existing assets and adds unnecessary workflow friction."
       },
       {
-        "text": "A generic account settings page with no website context.",
+        "text": "Back to the marketing home page to read product presentation again.",
         "isCorrect": false,
-        "feedback": "Settings-first navigation delays core objective of managing current websites."
+        "feedback": "Post-login flow should prioritize task continuation, not repeated landing content."
+      },
+      {
+        "text": "Directly to the manage websites dashboard showing created site snapshots.",
+        "isCorrect": true,
+        "feedback": "Correct: returning users should resume management from their existing sites dashboard."
       }
     ],
     "whyQuestion": "Why is direct dashboard routing better for users with existing websites?",
     "whyOptions": [
       {
-        "text": "It reduces friction and moves users immediately to relevant management actions.",
-        "isCorrect": true,
-        "feedback": "Exactly: contextual routing shortens time-to-task and improves product usability."
+        "text": "It is required because CMS products cannot render public landing pages.",
+        "isCorrect": false,
+        "feedback": "Landing pages remain useful; routing choice depends on authenticated context."
       },
       {
         "text": "It prevents users from creating any additional sites after first login.",
@@ -38,14 +38,14 @@
         "feedback": "The goal is efficient access, not restricting future site creation."
       },
       {
-        "text": "It is required because CMS products cannot render public landing pages.",
-        "isCorrect": false,
-        "feedback": "Landing pages remain useful; routing choice depends on authenticated context."
-      },
-      {
         "text": "It removes the need for per-site dashboards and blog management screens.",
         "isCorrect": false,
         "feedback": "Per-site dashboards remain essential after selecting a specific website."
+      },
+      {
+        "text": "It reduces friction and moves users immediately to relevant management actions.",
+        "isCorrect": true,
+        "feedback": "Exactly: contextual routing shortens time-to-task and improves product usability."
       }
     ]
   },
@@ -55,9 +55,9 @@
     "requiresWhy": true,
     "options": [
       {
-        "text": "Directly to the manage websites dashboard showing created site snapshots.",
-        "isCorrect": true,
-        "feedback": "Correct: returning users should resume management from their existing sites dashboard."
+        "text": "Immediately into a forced new-site wizard for every login session.",
+        "isCorrect": false,
+        "feedback": "Forcing creation ignores existing assets and adds unnecessary workflow friction."
       },
       {
         "text": "Back to the marketing home page to read product presentation again.",
@@ -65,18 +65,28 @@
         "feedback": "Post-login flow should prioritize task continuation, not repeated landing content."
       },
       {
-        "text": "Immediately into a forced new-site wizard for every login session.",
-        "isCorrect": false,
-        "feedback": "Forcing creation ignores existing assets and adds unnecessary workflow friction."
-      },
-      {
         "text": "A generic account settings page with no website context.",
         "isCorrect": false,
         "feedback": "Settings-first navigation delays core objective of managing current websites."
+      },
+      {
+        "text": "Directly to the manage websites dashboard showing created site snapshots.",
+        "isCorrect": true,
+        "feedback": "Correct: returning users should resume management from their existing sites dashboard."
       }
     ],
     "whyQuestion": "Why is that answer the strongest technically? Why is direct dashboard routing better for users with existing websites?",
     "whyOptions": [
+      {
+        "text": "It removes the need for per-site dashboards and blog management screens.",
+        "isCorrect": false,
+        "feedback": "Per-site dashboards remain essential after selecting a specific website."
+      },
+      {
+        "text": "It is required because CMS products cannot render public landing pages.",
+        "isCorrect": false,
+        "feedback": "Landing pages remain useful; routing choice depends on authenticated context."
+      },
       {
         "text": "It reduces friction and moves users immediately to relevant management actions.",
         "isCorrect": true,
@@ -86,16 +96,6 @@
         "text": "It prevents users from creating any additional sites after first login.",
         "isCorrect": false,
         "feedback": "The goal is efficient access, not restricting future site creation."
-      },
-      {
-        "text": "It is required because CMS products cannot render public landing pages.",
-        "isCorrect": false,
-        "feedback": "Landing pages remain useful; routing choice depends on authenticated context."
-      },
-      {
-        "text": "It removes the need for per-site dashboards and blog management screens.",
-        "isCorrect": false,
-        "feedback": "Per-site dashboards remain essential after selecting a specific website."
       }
     ]
   },
@@ -105,6 +105,16 @@
     "requiresWhy": true,
     "options": [
       {
+        "text": "A generic account settings page with no website context.",
+        "isCorrect": false,
+        "feedback": "Settings-first navigation delays core objective of managing current websites."
+      },
+      {
+        "text": "Immediately into a forced new-site wizard for every login session.",
+        "isCorrect": false,
+        "feedback": "Forcing creation ignores existing assets and adds unnecessary workflow friction."
+      },
+      {
         "text": "Directly to the manage websites dashboard showing created site snapshots.",
         "isCorrect": true,
         "feedback": "Correct: returning users should resume management from their existing sites dashboard."
@@ -113,29 +123,14 @@
         "text": "Back to the marketing home page to read product presentation again.",
         "isCorrect": false,
         "feedback": "Post-login flow should prioritize task continuation, not repeated landing content."
-      },
-      {
-        "text": "Immediately into a forced new-site wizard for every login session.",
-        "isCorrect": false,
-        "feedback": "Forcing creation ignores existing assets and adds unnecessary workflow friction."
-      },
-      {
-        "text": "A generic account settings page with no website context.",
-        "isCorrect": false,
-        "feedback": "Settings-first navigation delays core objective of managing current websites."
       }
     ],
     "whyQuestion": "Why does this option hold in real usage? Why is direct dashboard routing better for users with existing websites?",
     "whyOptions": [
       {
-        "text": "It reduces friction and moves users immediately to relevant management actions.",
-        "isCorrect": true,
-        "feedback": "Exactly: contextual routing shortens time-to-task and improves product usability."
-      },
-      {
-        "text": "It prevents users from creating any additional sites after first login.",
+        "text": "It removes the need for per-site dashboards and blog management screens.",
         "isCorrect": false,
-        "feedback": "The goal is efficient access, not restricting future site creation."
+        "feedback": "Per-site dashboards remain essential after selecting a specific website."
       },
       {
         "text": "It is required because CMS products cannot render public landing pages.",
@@ -143,9 +138,14 @@
         "feedback": "Landing pages remain useful; routing choice depends on authenticated context."
       },
       {
-        "text": "It removes the need for per-site dashboards and blog management screens.",
+        "text": "It prevents users from creating any additional sites after first login.",
         "isCorrect": false,
-        "feedback": "Per-site dashboards remain essential after selecting a specific website."
+        "feedback": "The goal is efficient access, not restricting future site creation."
+      },
+      {
+        "text": "It reduces friction and moves users immediately to relevant management actions.",
+        "isCorrect": true,
+        "feedback": "Exactly: contextual routing shortens time-to-task and improves product usability."
       }
     ]
   },
@@ -155,9 +155,9 @@
     "requiresWhy": true,
     "options": [
       {
-        "text": "Directly to the manage websites dashboard showing created site snapshots.",
-        "isCorrect": true,
-        "feedback": "Correct: returning users should resume management from their existing sites dashboard."
+        "text": "Immediately into a forced new-site wizard for every login session.",
+        "isCorrect": false,
+        "feedback": "Forcing creation ignores existing assets and adds unnecessary workflow friction."
       },
       {
         "text": "Back to the marketing home page to read product presentation again.",
@@ -165,9 +165,9 @@
         "feedback": "Post-login flow should prioritize task continuation, not repeated landing content."
       },
       {
-        "text": "Immediately into a forced new-site wizard for every login session.",
-        "isCorrect": false,
-        "feedback": "Forcing creation ignores existing assets and adds unnecessary workflow friction."
+        "text": "Directly to the manage websites dashboard showing created site snapshots.",
+        "isCorrect": true,
+        "feedback": "Correct: returning users should resume management from their existing sites dashboard."
       },
       {
         "text": "A generic account settings page with no website context.",
@@ -178,14 +178,14 @@
     "whyQuestion": "Why is this interpretation more reliable? Why is direct dashboard routing better for users with existing websites?",
     "whyOptions": [
       {
-        "text": "It reduces friction and moves users immediately to relevant management actions.",
-        "isCorrect": true,
-        "feedback": "Exactly: contextual routing shortens time-to-task and improves product usability."
-      },
-      {
         "text": "It prevents users from creating any additional sites after first login.",
         "isCorrect": false,
         "feedback": "The goal is efficient access, not restricting future site creation."
+      },
+      {
+        "text": "It removes the need for per-site dashboards and blog management screens.",
+        "isCorrect": false,
+        "feedback": "Per-site dashboards remain essential after selecting a specific website."
       },
       {
         "text": "It is required because CMS products cannot render public landing pages.",
@@ -193,9 +193,9 @@
         "feedback": "Landing pages remain useful; routing choice depends on authenticated context."
       },
       {
-        "text": "It removes the need for per-site dashboards and blog management screens.",
-        "isCorrect": false,
-        "feedback": "Per-site dashboards remain essential after selecting a specific website."
+        "text": "It reduces friction and moves users immediately to relevant management actions.",
+        "isCorrect": true,
+        "feedback": "Exactly: contextual routing shortens time-to-task and improves product usability."
       }
     ]
   },
@@ -205,37 +205,32 @@
     "requiresWhy": true,
     "options": [
       {
-        "text": "Directly to the manage websites dashboard showing created site snapshots.",
-        "isCorrect": true,
-        "feedback": "Correct: returning users should resume management from their existing sites dashboard."
-      },
-      {
         "text": "Back to the marketing home page to read product presentation again.",
         "isCorrect": false,
         "feedback": "Post-login flow should prioritize task continuation, not repeated landing content."
       },
       {
-        "text": "Immediately into a forced new-site wizard for every login session.",
-        "isCorrect": false,
-        "feedback": "Forcing creation ignores existing assets and adds unnecessary workflow friction."
+        "text": "Directly to the manage websites dashboard showing created site snapshots.",
+        "isCorrect": true,
+        "feedback": "Correct: returning users should resume management from their existing sites dashboard."
       },
       {
         "text": "A generic account settings page with no website context.",
         "isCorrect": false,
         "feedback": "Settings-first navigation delays core objective of managing current websites."
+      },
+      {
+        "text": "Immediately into a forced new-site wizard for every login session.",
+        "isCorrect": false,
+        "feedback": "Forcing creation ignores existing assets and adds unnecessary workflow friction."
       }
     ],
     "whyQuestion": "Why is this rule preferred in practice? Why is direct dashboard routing better for users with existing websites?",
     "whyOptions": [
       {
-        "text": "It reduces friction and moves users immediately to relevant management actions.",
-        "isCorrect": true,
-        "feedback": "Exactly: contextual routing shortens time-to-task and improves product usability."
-      },
-      {
-        "text": "It prevents users from creating any additional sites after first login.",
+        "text": "It removes the need for per-site dashboards and blog management screens.",
         "isCorrect": false,
-        "feedback": "The goal is efficient access, not restricting future site creation."
+        "feedback": "Per-site dashboards remain essential after selecting a specific website."
       },
       {
         "text": "It is required because CMS products cannot render public landing pages.",
@@ -243,9 +238,14 @@
         "feedback": "Landing pages remain useful; routing choice depends on authenticated context."
       },
       {
-        "text": "It removes the need for per-site dashboards and blog management screens.",
+        "text": "It prevents users from creating any additional sites after first login.",
         "isCorrect": false,
-        "feedback": "Per-site dashboards remain essential after selecting a specific website."
+        "feedback": "The goal is efficient access, not restricting future site creation."
+      },
+      {
+        "text": "It reduces friction and moves users immediately to relevant management actions.",
+        "isCorrect": true,
+        "feedback": "Exactly: contextual routing shortens time-to-task and improves product usability."
       }
     ]
   },
@@ -255,6 +255,11 @@
     "requiresWhy": true,
     "options": [
       {
+        "text": "A generic account settings page with no website context.",
+        "isCorrect": false,
+        "feedback": "Settings-first navigation delays core objective of managing current websites."
+      },
+      {
         "text": "Directly to the manage websites dashboard showing created site snapshots.",
         "isCorrect": true,
         "feedback": "Correct: returning users should resume management from their existing sites dashboard."
@@ -268,24 +273,19 @@
         "text": "Immediately into a forced new-site wizard for every login session.",
         "isCorrect": false,
         "feedback": "Forcing creation ignores existing assets and adds unnecessary workflow friction."
-      },
-      {
-        "text": "A generic account settings page with no website context.",
-        "isCorrect": false,
-        "feedback": "Settings-first navigation delays core objective of managing current websites."
       }
     ],
     "whyQuestion": "Why does this avoid the common misconception? Why is direct dashboard routing better for users with existing websites?",
     "whyOptions": [
       {
-        "text": "It reduces friction and moves users immediately to relevant management actions.",
-        "isCorrect": true,
-        "feedback": "Exactly: contextual routing shortens time-to-task and improves product usability."
-      },
-      {
         "text": "It prevents users from creating any additional sites after first login.",
         "isCorrect": false,
         "feedback": "The goal is efficient access, not restricting future site creation."
+      },
+      {
+        "text": "It removes the need for per-site dashboards and blog management screens.",
+        "isCorrect": false,
+        "feedback": "Per-site dashboards remain essential after selecting a specific website."
       },
       {
         "text": "It is required because CMS products cannot render public landing pages.",
@@ -293,9 +293,9 @@
         "feedback": "Landing pages remain useful; routing choice depends on authenticated context."
       },
       {
-        "text": "It removes the need for per-site dashboards and blog management screens.",
-        "isCorrect": false,
-        "feedback": "Per-site dashboards remain essential after selecting a specific website."
+        "text": "It reduces friction and moves users immediately to relevant management actions.",
+        "isCorrect": true,
+        "feedback": "Exactly: contextual routing shortens time-to-task and improves product usability."
       }
     ]
   },
@@ -333,14 +333,14 @@
         "feedback": "Exactly: contextual routing shortens time-to-task and improves product usability."
       },
       {
-        "text": "It prevents users from creating any additional sites after first login.",
-        "isCorrect": false,
-        "feedback": "The goal is efficient access, not restricting future site creation."
-      },
-      {
         "text": "It is required because CMS products cannot render public landing pages.",
         "isCorrect": false,
         "feedback": "Landing pages remain useful; routing choice depends on authenticated context."
+      },
+      {
+        "text": "It prevents users from creating any additional sites after first login.",
+        "isCorrect": false,
+        "feedback": "The goal is efficient access, not restricting future site creation."
       },
       {
         "text": "It removes the need for per-site dashboards and blog management screens.",
@@ -355,14 +355,14 @@
     "requiresWhy": true,
     "options": [
       {
-        "text": "Directly to the manage websites dashboard showing created site snapshots.",
-        "isCorrect": true,
-        "feedback": "Correct: returning users should resume management from their existing sites dashboard."
-      },
-      {
         "text": "Back to the marketing home page to read product presentation again.",
         "isCorrect": false,
         "feedback": "Post-login flow should prioritize task continuation, not repeated landing content."
+      },
+      {
+        "text": "A generic account settings page with no website context.",
+        "isCorrect": false,
+        "feedback": "Settings-first navigation delays core objective of managing current websites."
       },
       {
         "text": "Immediately into a forced new-site wizard for every login session.",
@@ -370,23 +370,13 @@
         "feedback": "Forcing creation ignores existing assets and adds unnecessary workflow friction."
       },
       {
-        "text": "A generic account settings page with no website context.",
-        "isCorrect": false,
-        "feedback": "Settings-first navigation delays core objective of managing current websites."
+        "text": "Directly to the manage websites dashboard showing created site snapshots.",
+        "isCorrect": true,
+        "feedback": "Correct: returning users should resume management from their existing sites dashboard."
       }
     ],
     "whyQuestion": "Why does this align with the note intent? Why is direct dashboard routing better for users with existing websites?",
     "whyOptions": [
-      {
-        "text": "It reduces friction and moves users immediately to relevant management actions.",
-        "isCorrect": true,
-        "feedback": "Exactly: contextual routing shortens time-to-task and improves product usability."
-      },
-      {
-        "text": "It prevents users from creating any additional sites after first login.",
-        "isCorrect": false,
-        "feedback": "The goal is efficient access, not restricting future site creation."
-      },
       {
         "text": "It is required because CMS products cannot render public landing pages.",
         "isCorrect": false,
@@ -396,6 +386,16 @@
         "text": "It removes the need for per-site dashboards and blog management screens.",
         "isCorrect": false,
         "feedback": "Per-site dashboards remain essential after selecting a specific website."
+      },
+      {
+        "text": "It prevents users from creating any additional sites after first login.",
+        "isCorrect": false,
+        "feedback": "The goal is efficient access, not restricting future site creation."
+      },
+      {
+        "text": "It reduces friction and moves users immediately to relevant management actions.",
+        "isCorrect": true,
+        "feedback": "Exactly: contextual routing shortens time-to-task and improves product usability."
       }
     ]
   },
@@ -415,28 +415,18 @@
         "feedback": "Post-login flow should prioritize task continuation, not repeated landing content."
       },
       {
-        "text": "Immediately into a forced new-site wizard for every login session.",
-        "isCorrect": false,
-        "feedback": "Forcing creation ignores existing assets and adds unnecessary workflow friction."
-      },
-      {
         "text": "A generic account settings page with no website context.",
         "isCorrect": false,
         "feedback": "Settings-first navigation delays core objective of managing current websites."
+      },
+      {
+        "text": "Immediately into a forced new-site wizard for every login session.",
+        "isCorrect": false,
+        "feedback": "Forcing creation ignores existing assets and adds unnecessary workflow friction."
       }
     ],
     "whyQuestion": "Why should engineers trust this explanation? Why is direct dashboard routing better for users with existing websites?",
     "whyOptions": [
-      {
-        "text": "It reduces friction and moves users immediately to relevant management actions.",
-        "isCorrect": true,
-        "feedback": "Exactly: contextual routing shortens time-to-task and improves product usability."
-      },
-      {
-        "text": "It prevents users from creating any additional sites after first login.",
-        "isCorrect": false,
-        "feedback": "The goal is efficient access, not restricting future site creation."
-      },
       {
         "text": "It is required because CMS products cannot render public landing pages.",
         "isCorrect": false,
@@ -446,6 +436,16 @@
         "text": "It removes the need for per-site dashboards and blog management screens.",
         "isCorrect": false,
         "feedback": "Per-site dashboards remain essential after selecting a specific website."
+      },
+      {
+        "text": "It prevents users from creating any additional sites after first login.",
+        "isCorrect": false,
+        "feedback": "The goal is efficient access, not restricting future site creation."
+      },
+      {
+        "text": "It reduces friction and moves users immediately to relevant management actions.",
+        "isCorrect": true,
+        "feedback": "Exactly: contextual routing shortens time-to-task and improves product usability."
       }
     ]
   },
@@ -454,11 +454,6 @@
     "question": "Confirm the core concept: In the CMS flow, where should a user with existing sites go right after login?",
     "requiresWhy": true,
     "options": [
-      {
-        "text": "Directly to the manage websites dashboard showing created site snapshots.",
-        "isCorrect": true,
-        "feedback": "Correct: returning users should resume management from their existing sites dashboard."
-      },
       {
         "text": "Back to the marketing home page to read product presentation again.",
         "isCorrect": false,
@@ -473,14 +468,19 @@
         "text": "A generic account settings page with no website context.",
         "isCorrect": false,
         "feedback": "Settings-first navigation delays core objective of managing current websites."
+      },
+      {
+        "text": "Directly to the manage websites dashboard showing created site snapshots.",
+        "isCorrect": true,
+        "feedback": "Correct: returning users should resume management from their existing sites dashboard."
       }
     ],
     "whyQuestion": "Why is this the correct conceptual takeaway? Why is direct dashboard routing better for users with existing websites?",
     "whyOptions": [
       {
-        "text": "It reduces friction and moves users immediately to relevant management actions.",
-        "isCorrect": true,
-        "feedback": "Exactly: contextual routing shortens time-to-task and improves product usability."
+        "text": "It is required because CMS products cannot render public landing pages.",
+        "isCorrect": false,
+        "feedback": "Landing pages remain useful; routing choice depends on authenticated context."
       },
       {
         "text": "It prevents users from creating any additional sites after first login.",
@@ -488,14 +488,14 @@
         "feedback": "The goal is efficient access, not restricting future site creation."
       },
       {
-        "text": "It is required because CMS products cannot render public landing pages.",
-        "isCorrect": false,
-        "feedback": "Landing pages remain useful; routing choice depends on authenticated context."
-      },
-      {
         "text": "It removes the need for per-site dashboards and blog management screens.",
         "isCorrect": false,
         "feedback": "Per-site dashboards remain essential after selecting a specific website."
+      },
+      {
+        "text": "It reduces friction and moves users immediately to relevant management actions.",
+        "isCorrect": true,
+        "feedback": "Exactly: contextual routing shortens time-to-task and improves product usability."
       }
     ]
   }

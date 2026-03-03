@@ -5,32 +5,32 @@
     "requiresWhy": true,
     "options": [
       {
-        "text": "A versioned script that applies and can roll back schema changes.",
-        "isCorrect": true,
-        "feedback": "Correct: migrations track schema evolution and support controlled rollback history."
-      },
-      {
         "text": "A runtime query optimizer that rewrites SQL during every request.",
         "isCorrect": false,
         "feedback": "Query optimization is database engine behavior, not migration tooling purpose."
       },
       {
-        "text": "A backup snapshot used only when production crashes irrecoverably.",
-        "isCorrect": false,
-        "feedback": "Backups store data states; migrations define schema transition steps."
+        "text": "A versioned script that applies and can roll back schema changes.",
+        "isCorrect": true,
+        "feedback": "Correct: migrations track schema evolution and support controlled rollback history."
       },
       {
         "text": "A script that resets all tables before each deployment automatically.",
         "isCorrect": false,
         "feedback": "Migrations evolve schema safely, not destructive reset-by-default deployment behavior."
+      },
+      {
+        "text": "A backup snapshot used only when production crashes irrecoverably.",
+        "isCorrect": false,
+        "feedback": "Backups store data states; migrations define schema transition steps."
       }
     ],
     "whyQuestion": "Why are migrations preferred over manual schema edits?",
     "whyOptions": [
       {
-        "text": "Because they provide reproducible, auditable, and reversible schema evolution.",
-        "isCorrect": true,
-        "feedback": "Exactly: teams can synchronize environments and undo problematic changes safely."
+        "text": "Because migrations automatically optimize every query execution plan permanently.",
+        "isCorrect": false,
+        "feedback": "Execution plans are runtime concerns and not guaranteed by migrations."
       },
       {
         "text": "Because manual edits cannot create foreign keys in SQL databases.",
@@ -43,9 +43,9 @@
         "feedback": "Transactions remain essential for atomic data changes regardless of migrations."
       },
       {
-        "text": "Because migrations automatically optimize every query execution plan permanently.",
-        "isCorrect": false,
-        "feedback": "Execution plans are runtime concerns and not guaranteed by migrations."
+        "text": "Because they provide reproducible, auditable, and reversible schema evolution.",
+        "isCorrect": true,
+        "feedback": "Exactly: teams can synchronize environments and undo problematic changes safely."
       }
     ]
   },
@@ -55,6 +55,11 @@
     "requiresWhy": true,
     "options": [
       {
+        "text": "A backup snapshot used only when production crashes irrecoverably.",
+        "isCorrect": false,
+        "feedback": "Backups store data states; migrations define schema transition steps."
+      },
+      {
         "text": "A versioned script that applies and can roll back schema changes.",
         "isCorrect": true,
         "feedback": "Correct: migrations track schema evolution and support controlled rollback history."
@@ -63,11 +68,6 @@
         "text": "A runtime query optimizer that rewrites SQL during every request.",
         "isCorrect": false,
         "feedback": "Query optimization is database engine behavior, not migration tooling purpose."
-      },
-      {
-        "text": "A backup snapshot used only when production crashes irrecoverably.",
-        "isCorrect": false,
-        "feedback": "Backups store data states; migrations define schema transition steps."
       },
       {
         "text": "A script that resets all tables before each deployment automatically.",
@@ -78,14 +78,14 @@
     "whyQuestion": "Why is that answer the strongest technically? Why are migrations preferred over manual schema edits?",
     "whyOptions": [
       {
-        "text": "Because they provide reproducible, auditable, and reversible schema evolution.",
-        "isCorrect": true,
-        "feedback": "Exactly: teams can synchronize environments and undo problematic changes safely."
-      },
-      {
         "text": "Because manual edits cannot create foreign keys in SQL databases.",
         "isCorrect": false,
         "feedback": "Manual SQL can create constraints; migrations improve process reliability."
+      },
+      {
+        "text": "Because migrations automatically optimize every query execution plan permanently.",
+        "isCorrect": false,
+        "feedback": "Execution plans are runtime concerns and not guaranteed by migrations."
       },
       {
         "text": "Because migrations eliminate the need for transactions in all data operations.",
@@ -93,9 +93,9 @@
         "feedback": "Transactions remain essential for atomic data changes regardless of migrations."
       },
       {
-        "text": "Because migrations automatically optimize every query execution plan permanently.",
-        "isCorrect": false,
-        "feedback": "Execution plans are runtime concerns and not guaranteed by migrations."
+        "text": "Because they provide reproducible, auditable, and reversible schema evolution.",
+        "isCorrect": true,
+        "feedback": "Exactly: teams can synchronize environments and undo problematic changes safely."
       }
     ]
   },
@@ -105,47 +105,47 @@
     "requiresWhy": true,
     "options": [
       {
-        "text": "A versioned script that applies and can roll back schema changes.",
-        "isCorrect": true,
-        "feedback": "Correct: migrations track schema evolution and support controlled rollback history."
-      },
-      {
         "text": "A runtime query optimizer that rewrites SQL during every request.",
         "isCorrect": false,
         "feedback": "Query optimization is database engine behavior, not migration tooling purpose."
       },
       {
-        "text": "A backup snapshot used only when production crashes irrecoverably.",
-        "isCorrect": false,
-        "feedback": "Backups store data states; migrations define schema transition steps."
+        "text": "A versioned script that applies and can roll back schema changes.",
+        "isCorrect": true,
+        "feedback": "Correct: migrations track schema evolution and support controlled rollback history."
       },
       {
         "text": "A script that resets all tables before each deployment automatically.",
         "isCorrect": false,
         "feedback": "Migrations evolve schema safely, not destructive reset-by-default deployment behavior."
+      },
+      {
+        "text": "A backup snapshot used only when production crashes irrecoverably.",
+        "isCorrect": false,
+        "feedback": "Backups store data states; migrations define schema transition steps."
       }
     ],
     "whyQuestion": "Why does this option hold in real usage? Why are migrations preferred over manual schema edits?",
     "whyOptions": [
-      {
-        "text": "Because they provide reproducible, auditable, and reversible schema evolution.",
-        "isCorrect": true,
-        "feedback": "Exactly: teams can synchronize environments and undo problematic changes safely."
-      },
       {
         "text": "Because manual edits cannot create foreign keys in SQL databases.",
         "isCorrect": false,
         "feedback": "Manual SQL can create constraints; migrations improve process reliability."
       },
       {
-        "text": "Because migrations eliminate the need for transactions in all data operations.",
-        "isCorrect": false,
-        "feedback": "Transactions remain essential for atomic data changes regardless of migrations."
+        "text": "Because they provide reproducible, auditable, and reversible schema evolution.",
+        "isCorrect": true,
+        "feedback": "Exactly: teams can synchronize environments and undo problematic changes safely."
       },
       {
         "text": "Because migrations automatically optimize every query execution plan permanently.",
         "isCorrect": false,
         "feedback": "Execution plans are runtime concerns and not guaranteed by migrations."
+      },
+      {
+        "text": "Because migrations eliminate the need for transactions in all data operations.",
+        "isCorrect": false,
+        "feedback": "Transactions remain essential for atomic data changes regardless of migrations."
       }
     ]
   },
@@ -155,33 +155,28 @@
     "requiresWhy": true,
     "options": [
       {
-        "text": "A versioned script that applies and can roll back schema changes.",
-        "isCorrect": true,
-        "feedback": "Correct: migrations track schema evolution and support controlled rollback history."
-      },
-      {
-        "text": "A runtime query optimizer that rewrites SQL during every request.",
-        "isCorrect": false,
-        "feedback": "Query optimization is database engine behavior, not migration tooling purpose."
-      },
-      {
         "text": "A backup snapshot used only when production crashes irrecoverably.",
         "isCorrect": false,
         "feedback": "Backups store data states; migrations define schema transition steps."
       },
       {
+        "text": "A versioned script that applies and can roll back schema changes.",
+        "isCorrect": true,
+        "feedback": "Correct: migrations track schema evolution and support controlled rollback history."
+      },
+      {
         "text": "A script that resets all tables before each deployment automatically.",
         "isCorrect": false,
         "feedback": "Migrations evolve schema safely, not destructive reset-by-default deployment behavior."
+      },
+      {
+        "text": "A runtime query optimizer that rewrites SQL during every request.",
+        "isCorrect": false,
+        "feedback": "Query optimization is database engine behavior, not migration tooling purpose."
       }
     ],
     "whyQuestion": "Why is this interpretation more reliable? Why are migrations preferred over manual schema edits?",
     "whyOptions": [
-      {
-        "text": "Because they provide reproducible, auditable, and reversible schema evolution.",
-        "isCorrect": true,
-        "feedback": "Exactly: teams can synchronize environments and undo problematic changes safely."
-      },
       {
         "text": "Because manual edits cannot create foreign keys in SQL databases.",
         "isCorrect": false,
@@ -196,6 +191,11 @@
         "text": "Because migrations automatically optimize every query execution plan permanently.",
         "isCorrect": false,
         "feedback": "Execution plans are runtime concerns and not guaranteed by migrations."
+      },
+      {
+        "text": "Because they provide reproducible, auditable, and reversible schema evolution.",
+        "isCorrect": true,
+        "feedback": "Exactly: teams can synchronize environments and undo problematic changes safely."
       }
     ]
   },
@@ -205,47 +205,47 @@
     "requiresWhy": true,
     "options": [
       {
-        "text": "A versioned script that applies and can roll back schema changes.",
-        "isCorrect": true,
-        "feedback": "Correct: migrations track schema evolution and support controlled rollback history."
-      },
-      {
         "text": "A runtime query optimizer that rewrites SQL during every request.",
         "isCorrect": false,
         "feedback": "Query optimization is database engine behavior, not migration tooling purpose."
       },
       {
-        "text": "A backup snapshot used only when production crashes irrecoverably.",
-        "isCorrect": false,
-        "feedback": "Backups store data states; migrations define schema transition steps."
+        "text": "A versioned script that applies and can roll back schema changes.",
+        "isCorrect": true,
+        "feedback": "Correct: migrations track schema evolution and support controlled rollback history."
       },
       {
         "text": "A script that resets all tables before each deployment automatically.",
         "isCorrect": false,
         "feedback": "Migrations evolve schema safely, not destructive reset-by-default deployment behavior."
+      },
+      {
+        "text": "A backup snapshot used only when production crashes irrecoverably.",
+        "isCorrect": false,
+        "feedback": "Backups store data states; migrations define schema transition steps."
       }
     ],
     "whyQuestion": "Why is this rule preferred in practice? Why are migrations preferred over manual schema edits?",
     "whyOptions": [
-      {
-        "text": "Because they provide reproducible, auditable, and reversible schema evolution.",
-        "isCorrect": true,
-        "feedback": "Exactly: teams can synchronize environments and undo problematic changes safely."
-      },
       {
         "text": "Because manual edits cannot create foreign keys in SQL databases.",
         "isCorrect": false,
         "feedback": "Manual SQL can create constraints; migrations improve process reliability."
       },
       {
-        "text": "Because migrations eliminate the need for transactions in all data operations.",
-        "isCorrect": false,
-        "feedback": "Transactions remain essential for atomic data changes regardless of migrations."
-      },
-      {
         "text": "Because migrations automatically optimize every query execution plan permanently.",
         "isCorrect": false,
         "feedback": "Execution plans are runtime concerns and not guaranteed by migrations."
+      },
+      {
+        "text": "Because they provide reproducible, auditable, and reversible schema evolution.",
+        "isCorrect": true,
+        "feedback": "Exactly: teams can synchronize environments and undo problematic changes safely."
+      },
+      {
+        "text": "Because migrations eliminate the need for transactions in all data operations.",
+        "isCorrect": false,
+        "feedback": "Transactions remain essential for atomic data changes regardless of migrations."
       }
     ]
   },
@@ -260,14 +260,14 @@
         "feedback": "Correct: migrations track schema evolution and support controlled rollback history."
       },
       {
-        "text": "A runtime query optimizer that rewrites SQL during every request.",
-        "isCorrect": false,
-        "feedback": "Query optimization is database engine behavior, not migration tooling purpose."
-      },
-      {
         "text": "A backup snapshot used only when production crashes irrecoverably.",
         "isCorrect": false,
         "feedback": "Backups store data states; migrations define schema transition steps."
+      },
+      {
+        "text": "A runtime query optimizer that rewrites SQL during every request.",
+        "isCorrect": false,
+        "feedback": "Query optimization is database engine behavior, not migration tooling purpose."
       },
       {
         "text": "A script that resets all tables before each deployment automatically.",
@@ -278,6 +278,11 @@
     "whyQuestion": "Why does this avoid the common misconception? Why are migrations preferred over manual schema edits?",
     "whyOptions": [
       {
+        "text": "Because migrations automatically optimize every query execution plan permanently.",
+        "isCorrect": false,
+        "feedback": "Execution plans are runtime concerns and not guaranteed by migrations."
+      },
+      {
         "text": "Because they provide reproducible, auditable, and reversible schema evolution.",
         "isCorrect": true,
         "feedback": "Exactly: teams can synchronize environments and undo problematic changes safely."
@@ -291,11 +296,6 @@
         "text": "Because migrations eliminate the need for transactions in all data operations.",
         "isCorrect": false,
         "feedback": "Transactions remain essential for atomic data changes regardless of migrations."
-      },
-      {
-        "text": "Because migrations automatically optimize every query execution plan permanently.",
-        "isCorrect": false,
-        "feedback": "Execution plans are runtime concerns and not guaranteed by migrations."
       }
     ]
   },
@@ -305,14 +305,14 @@
     "requiresWhy": true,
     "options": [
       {
+        "text": "A script that resets all tables before each deployment automatically.",
+        "isCorrect": false,
+        "feedback": "Migrations evolve schema safely, not destructive reset-by-default deployment behavior."
+      },
+      {
         "text": "A versioned script that applies and can roll back schema changes.",
         "isCorrect": true,
         "feedback": "Correct: migrations track schema evolution and support controlled rollback history."
-      },
-      {
-        "text": "A runtime query optimizer that rewrites SQL during every request.",
-        "isCorrect": false,
-        "feedback": "Query optimization is database engine behavior, not migration tooling purpose."
       },
       {
         "text": "A backup snapshot used only when production crashes irrecoverably.",
@@ -320,32 +320,32 @@
         "feedback": "Backups store data states; migrations define schema transition steps."
       },
       {
-        "text": "A script that resets all tables before each deployment automatically.",
+        "text": "A runtime query optimizer that rewrites SQL during every request.",
         "isCorrect": false,
-        "feedback": "Migrations evolve schema safely, not destructive reset-by-default deployment behavior."
+        "feedback": "Query optimization is database engine behavior, not migration tooling purpose."
       }
     ],
     "whyQuestion": "Why is this the most defensible reasoning? Why are migrations preferred over manual schema edits?",
     "whyOptions": [
-      {
-        "text": "Because they provide reproducible, auditable, and reversible schema evolution.",
-        "isCorrect": true,
-        "feedback": "Exactly: teams can synchronize environments and undo problematic changes safely."
-      },
       {
         "text": "Because manual edits cannot create foreign keys in SQL databases.",
         "isCorrect": false,
         "feedback": "Manual SQL can create constraints; migrations improve process reliability."
       },
       {
-        "text": "Because migrations eliminate the need for transactions in all data operations.",
-        "isCorrect": false,
-        "feedback": "Transactions remain essential for atomic data changes regardless of migrations."
+        "text": "Because they provide reproducible, auditable, and reversible schema evolution.",
+        "isCorrect": true,
+        "feedback": "Exactly: teams can synchronize environments and undo problematic changes safely."
       },
       {
         "text": "Because migrations automatically optimize every query execution plan permanently.",
         "isCorrect": false,
         "feedback": "Execution plans are runtime concerns and not guaranteed by migrations."
+      },
+      {
+        "text": "Because migrations eliminate the need for transactions in all data operations.",
+        "isCorrect": false,
+        "feedback": "Transactions remain essential for atomic data changes regardless of migrations."
       }
     ]
   },
@@ -378,6 +378,11 @@
     "whyQuestion": "Why does this align with the note intent? Why are migrations preferred over manual schema edits?",
     "whyOptions": [
       {
+        "text": "Because migrations automatically optimize every query execution plan permanently.",
+        "isCorrect": false,
+        "feedback": "Execution plans are runtime concerns and not guaranteed by migrations."
+      },
+      {
         "text": "Because they provide reproducible, auditable, and reversible schema evolution.",
         "isCorrect": true,
         "feedback": "Exactly: teams can synchronize environments and undo problematic changes safely."
@@ -391,11 +396,6 @@
         "text": "Because migrations eliminate the need for transactions in all data operations.",
         "isCorrect": false,
         "feedback": "Transactions remain essential for atomic data changes regardless of migrations."
-      },
-      {
-        "text": "Because migrations automatically optimize every query execution plan permanently.",
-        "isCorrect": false,
-        "feedback": "Execution plans are runtime concerns and not guaranteed by migrations."
       }
     ]
   },
@@ -415,14 +415,14 @@
         "feedback": "Query optimization is database engine behavior, not migration tooling purpose."
       },
       {
-        "text": "A backup snapshot used only when production crashes irrecoverably.",
-        "isCorrect": false,
-        "feedback": "Backups store data states; migrations define schema transition steps."
-      },
-      {
         "text": "A script that resets all tables before each deployment automatically.",
         "isCorrect": false,
         "feedback": "Migrations evolve schema safely, not destructive reset-by-default deployment behavior."
+      },
+      {
+        "text": "A backup snapshot used only when production crashes irrecoverably.",
+        "isCorrect": false,
+        "feedback": "Backups store data states; migrations define schema transition steps."
       }
     ],
     "whyQuestion": "Why should engineers trust this explanation? Why are migrations preferred over manual schema edits?",
@@ -433,9 +433,9 @@
         "feedback": "Exactly: teams can synchronize environments and undo problematic changes safely."
       },
       {
-        "text": "Because manual edits cannot create foreign keys in SQL databases.",
+        "text": "Because migrations automatically optimize every query execution plan permanently.",
         "isCorrect": false,
-        "feedback": "Manual SQL can create constraints; migrations improve process reliability."
+        "feedback": "Execution plans are runtime concerns and not guaranteed by migrations."
       },
       {
         "text": "Because migrations eliminate the need for transactions in all data operations.",
@@ -443,9 +443,9 @@
         "feedback": "Transactions remain essential for atomic data changes regardless of migrations."
       },
       {
-        "text": "Because migrations automatically optimize every query execution plan permanently.",
+        "text": "Because manual edits cannot create foreign keys in SQL databases.",
         "isCorrect": false,
-        "feedback": "Execution plans are runtime concerns and not guaranteed by migrations."
+        "feedback": "Manual SQL can create constraints; migrations improve process reliability."
       }
     ]
   },
@@ -455,9 +455,9 @@
     "requiresWhy": true,
     "options": [
       {
-        "text": "A versioned script that applies and can roll back schema changes.",
-        "isCorrect": true,
-        "feedback": "Correct: migrations track schema evolution and support controlled rollback history."
+        "text": "A backup snapshot used only when production crashes irrecoverably.",
+        "isCorrect": false,
+        "feedback": "Backups store data states; migrations define schema transition steps."
       },
       {
         "text": "A runtime query optimizer that rewrites SQL during every request.",
@@ -465,14 +465,14 @@
         "feedback": "Query optimization is database engine behavior, not migration tooling purpose."
       },
       {
-        "text": "A backup snapshot used only when production crashes irrecoverably.",
-        "isCorrect": false,
-        "feedback": "Backups store data states; migrations define schema transition steps."
-      },
-      {
         "text": "A script that resets all tables before each deployment automatically.",
         "isCorrect": false,
         "feedback": "Migrations evolve schema safely, not destructive reset-by-default deployment behavior."
+      },
+      {
+        "text": "A versioned script that applies and can roll back schema changes.",
+        "isCorrect": true,
+        "feedback": "Correct: migrations track schema evolution and support controlled rollback history."
       }
     ],
     "whyQuestion": "Why is this the correct conceptual takeaway? Why are migrations preferred over manual schema edits?",
@@ -488,14 +488,14 @@
         "feedback": "Manual SQL can create constraints; migrations improve process reliability."
       },
       {
-        "text": "Because migrations eliminate the need for transactions in all data operations.",
-        "isCorrect": false,
-        "feedback": "Transactions remain essential for atomic data changes regardless of migrations."
-      },
-      {
         "text": "Because migrations automatically optimize every query execution plan permanently.",
         "isCorrect": false,
         "feedback": "Execution plans are runtime concerns and not guaranteed by migrations."
+      },
+      {
+        "text": "Because migrations eliminate the need for transactions in all data operations.",
+        "isCorrect": false,
+        "feedback": "Transactions remain essential for atomic data changes regardless of migrations."
       }
     ]
   }

@@ -5,14 +5,14 @@
     "requiresWhy": true,
     "options": [
       {
-        "text": "Quickly verify critical user journeys before running deeper test coverage.",
-        "isCorrect": true,
-        "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
-      },
-      {
         "text": "Replace all regression tests so full suites become unnecessary.",
         "isCorrect": false,
         "feedback": "Smoke tests are minimal checks and cannot replace comprehensive behavior coverage."
+      },
+      {
+        "text": "Quickly verify critical user journeys before running deeper test coverage.",
+        "isCorrect": true,
+        "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
       },
       {
         "text": "Benchmark frontend performance metrics with statistically significant confidence.",
@@ -28,24 +28,24 @@
     "whyQuestion": "Why run smoke tests before full end-to-end suites?",
     "whyOptions": [
       {
-        "text": "They fail fast on major outages, saving time and debugging effort.",
-        "isCorrect": true,
-        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites."
-      },
-      {
         "text": "They automatically fix flaky tests by rerunning failing commands silently.",
         "isCorrect": false,
         "feedback": "Smoke strategy improves sequencing, but does not auto-heal flaky test logic."
       },
       {
-        "text": "They guarantee every edge case is covered before release.",
-        "isCorrect": false,
-        "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage."
+        "text": "They fail fast on major outages, saving time and debugging effort.",
+        "isCorrect": true,
+        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites."
       },
       {
         "text": "They remove the need for reusable commands and page objects.",
         "isCorrect": false,
         "feedback": "Abstractions still reduce duplication and improve maintainability across suites."
+      },
+      {
+        "text": "They guarantee every edge case is covered before release.",
+        "isCorrect": false,
+        "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage."
       }
     ]
   },
@@ -55,9 +55,9 @@
     "requiresWhy": true,
     "options": [
       {
-        "text": "Quickly verify critical user journeys before running deeper test coverage.",
-        "isCorrect": true,
-        "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
+        "text": "Benchmark frontend performance metrics with statistically significant confidence.",
+        "isCorrect": false,
+        "feedback": "Performance benchmarking requires dedicated tooling, not basic smoke scenarios."
       },
       {
         "text": "Replace all regression tests so full suites become unnecessary.",
@@ -65,18 +65,28 @@
         "feedback": "Smoke tests are minimal checks and cannot replace comprehensive behavior coverage."
       },
       {
-        "text": "Benchmark frontend performance metrics with statistically significant confidence.",
-        "isCorrect": false,
-        "feedback": "Performance benchmarking requires dedicated tooling, not basic smoke scenarios."
-      },
-      {
         "text": "Validate only fixture file schemas and ignore UI interactions entirely.",
         "isCorrect": false,
         "feedback": "Smoke tests focus on user-critical flows, not schema-only fixture validation."
+      },
+      {
+        "text": "Quickly verify critical user journeys before running deeper test coverage.",
+        "isCorrect": true,
+        "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
       }
     ],
     "whyQuestion": "Why is that answer the strongest technically? Why run smoke tests before full end-to-end suites?",
     "whyOptions": [
+      {
+        "text": "They remove the need for reusable commands and page objects.",
+        "isCorrect": false,
+        "feedback": "Abstractions still reduce duplication and improve maintainability across suites."
+      },
+      {
+        "text": "They guarantee every edge case is covered before release.",
+        "isCorrect": false,
+        "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage."
+      },
       {
         "text": "They fail fast on major outages, saving time and debugging effort.",
         "isCorrect": true,
@@ -86,16 +96,6 @@
         "text": "They automatically fix flaky tests by rerunning failing commands silently.",
         "isCorrect": false,
         "feedback": "Smoke strategy improves sequencing, but does not auto-heal flaky test logic."
-      },
-      {
-        "text": "They guarantee every edge case is covered before release.",
-        "isCorrect": false,
-        "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage."
-      },
-      {
-        "text": "They remove the need for reusable commands and page objects.",
-        "isCorrect": false,
-        "feedback": "Abstractions still reduce duplication and improve maintainability across suites."
       }
     ]
   },
@@ -105,16 +105,6 @@
     "requiresWhy": true,
     "options": [
       {
-        "text": "Quickly verify critical user journeys before running deeper test coverage.",
-        "isCorrect": true,
-        "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
-      },
-      {
-        "text": "Replace all regression tests so full suites become unnecessary.",
-        "isCorrect": false,
-        "feedback": "Smoke tests are minimal checks and cannot replace comprehensive behavior coverage."
-      },
-      {
         "text": "Benchmark frontend performance metrics with statistically significant confidence.",
         "isCorrect": false,
         "feedback": "Performance benchmarking requires dedicated tooling, not basic smoke scenarios."
@@ -123,14 +113,24 @@
         "text": "Validate only fixture file schemas and ignore UI interactions entirely.",
         "isCorrect": false,
         "feedback": "Smoke tests focus on user-critical flows, not schema-only fixture validation."
+      },
+      {
+        "text": "Replace all regression tests so full suites become unnecessary.",
+        "isCorrect": false,
+        "feedback": "Smoke tests are minimal checks and cannot replace comprehensive behavior coverage."
+      },
+      {
+        "text": "Quickly verify critical user journeys before running deeper test coverage.",
+        "isCorrect": true,
+        "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
       }
     ],
     "whyQuestion": "Why does this option hold in real usage? Why run smoke tests before full end-to-end suites?",
     "whyOptions": [
       {
-        "text": "They fail fast on major outages, saving time and debugging effort.",
-        "isCorrect": true,
-        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites."
+        "text": "They guarantee every edge case is covered before release.",
+        "isCorrect": false,
+        "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage."
       },
       {
         "text": "They automatically fix flaky tests by rerunning failing commands silently.",
@@ -138,14 +138,14 @@
         "feedback": "Smoke strategy improves sequencing, but does not auto-heal flaky test logic."
       },
       {
-        "text": "They guarantee every edge case is covered before release.",
-        "isCorrect": false,
-        "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage."
-      },
-      {
         "text": "They remove the need for reusable commands and page objects.",
         "isCorrect": false,
         "feedback": "Abstractions still reduce duplication and improve maintainability across suites."
+      },
+      {
+        "text": "They fail fast on major outages, saving time and debugging effort.",
+        "isCorrect": true,
+        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites."
       }
     ]
   },
@@ -155,32 +155,32 @@
     "requiresWhy": true,
     "options": [
       {
-        "text": "Quickly verify critical user journeys before running deeper test coverage.",
-        "isCorrect": true,
-        "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
-      },
-      {
-        "text": "Replace all regression tests so full suites become unnecessary.",
-        "isCorrect": false,
-        "feedback": "Smoke tests are minimal checks and cannot replace comprehensive behavior coverage."
-      },
-      {
         "text": "Benchmark frontend performance metrics with statistically significant confidence.",
         "isCorrect": false,
         "feedback": "Performance benchmarking requires dedicated tooling, not basic smoke scenarios."
       },
       {
+        "text": "Quickly verify critical user journeys before running deeper test coverage.",
+        "isCorrect": true,
+        "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
+      },
+      {
         "text": "Validate only fixture file schemas and ignore UI interactions entirely.",
         "isCorrect": false,
         "feedback": "Smoke tests focus on user-critical flows, not schema-only fixture validation."
+      },
+      {
+        "text": "Replace all regression tests so full suites become unnecessary.",
+        "isCorrect": false,
+        "feedback": "Smoke tests are minimal checks and cannot replace comprehensive behavior coverage."
       }
     ],
     "whyQuestion": "Why is this interpretation more reliable? Why run smoke tests before full end-to-end suites?",
     "whyOptions": [
       {
-        "text": "They fail fast on major outages, saving time and debugging effort.",
-        "isCorrect": true,
-        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites."
+        "text": "They guarantee every edge case is covered before release.",
+        "isCorrect": false,
+        "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage."
       },
       {
         "text": "They automatically fix flaky tests by rerunning failing commands silently.",
@@ -188,9 +188,9 @@
         "feedback": "Smoke strategy improves sequencing, but does not auto-heal flaky test logic."
       },
       {
-        "text": "They guarantee every edge case is covered before release.",
-        "isCorrect": false,
-        "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage."
+        "text": "They fail fast on major outages, saving time and debugging effort.",
+        "isCorrect": true,
+        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites."
       },
       {
         "text": "They remove the need for reusable commands and page objects.",
@@ -205,32 +205,32 @@
     "requiresWhy": true,
     "options": [
       {
-        "text": "Quickly verify critical user journeys before running deeper test coverage.",
-        "isCorrect": true,
-        "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
-      },
-      {
         "text": "Replace all regression tests so full suites become unnecessary.",
         "isCorrect": false,
         "feedback": "Smoke tests are minimal checks and cannot replace comprehensive behavior coverage."
       },
       {
-        "text": "Benchmark frontend performance metrics with statistically significant confidence.",
-        "isCorrect": false,
-        "feedback": "Performance benchmarking requires dedicated tooling, not basic smoke scenarios."
-      },
-      {
         "text": "Validate only fixture file schemas and ignore UI interactions entirely.",
         "isCorrect": false,
         "feedback": "Smoke tests focus on user-critical flows, not schema-only fixture validation."
+      },
+      {
+        "text": "Quickly verify critical user journeys before running deeper test coverage.",
+        "isCorrect": true,
+        "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
+      },
+      {
+        "text": "Benchmark frontend performance metrics with statistically significant confidence.",
+        "isCorrect": false,
+        "feedback": "Performance benchmarking requires dedicated tooling, not basic smoke scenarios."
       }
     ],
     "whyQuestion": "Why is this rule preferred in practice? Why run smoke tests before full end-to-end suites?",
     "whyOptions": [
       {
-        "text": "They fail fast on major outages, saving time and debugging effort.",
-        "isCorrect": true,
-        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites."
+        "text": "They remove the need for reusable commands and page objects.",
+        "isCorrect": false,
+        "feedback": "Abstractions still reduce duplication and improve maintainability across suites."
       },
       {
         "text": "They automatically fix flaky tests by rerunning failing commands silently.",
@@ -238,14 +238,14 @@
         "feedback": "Smoke strategy improves sequencing, but does not auto-heal flaky test logic."
       },
       {
+        "text": "They fail fast on major outages, saving time and debugging effort.",
+        "isCorrect": true,
+        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites."
+      },
+      {
         "text": "They guarantee every edge case is covered before release.",
         "isCorrect": false,
         "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage."
-      },
-      {
-        "text": "They remove the need for reusable commands and page objects.",
-        "isCorrect": false,
-        "feedback": "Abstractions still reduce duplication and improve maintainability across suites."
       }
     ]
   },
@@ -255,14 +255,14 @@
     "requiresWhy": true,
     "options": [
       {
+        "text": "Validate only fixture file schemas and ignore UI interactions entirely.",
+        "isCorrect": false,
+        "feedback": "Smoke tests focus on user-critical flows, not schema-only fixture validation."
+      },
+      {
         "text": "Quickly verify critical user journeys before running deeper test coverage.",
         "isCorrect": true,
         "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
-      },
-      {
-        "text": "Replace all regression tests so full suites become unnecessary.",
-        "isCorrect": false,
-        "feedback": "Smoke tests are minimal checks and cannot replace comprehensive behavior coverage."
       },
       {
         "text": "Benchmark frontend performance metrics with statistically significant confidence.",
@@ -270,17 +270,17 @@
         "feedback": "Performance benchmarking requires dedicated tooling, not basic smoke scenarios."
       },
       {
-        "text": "Validate only fixture file schemas and ignore UI interactions entirely.",
+        "text": "Replace all regression tests so full suites become unnecessary.",
         "isCorrect": false,
-        "feedback": "Smoke tests focus on user-critical flows, not schema-only fixture validation."
+        "feedback": "Smoke tests are minimal checks and cannot replace comprehensive behavior coverage."
       }
     ],
     "whyQuestion": "Why does this avoid the common misconception? Why run smoke tests before full end-to-end suites?",
     "whyOptions": [
       {
-        "text": "They fail fast on major outages, saving time and debugging effort.",
-        "isCorrect": true,
-        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites."
+        "text": "They remove the need for reusable commands and page objects.",
+        "isCorrect": false,
+        "feedback": "Abstractions still reduce duplication and improve maintainability across suites."
       },
       {
         "text": "They automatically fix flaky tests by rerunning failing commands silently.",
@@ -293,9 +293,9 @@
         "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage."
       },
       {
-        "text": "They remove the need for reusable commands and page objects.",
-        "isCorrect": false,
-        "feedback": "Abstractions still reduce duplication and improve maintainability across suites."
+        "text": "They fail fast on major outages, saving time and debugging effort.",
+        "isCorrect": true,
+        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites."
       }
     ]
   },
@@ -305,9 +305,9 @@
     "requiresWhy": true,
     "options": [
       {
-        "text": "Quickly verify critical user journeys before running deeper test coverage.",
-        "isCorrect": true,
-        "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
+        "text": "Validate only fixture file schemas and ignore UI interactions entirely.",
+        "isCorrect": false,
+        "feedback": "Smoke tests focus on user-critical flows, not schema-only fixture validation."
       },
       {
         "text": "Replace all regression tests so full suites become unnecessary.",
@@ -320,32 +320,32 @@
         "feedback": "Performance benchmarking requires dedicated tooling, not basic smoke scenarios."
       },
       {
-        "text": "Validate only fixture file schemas and ignore UI interactions entirely.",
-        "isCorrect": false,
-        "feedback": "Smoke tests focus on user-critical flows, not schema-only fixture validation."
+        "text": "Quickly verify critical user journeys before running deeper test coverage.",
+        "isCorrect": true,
+        "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
       }
     ],
     "whyQuestion": "Why is this the most defensible reasoning? Why run smoke tests before full end-to-end suites?",
     "whyOptions": [
-      {
-        "text": "They fail fast on major outages, saving time and debugging effort.",
-        "isCorrect": true,
-        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites."
-      },
       {
         "text": "They automatically fix flaky tests by rerunning failing commands silently.",
         "isCorrect": false,
         "feedback": "Smoke strategy improves sequencing, but does not auto-heal flaky test logic."
       },
       {
-        "text": "They guarantee every edge case is covered before release.",
-        "isCorrect": false,
-        "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage."
-      },
-      {
         "text": "They remove the need for reusable commands and page objects.",
         "isCorrect": false,
         "feedback": "Abstractions still reduce duplication and improve maintainability across suites."
+      },
+      {
+        "text": "They fail fast on major outages, saving time and debugging effort.",
+        "isCorrect": true,
+        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites."
+      },
+      {
+        "text": "They guarantee every edge case is covered before release.",
+        "isCorrect": false,
+        "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage."
       }
     ]
   },
@@ -360,6 +360,11 @@
         "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
       },
       {
+        "text": "Validate only fixture file schemas and ignore UI interactions entirely.",
+        "isCorrect": false,
+        "feedback": "Smoke tests focus on user-critical flows, not schema-only fixture validation."
+      },
+      {
         "text": "Replace all regression tests so full suites become unnecessary.",
         "isCorrect": false,
         "feedback": "Smoke tests are minimal checks and cannot replace comprehensive behavior coverage."
@@ -368,15 +373,20 @@
         "text": "Benchmark frontend performance metrics with statistically significant confidence.",
         "isCorrect": false,
         "feedback": "Performance benchmarking requires dedicated tooling, not basic smoke scenarios."
-      },
-      {
-        "text": "Validate only fixture file schemas and ignore UI interactions entirely.",
-        "isCorrect": false,
-        "feedback": "Smoke tests focus on user-critical flows, not schema-only fixture validation."
       }
     ],
     "whyQuestion": "Why does this align with the note intent? Why run smoke tests before full end-to-end suites?",
     "whyOptions": [
+      {
+        "text": "They remove the need for reusable commands and page objects.",
+        "isCorrect": false,
+        "feedback": "Abstractions still reduce duplication and improve maintainability across suites."
+      },
+      {
+        "text": "They guarantee every edge case is covered before release.",
+        "isCorrect": false,
+        "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage."
+      },
       {
         "text": "They fail fast on major outages, saving time and debugging effort.",
         "isCorrect": true,
@@ -386,16 +396,6 @@
         "text": "They automatically fix flaky tests by rerunning failing commands silently.",
         "isCorrect": false,
         "feedback": "Smoke strategy improves sequencing, but does not auto-heal flaky test logic."
-      },
-      {
-        "text": "They guarantee every edge case is covered before release.",
-        "isCorrect": false,
-        "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage."
-      },
-      {
-        "text": "They remove the need for reusable commands and page objects.",
-        "isCorrect": false,
-        "feedback": "Abstractions still reduce duplication and improve maintainability across suites."
       }
     ]
   },
@@ -405,14 +405,14 @@
     "requiresWhy": true,
     "options": [
       {
+        "text": "Validate only fixture file schemas and ignore UI interactions entirely.",
+        "isCorrect": false,
+        "feedback": "Smoke tests focus on user-critical flows, not schema-only fixture validation."
+      },
+      {
         "text": "Quickly verify critical user journeys before running deeper test coverage.",
         "isCorrect": true,
         "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
-      },
-      {
-        "text": "Replace all regression tests so full suites become unnecessary.",
-        "isCorrect": false,
-        "feedback": "Smoke tests are minimal checks and cannot replace comprehensive behavior coverage."
       },
       {
         "text": "Benchmark frontend performance metrics with statistically significant confidence.",
@@ -420,23 +420,13 @@
         "feedback": "Performance benchmarking requires dedicated tooling, not basic smoke scenarios."
       },
       {
-        "text": "Validate only fixture file schemas and ignore UI interactions entirely.",
+        "text": "Replace all regression tests so full suites become unnecessary.",
         "isCorrect": false,
-        "feedback": "Smoke tests focus on user-critical flows, not schema-only fixture validation."
+        "feedback": "Smoke tests are minimal checks and cannot replace comprehensive behavior coverage."
       }
     ],
     "whyQuestion": "Why should engineers trust this explanation? Why run smoke tests before full end-to-end suites?",
     "whyOptions": [
-      {
-        "text": "They fail fast on major outages, saving time and debugging effort.",
-        "isCorrect": true,
-        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites."
-      },
-      {
-        "text": "They automatically fix flaky tests by rerunning failing commands silently.",
-        "isCorrect": false,
-        "feedback": "Smoke strategy improves sequencing, but does not auto-heal flaky test logic."
-      },
       {
         "text": "They guarantee every edge case is covered before release.",
         "isCorrect": false,
@@ -446,6 +436,16 @@
         "text": "They remove the need for reusable commands and page objects.",
         "isCorrect": false,
         "feedback": "Abstractions still reduce duplication and improve maintainability across suites."
+      },
+      {
+        "text": "They fail fast on major outages, saving time and debugging effort.",
+        "isCorrect": true,
+        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites."
+      },
+      {
+        "text": "They automatically fix flaky tests by rerunning failing commands silently.",
+        "isCorrect": false,
+        "feedback": "Smoke strategy improves sequencing, but does not auto-heal flaky test logic."
       }
     ]
   },
@@ -455,11 +455,6 @@
     "requiresWhy": true,
     "options": [
       {
-        "text": "Quickly verify critical user journeys before running deeper test coverage.",
-        "isCorrect": true,
-        "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
-      },
-      {
         "text": "Replace all regression tests so full suites become unnecessary.",
         "isCorrect": false,
         "feedback": "Smoke tests are minimal checks and cannot replace comprehensive behavior coverage."
@@ -473,14 +468,19 @@
         "text": "Validate only fixture file schemas and ignore UI interactions entirely.",
         "isCorrect": false,
         "feedback": "Smoke tests focus on user-critical flows, not schema-only fixture validation."
+      },
+      {
+        "text": "Quickly verify critical user journeys before running deeper test coverage.",
+        "isCorrect": true,
+        "feedback": "Correct: smoke tests detect catastrophic breakage early with minimal execution time."
       }
     ],
     "whyQuestion": "Why is this the correct conceptual takeaway? Why run smoke tests before full end-to-end suites?",
     "whyOptions": [
       {
-        "text": "They fail fast on major outages, saving time and debugging effort.",
-        "isCorrect": true,
-        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites."
+        "text": "They guarantee every edge case is covered before release.",
+        "isCorrect": false,
+        "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage."
       },
       {
         "text": "They automatically fix flaky tests by rerunning failing commands silently.",
@@ -488,14 +488,14 @@
         "feedback": "Smoke strategy improves sequencing, but does not auto-heal flaky test logic."
       },
       {
-        "text": "They guarantee every edge case is covered before release.",
-        "isCorrect": false,
-        "feedback": "Smoke scope is intentionally narrow and cannot guarantee exhaustive coverage."
-      },
-      {
         "text": "They remove the need for reusable commands and page objects.",
         "isCorrect": false,
         "feedback": "Abstractions still reduce duplication and improve maintainability across suites."
+      },
+      {
+        "text": "They fail fast on major outages, saving time and debugging effort.",
+        "isCorrect": true,
+        "feedback": "Exactly: early critical-path failures prevent wasting cycles on deeper suites."
       }
     ]
   }

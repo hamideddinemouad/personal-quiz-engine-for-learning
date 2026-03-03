@@ -2,511 +2,511 @@
   {
     "id": "q1",
     "question": "What is the correct logical SQL execution order from the notes?",
-    "hint": "Execution starts with source rows, not projection.",
     "requiresWhy": true,
     "options": [
       {
+        "text": "FROM -> JOIN -> WHERE -> GROUP BY -> SELECT -> HAVING -> ORDER BY",
+        "isCorrect": false,
+        "feedback": "HAVING filters grouped results before final SELECT projection."
+      },
+      {
+        "text": "FROM -> JOIN -> GROUP BY -> WHERE -> HAVING -> SELECT -> ORDER BY",
+        "isCorrect": false,
+        "feedback": "WHERE filters rows before grouping, not after it."
+      },
+      {
         "text": "FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY",
         "isCorrect": true,
-        "feedback": "Correct: row-set construction and filtering happen before projection and sorting."
+        "feedback": "Correct: source rows are built and filtered before projection and sorting."
       },
       {
-        "text": "SELECT -> FROM -> WHERE -> GROUP BY -> HAVING -> ORDER BY",
+        "text": "FROM -> JOIN -> WHERE -> SELECT -> GROUP BY -> HAVING -> ORDER BY",
         "isCorrect": false,
-        "feedback": "That is written syntax order, but execution starts from source resolution."
-      },
-      {
-        "text": "WHERE -> FROM -> JOIN -> SELECT -> GROUP BY -> HAVING -> ORDER BY",
-        "isCorrect": false,
-        "feedback": "WHERE cannot run first because no joined row set exists yet."
-      },
-      {
-        "text": "FROM -> GROUP BY -> WHERE -> HAVING -> SELECT -> ORDER BY -> JOIN",
-        "isCorrect": false,
-        "feedback": "JOIN must occur before grouping to build the combined working dataset."
+        "feedback": "SELECT cannot precede grouping because GROUP BY/HAVING shape projection input."
       }
     ],
     "whyQuestion": "Why must SQL process FROM and JOIN before SELECT?",
     "whyOptions": [
       {
-        "text": "Because SQL must build the working row set before choosing output columns.",
+        "text": "ORDER BY determines which joined rows survive earlier relational operations.",
+        "isCorrect": false,
+        "feedback": "ORDER BY sorts final results; it does not decide row eligibility."
+      },
+      {
+        "text": "SELECT must run first so WHERE and GROUP BY can reference select aliases.",
+        "isCorrect": false,
+        "feedback": "Aliases are not a reason for execution order and often unavailable there."
+      },
+      {
+        "text": "SQL must build the working row set before selecting projected output columns.",
         "isCorrect": true,
-        "feedback": "Exactly: projection requires a resolved dataset containing all referenced fields."
+        "feedback": "Exactly: projection requires a resolved and filtered relational dataset first."
       },
       {
-        "text": "Because SELECT only sorts data and cannot reference source tables.",
+        "text": "HAVING creates join relationships that FROM and JOIN evaluate afterward.",
         "isCorrect": false,
-        "feedback": "SELECT performs projection, while sorting is handled later by ORDER BY."
-      },
-      {
-        "text": "Because HAVING defines table relationships before joins are planned.",
-        "isCorrect": false,
-        "feedback": "HAVING filters grouped results and does not establish join relationships."
-      },
-      {
-        "text": "Because ORDER BY must execute first to choose the correct joined tables.",
-        "isCorrect": false,
-        "feedback": "ORDER BY is a final presentation step, not table selection logic."
+        "feedback": "HAVING filters existing groups; it does not define joins."
       }
-    ]
+    ],
+    "hint": "Execution starts with source rows, not projection."
   },
   {
     "id": "q2",
     "question": "Which statement is most accurate: What is the correct logical SQL execution order from the notes?",
-    "hint": "Execution starts with source rows, not projection.",
     "requiresWhy": true,
     "options": [
       {
+        "text": "FROM -> JOIN -> WHERE -> GROUP BY -> SELECT -> HAVING -> ORDER BY",
+        "isCorrect": false,
+        "feedback": "HAVING filters grouped results before final SELECT projection."
+      },
+      {
         "text": "FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY",
         "isCorrect": true,
-        "feedback": "Correct: row-set construction and filtering happen before projection and sorting."
+        "feedback": "Correct: source rows are built and filtered before projection and sorting."
       },
       {
-        "text": "SELECT -> FROM -> WHERE -> GROUP BY -> HAVING -> ORDER BY",
+        "text": "FROM -> JOIN -> WHERE -> SELECT -> GROUP BY -> HAVING -> ORDER BY",
         "isCorrect": false,
-        "feedback": "That is written syntax order, but execution starts from source resolution."
+        "feedback": "SELECT cannot precede grouping because GROUP BY/HAVING shape projection input."
       },
       {
-        "text": "WHERE -> FROM -> JOIN -> SELECT -> GROUP BY -> HAVING -> ORDER BY",
+        "text": "FROM -> JOIN -> GROUP BY -> WHERE -> HAVING -> SELECT -> ORDER BY",
         "isCorrect": false,
-        "feedback": "WHERE cannot run first because no joined row set exists yet."
-      },
-      {
-        "text": "FROM -> GROUP BY -> WHERE -> HAVING -> SELECT -> ORDER BY -> JOIN",
-        "isCorrect": false,
-        "feedback": "JOIN must occur before grouping to build the combined working dataset."
+        "feedback": "WHERE filters rows before grouping, not after it."
       }
     ],
     "whyQuestion": "Why is that answer the strongest technically? Why must SQL process FROM and JOIN before SELECT?",
     "whyOptions": [
       {
-        "text": "Because SQL must build the working row set before choosing output columns.",
+        "text": "SQL must build the working row set before selecting projected output columns.",
         "isCorrect": true,
-        "feedback": "Exactly: projection requires a resolved dataset containing all referenced fields."
+        "feedback": "Exactly: projection requires a resolved and filtered relational dataset first."
       },
       {
-        "text": "Because SELECT only sorts data and cannot reference source tables.",
+        "text": "SELECT must run first so WHERE and GROUP BY can reference select aliases.",
         "isCorrect": false,
-        "feedback": "SELECT performs projection, while sorting is handled later by ORDER BY."
+        "feedback": "Aliases are not a reason for execution order and often unavailable there."
       },
       {
-        "text": "Because HAVING defines table relationships before joins are planned.",
+        "text": "ORDER BY determines which joined rows survive earlier relational operations.",
         "isCorrect": false,
-        "feedback": "HAVING filters grouped results and does not establish join relationships."
+        "feedback": "ORDER BY sorts final results; it does not decide row eligibility."
       },
       {
-        "text": "Because ORDER BY must execute first to choose the correct joined tables.",
+        "text": "HAVING creates join relationships that FROM and JOIN evaluate afterward.",
         "isCorrect": false,
-        "feedback": "ORDER BY is a final presentation step, not table selection logic."
+        "feedback": "HAVING filters existing groups; it does not define joins."
       }
-    ]
+    ],
+    "hint": "Execution starts with source rows, not projection."
   },
   {
     "id": "q3",
     "question": "Choose the best technical interpretation: What is the correct logical SQL execution order from the notes?",
-    "hint": "Execution starts with source rows, not projection.",
     "requiresWhy": true,
     "options": [
       {
+        "text": "FROM -> JOIN -> WHERE -> GROUP BY -> SELECT -> HAVING -> ORDER BY",
+        "isCorrect": false,
+        "feedback": "HAVING filters grouped results before final SELECT projection."
+      },
+      {
         "text": "FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY",
         "isCorrect": true,
-        "feedback": "Correct: row-set construction and filtering happen before projection and sorting."
+        "feedback": "Correct: source rows are built and filtered before projection and sorting."
       },
       {
-        "text": "SELECT -> FROM -> WHERE -> GROUP BY -> HAVING -> ORDER BY",
+        "text": "FROM -> JOIN -> WHERE -> SELECT -> GROUP BY -> HAVING -> ORDER BY",
         "isCorrect": false,
-        "feedback": "That is written syntax order, but execution starts from source resolution."
+        "feedback": "SELECT cannot precede grouping because GROUP BY/HAVING shape projection input."
       },
       {
-        "text": "WHERE -> FROM -> JOIN -> SELECT -> GROUP BY -> HAVING -> ORDER BY",
+        "text": "FROM -> JOIN -> GROUP BY -> WHERE -> HAVING -> SELECT -> ORDER BY",
         "isCorrect": false,
-        "feedback": "WHERE cannot run first because no joined row set exists yet."
-      },
-      {
-        "text": "FROM -> GROUP BY -> WHERE -> HAVING -> SELECT -> ORDER BY -> JOIN",
-        "isCorrect": false,
-        "feedback": "JOIN must occur before grouping to build the combined working dataset."
+        "feedback": "WHERE filters rows before grouping, not after it."
       }
     ],
     "whyQuestion": "Why does this option hold in real usage? Why must SQL process FROM and JOIN before SELECT?",
     "whyOptions": [
       {
-        "text": "Because SQL must build the working row set before choosing output columns.",
+        "text": "SELECT must run first so WHERE and GROUP BY can reference select aliases.",
+        "isCorrect": false,
+        "feedback": "Aliases are not a reason for execution order and often unavailable there."
+      },
+      {
+        "text": "ORDER BY determines which joined rows survive earlier relational operations.",
+        "isCorrect": false,
+        "feedback": "ORDER BY sorts final results; it does not decide row eligibility."
+      },
+      {
+        "text": "SQL must build the working row set before selecting projected output columns.",
         "isCorrect": true,
-        "feedback": "Exactly: projection requires a resolved dataset containing all referenced fields."
+        "feedback": "Exactly: projection requires a resolved and filtered relational dataset first."
       },
       {
-        "text": "Because SELECT only sorts data and cannot reference source tables.",
+        "text": "HAVING creates join relationships that FROM and JOIN evaluate afterward.",
         "isCorrect": false,
-        "feedback": "SELECT performs projection, while sorting is handled later by ORDER BY."
-      },
-      {
-        "text": "Because HAVING defines table relationships before joins are planned.",
-        "isCorrect": false,
-        "feedback": "HAVING filters grouped results and does not establish join relationships."
-      },
-      {
-        "text": "Because ORDER BY must execute first to choose the correct joined tables.",
-        "isCorrect": false,
-        "feedback": "ORDER BY is a final presentation step, not table selection logic."
+        "feedback": "HAVING filters existing groups; it does not define joins."
       }
-    ]
+    ],
+    "hint": "Execution starts with source rows, not projection."
   },
   {
     "id": "q4",
     "question": "For practical use, which claim is correct: What is the correct logical SQL execution order from the notes?",
-    "hint": "Execution starts with source rows, not projection.",
     "requiresWhy": true,
     "options": [
       {
+        "text": "FROM -> JOIN -> WHERE -> GROUP BY -> SELECT -> HAVING -> ORDER BY",
+        "isCorrect": false,
+        "feedback": "HAVING filters grouped results before final SELECT projection."
+      },
+      {
         "text": "FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY",
         "isCorrect": true,
-        "feedback": "Correct: row-set construction and filtering happen before projection and sorting."
+        "feedback": "Correct: source rows are built and filtered before projection and sorting."
       },
       {
-        "text": "SELECT -> FROM -> WHERE -> GROUP BY -> HAVING -> ORDER BY",
+        "text": "FROM -> JOIN -> WHERE -> SELECT -> GROUP BY -> HAVING -> ORDER BY",
         "isCorrect": false,
-        "feedback": "That is written syntax order, but execution starts from source resolution."
+        "feedback": "SELECT cannot precede grouping because GROUP BY/HAVING shape projection input."
       },
       {
-        "text": "WHERE -> FROM -> JOIN -> SELECT -> GROUP BY -> HAVING -> ORDER BY",
+        "text": "FROM -> JOIN -> GROUP BY -> WHERE -> HAVING -> SELECT -> ORDER BY",
         "isCorrect": false,
-        "feedback": "WHERE cannot run first because no joined row set exists yet."
-      },
-      {
-        "text": "FROM -> GROUP BY -> WHERE -> HAVING -> SELECT -> ORDER BY -> JOIN",
-        "isCorrect": false,
-        "feedback": "JOIN must occur before grouping to build the combined working dataset."
+        "feedback": "WHERE filters rows before grouping, not after it."
       }
     ],
     "whyQuestion": "Why is this interpretation more reliable? Why must SQL process FROM and JOIN before SELECT?",
     "whyOptions": [
       {
-        "text": "Because SQL must build the working row set before choosing output columns.",
+        "text": "ORDER BY determines which joined rows survive earlier relational operations.",
+        "isCorrect": false,
+        "feedback": "ORDER BY sorts final results; it does not decide row eligibility."
+      },
+      {
+        "text": "SELECT must run first so WHERE and GROUP BY can reference select aliases.",
+        "isCorrect": false,
+        "feedback": "Aliases are not a reason for execution order and often unavailable there."
+      },
+      {
+        "text": "HAVING creates join relationships that FROM and JOIN evaluate afterward.",
+        "isCorrect": false,
+        "feedback": "HAVING filters existing groups; it does not define joins."
+      },
+      {
+        "text": "SQL must build the working row set before selecting projected output columns.",
         "isCorrect": true,
-        "feedback": "Exactly: projection requires a resolved dataset containing all referenced fields."
-      },
-      {
-        "text": "Because SELECT only sorts data and cannot reference source tables.",
-        "isCorrect": false,
-        "feedback": "SELECT performs projection, while sorting is handled later by ORDER BY."
-      },
-      {
-        "text": "Because HAVING defines table relationships before joins are planned.",
-        "isCorrect": false,
-        "feedback": "HAVING filters grouped results and does not establish join relationships."
-      },
-      {
-        "text": "Because ORDER BY must execute first to choose the correct joined tables.",
-        "isCorrect": false,
-        "feedback": "ORDER BY is a final presentation step, not table selection logic."
+        "feedback": "Exactly: projection requires a resolved and filtered relational dataset first."
       }
-    ]
+    ],
+    "hint": "Execution starts with source rows, not projection."
   },
   {
     "id": "q5",
     "question": "Identify the option aligned with this note: What is the correct logical SQL execution order from the notes?",
-    "hint": "Execution starts with source rows, not projection.",
     "requiresWhy": true,
     "options": [
       {
         "text": "FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY",
         "isCorrect": true,
-        "feedback": "Correct: row-set construction and filtering happen before projection and sorting."
+        "feedback": "Correct: source rows are built and filtered before projection and sorting."
       },
       {
-        "text": "SELECT -> FROM -> WHERE -> GROUP BY -> HAVING -> ORDER BY",
+        "text": "FROM -> JOIN -> GROUP BY -> WHERE -> HAVING -> SELECT -> ORDER BY",
         "isCorrect": false,
-        "feedback": "That is written syntax order, but execution starts from source resolution."
+        "feedback": "WHERE filters rows before grouping, not after it."
       },
       {
-        "text": "WHERE -> FROM -> JOIN -> SELECT -> GROUP BY -> HAVING -> ORDER BY",
+        "text": "FROM -> JOIN -> WHERE -> GROUP BY -> SELECT -> HAVING -> ORDER BY",
         "isCorrect": false,
-        "feedback": "WHERE cannot run first because no joined row set exists yet."
+        "feedback": "HAVING filters grouped results before final SELECT projection."
       },
       {
-        "text": "FROM -> GROUP BY -> WHERE -> HAVING -> SELECT -> ORDER BY -> JOIN",
+        "text": "FROM -> JOIN -> WHERE -> SELECT -> GROUP BY -> HAVING -> ORDER BY",
         "isCorrect": false,
-        "feedback": "JOIN must occur before grouping to build the combined working dataset."
+        "feedback": "SELECT cannot precede grouping because GROUP BY/HAVING shape projection input."
       }
     ],
     "whyQuestion": "Why is this rule preferred in practice? Why must SQL process FROM and JOIN before SELECT?",
     "whyOptions": [
       {
-        "text": "Because SQL must build the working row set before choosing output columns.",
+        "text": "SQL must build the working row set before selecting projected output columns.",
         "isCorrect": true,
-        "feedback": "Exactly: projection requires a resolved dataset containing all referenced fields."
+        "feedback": "Exactly: projection requires a resolved and filtered relational dataset first."
       },
       {
-        "text": "Because SELECT only sorts data and cannot reference source tables.",
+        "text": "SELECT must run first so WHERE and GROUP BY can reference select aliases.",
         "isCorrect": false,
-        "feedback": "SELECT performs projection, while sorting is handled later by ORDER BY."
+        "feedback": "Aliases are not a reason for execution order and often unavailable there."
       },
       {
-        "text": "Because HAVING defines table relationships before joins are planned.",
+        "text": "HAVING creates join relationships that FROM and JOIN evaluate afterward.",
         "isCorrect": false,
-        "feedback": "HAVING filters grouped results and does not establish join relationships."
+        "feedback": "HAVING filters existing groups; it does not define joins."
       },
       {
-        "text": "Because ORDER BY must execute first to choose the correct joined tables.",
+        "text": "ORDER BY determines which joined rows survive earlier relational operations.",
         "isCorrect": false,
-        "feedback": "ORDER BY is a final presentation step, not table selection logic."
+        "feedback": "ORDER BY sorts final results; it does not decide row eligibility."
       }
-    ]
+    ],
+    "hint": "Execution starts with source rows, not projection."
   },
   {
     "id": "q6",
     "question": "In a code review, which statement holds: What is the correct logical SQL execution order from the notes?",
-    "hint": "Execution starts with source rows, not projection.",
     "requiresWhy": true,
     "options": [
       {
+        "text": "FROM -> JOIN -> GROUP BY -> WHERE -> HAVING -> SELECT -> ORDER BY",
+        "isCorrect": false,
+        "feedback": "WHERE filters rows before grouping, not after it."
+      },
+      {
+        "text": "FROM -> JOIN -> WHERE -> SELECT -> GROUP BY -> HAVING -> ORDER BY",
+        "isCorrect": false,
+        "feedback": "SELECT cannot precede grouping because GROUP BY/HAVING shape projection input."
+      },
+      {
+        "text": "FROM -> JOIN -> WHERE -> GROUP BY -> SELECT -> HAVING -> ORDER BY",
+        "isCorrect": false,
+        "feedback": "HAVING filters grouped results before final SELECT projection."
+      },
+      {
         "text": "FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY",
         "isCorrect": true,
-        "feedback": "Correct: row-set construction and filtering happen before projection and sorting."
-      },
-      {
-        "text": "SELECT -> FROM -> WHERE -> GROUP BY -> HAVING -> ORDER BY",
-        "isCorrect": false,
-        "feedback": "That is written syntax order, but execution starts from source resolution."
-      },
-      {
-        "text": "WHERE -> FROM -> JOIN -> SELECT -> GROUP BY -> HAVING -> ORDER BY",
-        "isCorrect": false,
-        "feedback": "WHERE cannot run first because no joined row set exists yet."
-      },
-      {
-        "text": "FROM -> GROUP BY -> WHERE -> HAVING -> SELECT -> ORDER BY -> JOIN",
-        "isCorrect": false,
-        "feedback": "JOIN must occur before grouping to build the combined working dataset."
+        "feedback": "Correct: source rows are built and filtered before projection and sorting."
       }
     ],
     "whyQuestion": "Why does this avoid the common misconception? Why must SQL process FROM and JOIN before SELECT?",
     "whyOptions": [
       {
-        "text": "Because SQL must build the working row set before choosing output columns.",
+        "text": "SELECT must run first so WHERE and GROUP BY can reference select aliases.",
+        "isCorrect": false,
+        "feedback": "Aliases are not a reason for execution order and often unavailable there."
+      },
+      {
+        "text": "HAVING creates join relationships that FROM and JOIN evaluate afterward.",
+        "isCorrect": false,
+        "feedback": "HAVING filters existing groups; it does not define joins."
+      },
+      {
+        "text": "ORDER BY determines which joined rows survive earlier relational operations.",
+        "isCorrect": false,
+        "feedback": "ORDER BY sorts final results; it does not decide row eligibility."
+      },
+      {
+        "text": "SQL must build the working row set before selecting projected output columns.",
         "isCorrect": true,
-        "feedback": "Exactly: projection requires a resolved dataset containing all referenced fields."
-      },
-      {
-        "text": "Because SELECT only sorts data and cannot reference source tables.",
-        "isCorrect": false,
-        "feedback": "SELECT performs projection, while sorting is handled later by ORDER BY."
-      },
-      {
-        "text": "Because HAVING defines table relationships before joins are planned.",
-        "isCorrect": false,
-        "feedback": "HAVING filters grouped results and does not establish join relationships."
-      },
-      {
-        "text": "Because ORDER BY must execute first to choose the correct joined tables.",
-        "isCorrect": false,
-        "feedback": "ORDER BY is a final presentation step, not table selection logic."
+        "feedback": "Exactly: projection requires a resolved and filtered relational dataset first."
       }
-    ]
+    ],
+    "hint": "Execution starts with source rows, not projection."
   },
   {
     "id": "q7",
     "question": "Which choice avoids the common misunderstanding: What is the correct logical SQL execution order from the notes?",
-    "hint": "Execution starts with source rows, not projection.",
     "requiresWhy": true,
     "options": [
       {
+        "text": "FROM -> JOIN -> WHERE -> GROUP BY -> SELECT -> HAVING -> ORDER BY",
+        "isCorrect": false,
+        "feedback": "HAVING filters grouped results before final SELECT projection."
+      },
+      {
+        "text": "FROM -> JOIN -> GROUP BY -> WHERE -> HAVING -> SELECT -> ORDER BY",
+        "isCorrect": false,
+        "feedback": "WHERE filters rows before grouping, not after it."
+      },
+      {
         "text": "FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY",
         "isCorrect": true,
-        "feedback": "Correct: row-set construction and filtering happen before projection and sorting."
+        "feedback": "Correct: source rows are built and filtered before projection and sorting."
       },
       {
-        "text": "SELECT -> FROM -> WHERE -> GROUP BY -> HAVING -> ORDER BY",
+        "text": "FROM -> JOIN -> WHERE -> SELECT -> GROUP BY -> HAVING -> ORDER BY",
         "isCorrect": false,
-        "feedback": "That is written syntax order, but execution starts from source resolution."
-      },
-      {
-        "text": "WHERE -> FROM -> JOIN -> SELECT -> GROUP BY -> HAVING -> ORDER BY",
-        "isCorrect": false,
-        "feedback": "WHERE cannot run first because no joined row set exists yet."
-      },
-      {
-        "text": "FROM -> GROUP BY -> WHERE -> HAVING -> SELECT -> ORDER BY -> JOIN",
-        "isCorrect": false,
-        "feedback": "JOIN must occur before grouping to build the combined working dataset."
+        "feedback": "SELECT cannot precede grouping because GROUP BY/HAVING shape projection input."
       }
     ],
     "whyQuestion": "Why is this the most defensible reasoning? Why must SQL process FROM and JOIN before SELECT?",
     "whyOptions": [
       {
-        "text": "Because SQL must build the working row set before choosing output columns.",
+        "text": "SELECT must run first so WHERE and GROUP BY can reference select aliases.",
+        "isCorrect": false,
+        "feedback": "Aliases are not a reason for execution order and often unavailable there."
+      },
+      {
+        "text": "ORDER BY determines which joined rows survive earlier relational operations.",
+        "isCorrect": false,
+        "feedback": "ORDER BY sorts final results; it does not decide row eligibility."
+      },
+      {
+        "text": "HAVING creates join relationships that FROM and JOIN evaluate afterward.",
+        "isCorrect": false,
+        "feedback": "HAVING filters existing groups; it does not define joins."
+      },
+      {
+        "text": "SQL must build the working row set before selecting projected output columns.",
         "isCorrect": true,
-        "feedback": "Exactly: projection requires a resolved dataset containing all referenced fields."
-      },
-      {
-        "text": "Because SELECT only sorts data and cannot reference source tables.",
-        "isCorrect": false,
-        "feedback": "SELECT performs projection, while sorting is handled later by ORDER BY."
-      },
-      {
-        "text": "Because HAVING defines table relationships before joins are planned.",
-        "isCorrect": false,
-        "feedback": "HAVING filters grouped results and does not establish join relationships."
-      },
-      {
-        "text": "Because ORDER BY must execute first to choose the correct joined tables.",
-        "isCorrect": false,
-        "feedback": "ORDER BY is a final presentation step, not table selection logic."
+        "feedback": "Exactly: projection requires a resolved and filtered relational dataset first."
       }
-    ]
+    ],
+    "hint": "Execution starts with source rows, not projection."
   },
   {
     "id": "q8",
     "question": "Select the strongest rule from this topic: What is the correct logical SQL execution order from the notes?",
-    "hint": "Execution starts with source rows, not projection.",
     "requiresWhy": true,
     "options": [
       {
+        "text": "FROM -> JOIN -> WHERE -> GROUP BY -> SELECT -> HAVING -> ORDER BY",
+        "isCorrect": false,
+        "feedback": "HAVING filters grouped results before final SELECT projection."
+      },
+      {
         "text": "FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY",
         "isCorrect": true,
-        "feedback": "Correct: row-set construction and filtering happen before projection and sorting."
+        "feedback": "Correct: source rows are built and filtered before projection and sorting."
       },
       {
-        "text": "SELECT -> FROM -> WHERE -> GROUP BY -> HAVING -> ORDER BY",
+        "text": "FROM -> JOIN -> WHERE -> SELECT -> GROUP BY -> HAVING -> ORDER BY",
         "isCorrect": false,
-        "feedback": "That is written syntax order, but execution starts from source resolution."
+        "feedback": "SELECT cannot precede grouping because GROUP BY/HAVING shape projection input."
       },
       {
-        "text": "WHERE -> FROM -> JOIN -> SELECT -> GROUP BY -> HAVING -> ORDER BY",
+        "text": "FROM -> JOIN -> GROUP BY -> WHERE -> HAVING -> SELECT -> ORDER BY",
         "isCorrect": false,
-        "feedback": "WHERE cannot run first because no joined row set exists yet."
-      },
-      {
-        "text": "FROM -> GROUP BY -> WHERE -> HAVING -> SELECT -> ORDER BY -> JOIN",
-        "isCorrect": false,
-        "feedback": "JOIN must occur before grouping to build the combined working dataset."
+        "feedback": "WHERE filters rows before grouping, not after it."
       }
     ],
     "whyQuestion": "Why does this align with the note intent? Why must SQL process FROM and JOIN before SELECT?",
     "whyOptions": [
       {
-        "text": "Because SQL must build the working row set before choosing output columns.",
+        "text": "ORDER BY determines which joined rows survive earlier relational operations.",
+        "isCorrect": false,
+        "feedback": "ORDER BY sorts final results; it does not decide row eligibility."
+      },
+      {
+        "text": "HAVING creates join relationships that FROM and JOIN evaluate afterward.",
+        "isCorrect": false,
+        "feedback": "HAVING filters existing groups; it does not define joins."
+      },
+      {
+        "text": "SQL must build the working row set before selecting projected output columns.",
         "isCorrect": true,
-        "feedback": "Exactly: projection requires a resolved dataset containing all referenced fields."
+        "feedback": "Exactly: projection requires a resolved and filtered relational dataset first."
       },
       {
-        "text": "Because SELECT only sorts data and cannot reference source tables.",
+        "text": "SELECT must run first so WHERE and GROUP BY can reference select aliases.",
         "isCorrect": false,
-        "feedback": "SELECT performs projection, while sorting is handled later by ORDER BY."
-      },
-      {
-        "text": "Because HAVING defines table relationships before joins are planned.",
-        "isCorrect": false,
-        "feedback": "HAVING filters grouped results and does not establish join relationships."
-      },
-      {
-        "text": "Because ORDER BY must execute first to choose the correct joined tables.",
-        "isCorrect": false,
-        "feedback": "ORDER BY is a final presentation step, not table selection logic."
+        "feedback": "Aliases are not a reason for execution order and often unavailable there."
       }
-    ]
+    ],
+    "hint": "Execution starts with source rows, not projection."
   },
   {
     "id": "q9",
     "question": "Which option should be applied in real projects: What is the correct logical SQL execution order from the notes?",
-    "hint": "Execution starts with source rows, not projection.",
     "requiresWhy": true,
     "options": [
       {
+        "text": "FROM -> JOIN -> WHERE -> GROUP BY -> SELECT -> HAVING -> ORDER BY",
+        "isCorrect": false,
+        "feedback": "HAVING filters grouped results before final SELECT projection."
+      },
+      {
+        "text": "FROM -> JOIN -> GROUP BY -> WHERE -> HAVING -> SELECT -> ORDER BY",
+        "isCorrect": false,
+        "feedback": "WHERE filters rows before grouping, not after it."
+      },
+      {
         "text": "FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY",
         "isCorrect": true,
-        "feedback": "Correct: row-set construction and filtering happen before projection and sorting."
+        "feedback": "Correct: source rows are built and filtered before projection and sorting."
       },
       {
-        "text": "SELECT -> FROM -> WHERE -> GROUP BY -> HAVING -> ORDER BY",
+        "text": "FROM -> JOIN -> WHERE -> SELECT -> GROUP BY -> HAVING -> ORDER BY",
         "isCorrect": false,
-        "feedback": "That is written syntax order, but execution starts from source resolution."
-      },
-      {
-        "text": "WHERE -> FROM -> JOIN -> SELECT -> GROUP BY -> HAVING -> ORDER BY",
-        "isCorrect": false,
-        "feedback": "WHERE cannot run first because no joined row set exists yet."
-      },
-      {
-        "text": "FROM -> GROUP BY -> WHERE -> HAVING -> SELECT -> ORDER BY -> JOIN",
-        "isCorrect": false,
-        "feedback": "JOIN must occur before grouping to build the combined working dataset."
+        "feedback": "SELECT cannot precede grouping because GROUP BY/HAVING shape projection input."
       }
     ],
     "whyQuestion": "Why should engineers trust this explanation? Why must SQL process FROM and JOIN before SELECT?",
     "whyOptions": [
       {
-        "text": "Because SQL must build the working row set before choosing output columns.",
+        "text": "SELECT must run first so WHERE and GROUP BY can reference select aliases.",
+        "isCorrect": false,
+        "feedback": "Aliases are not a reason for execution order and often unavailable there."
+      },
+      {
+        "text": "SQL must build the working row set before selecting projected output columns.",
         "isCorrect": true,
-        "feedback": "Exactly: projection requires a resolved dataset containing all referenced fields."
+        "feedback": "Exactly: projection requires a resolved and filtered relational dataset first."
       },
       {
-        "text": "Because SELECT only sorts data and cannot reference source tables.",
+        "text": "ORDER BY determines which joined rows survive earlier relational operations.",
         "isCorrect": false,
-        "feedback": "SELECT performs projection, while sorting is handled later by ORDER BY."
+        "feedback": "ORDER BY sorts final results; it does not decide row eligibility."
       },
       {
-        "text": "Because HAVING defines table relationships before joins are planned.",
+        "text": "HAVING creates join relationships that FROM and JOIN evaluate afterward.",
         "isCorrect": false,
-        "feedback": "HAVING filters grouped results and does not establish join relationships."
-      },
-      {
-        "text": "Because ORDER BY must execute first to choose the correct joined tables.",
-        "isCorrect": false,
-        "feedback": "ORDER BY is a final presentation step, not table selection logic."
+        "feedback": "HAVING filters existing groups; it does not define joins."
       }
-    ]
+    ],
+    "hint": "Execution starts with source rows, not projection."
   },
   {
     "id": "q10",
     "question": "Confirm the core concept: What is the correct logical SQL execution order from the notes?",
-    "hint": "Execution starts with source rows, not projection.",
     "requiresWhy": true,
     "options": [
       {
+        "text": "FROM -> JOIN -> WHERE -> SELECT -> GROUP BY -> HAVING -> ORDER BY",
+        "isCorrect": false,
+        "feedback": "SELECT cannot precede grouping because GROUP BY/HAVING shape projection input."
+      },
+      {
+        "text": "FROM -> JOIN -> GROUP BY -> WHERE -> HAVING -> SELECT -> ORDER BY",
+        "isCorrect": false,
+        "feedback": "WHERE filters rows before grouping, not after it."
+      },
+      {
+        "text": "FROM -> JOIN -> WHERE -> GROUP BY -> SELECT -> HAVING -> ORDER BY",
+        "isCorrect": false,
+        "feedback": "HAVING filters grouped results before final SELECT projection."
+      },
+      {
         "text": "FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY",
         "isCorrect": true,
-        "feedback": "Correct: row-set construction and filtering happen before projection and sorting."
-      },
-      {
-        "text": "SELECT -> FROM -> WHERE -> GROUP BY -> HAVING -> ORDER BY",
-        "isCorrect": false,
-        "feedback": "That is written syntax order, but execution starts from source resolution."
-      },
-      {
-        "text": "WHERE -> FROM -> JOIN -> SELECT -> GROUP BY -> HAVING -> ORDER BY",
-        "isCorrect": false,
-        "feedback": "WHERE cannot run first because no joined row set exists yet."
-      },
-      {
-        "text": "FROM -> GROUP BY -> WHERE -> HAVING -> SELECT -> ORDER BY -> JOIN",
-        "isCorrect": false,
-        "feedback": "JOIN must occur before grouping to build the combined working dataset."
+        "feedback": "Correct: source rows are built and filtered before projection and sorting."
       }
     ],
     "whyQuestion": "Why is this the correct conceptual takeaway? Why must SQL process FROM and JOIN before SELECT?",
     "whyOptions": [
       {
-        "text": "Because SQL must build the working row set before choosing output columns.",
+        "text": "SELECT must run first so WHERE and GROUP BY can reference select aliases.",
+        "isCorrect": false,
+        "feedback": "Aliases are not a reason for execution order and often unavailable there."
+      },
+      {
+        "text": "HAVING creates join relationships that FROM and JOIN evaluate afterward.",
+        "isCorrect": false,
+        "feedback": "HAVING filters existing groups; it does not define joins."
+      },
+      {
+        "text": "SQL must build the working row set before selecting projected output columns.",
         "isCorrect": true,
-        "feedback": "Exactly: projection requires a resolved dataset containing all referenced fields."
+        "feedback": "Exactly: projection requires a resolved and filtered relational dataset first."
       },
       {
-        "text": "Because SELECT only sorts data and cannot reference source tables.",
+        "text": "ORDER BY determines which joined rows survive earlier relational operations.",
         "isCorrect": false,
-        "feedback": "SELECT performs projection, while sorting is handled later by ORDER BY."
-      },
-      {
-        "text": "Because HAVING defines table relationships before joins are planned.",
-        "isCorrect": false,
-        "feedback": "HAVING filters grouped results and does not establish join relationships."
-      },
-      {
-        "text": "Because ORDER BY must execute first to choose the correct joined tables.",
-        "isCorrect": false,
-        "feedback": "ORDER BY is a final presentation step, not table selection logic."
+        "feedback": "ORDER BY sorts final results; it does not decide row eligibility."
       }
-    ]
+    ],
+    "hint": "Execution starts with source rows, not projection."
   }
 ]
