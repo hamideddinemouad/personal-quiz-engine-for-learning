@@ -6,6 +6,8 @@ out
 *.tsbuildinfo
 .env*
 !.env.example
+# Local secret copy helpers (never commit)
+.env.vercel.copy
 data/*.sqlite
 data/*.sqlite-*
 v2-next/data/*.sqlite
