@@ -41,6 +41,7 @@ export interface QuizProgress {
 export interface DailyQuizHistoryEntry {
   date: string;
   savedAt: string;
+  subject: string | null;
   questions: QuizQuestion[];
 }
 

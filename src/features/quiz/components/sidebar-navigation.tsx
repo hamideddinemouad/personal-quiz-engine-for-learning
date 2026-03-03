@@ -18,6 +18,7 @@ import {
 interface SidebarNavigationProps {
   dailyMasteredGoal: number;
   dailySnapshotError: string | null;
+  quizSubject: string | null;
   studyStreakDays: number;
   isShufflingMegaQuiz: boolean;
   shuffleError: string | null;
@@ -52,6 +53,7 @@ function statusLabel(status: QuizStatus): string {
 export default function SidebarNavigation({
   dailyMasteredGoal,
   dailySnapshotError,
+  quizSubject,
   studyStreakDays,
   isShufflingMegaQuiz,
   shuffleError,
@@ -75,6 +77,9 @@ export default function SidebarNavigation({
       <p aria-live="polite" className="muted-text muted-text--with-icon">
         <ClockIcon className="inline-icon" />
         Stopwatch: <span className="mono-text">{formatStopwatch(elapsedSeconds)}</span>
+      </p>
+      <p className="muted-text quiz-subject">
+        Subject: <span className="mono-text">{quizSubject || 'No subject (legacy entry)'}</span>
       </p>
       {dailySnapshotError ? <p className="feedback feedback--error">{dailySnapshotError}</p> : null}
       <div aria-live="polite" className="sidebar-progress">

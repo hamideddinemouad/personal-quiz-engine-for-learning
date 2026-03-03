@@ -7,8 +7,18 @@ const MAX_DAYS_STORED = 365;
 type HistoryRow = {
   date: string;
   saved_at: string;
+  subject: string | null;
   questions_json: string;
 };
+
+function normalizeSubject(subject: string | null | undefined): string | null {
+  if (typeof subject !== 'string') {
+    return null;
+  }
+
+  const normalized = subject.trim();
+  return normalized.length > 0 ? normalized : null;
+}
 
 function mapRowToEntry(row: HistoryRow): DailyQuizHistoryEntry | null {
   // Goal: Convert raw SQL row into validated app shape.
@@ -22,6 +32,7 @@ function mapRowToEntry(row: HistoryRow): DailyQuizHistoryEntry | null {
     return {
       date: row.date,
       savedAt: row.saved_at,
+      subject: normalizeSubject(row.subject),
       questions: cloneQuestions(parsedQuestions)
     };
   } catch {
@@ -59,51 +70,57 @@ function trimHistoryToMaxDays(maxDays: number = MAX_DAYS_STORED): void {
 
 export function upsertDailyQuizHistoryEntry(
   date: string,
-  questionsSnapshot: QuizQuestion[]
+  questionsSnapshot: QuizQuestion[],
+  subject: string | null = null
 ): DailyQuizHistoryEntry {
   // Goal: Store one canonical snapshot per date (insert new / replace existing).
   const database = getDatabase();
   const snapshot = cloneQuestions(questionsSnapshot);
   const savedAt = new Date().toISOString();
+  const normalizedSubject = normalizeSubject(subject);
 
   database
     .prepare(
       `
-      INSERT INTO daily_quiz_history (date, saved_at, questions_json)
-      VALUES (?, ?, ?)
+      INSERT INTO daily_quiz_history (date, saved_at, subject, questions_json)
+      VALUES (?, ?, ?, ?)
       ON CONFLICT(date) DO UPDATE SET
         saved_at = excluded.saved_at,
+        subject = excluded.subject,
         questions_json = excluded.questions_json;
       `
     )
-    .run(date, savedAt, JSON.stringify(snapshot));
+    .run(date, savedAt, normalizedSubject, JSON.stringify(snapshot));
 
   trimHistoryToMaxDays();
 
   return {
     date,
     savedAt,
+    subject: normalizedSubject,
     questions: cloneQuestions(snapshot)
   };
 }
 
 export function createDailyQuizHistoryEntry(
   date: string,
-  questionsSnapshot: QuizQuestion[]
+  questionsSnapshot: QuizQuestion[],
+  subject: string | null = null
 ): DailyQuizHistoryEntry | null {
   // Goal: Create only a brand-new date row. If date already exists, return null.
   const database = getDatabase();
   const snapshot = cloneQuestions(questionsSnapshot);
   const savedAt = new Date().toISOString();
+  const normalizedSubject = normalizeSubject(subject);
 
   const insertResult = database
     .prepare(
       `
-      INSERT OR IGNORE INTO daily_quiz_history (date, saved_at, questions_json)
-      VALUES (?, ?, ?);
+      INSERT OR IGNORE INTO daily_quiz_history (date, saved_at, subject, questions_json)
+      VALUES (?, ?, ?, ?);
       `
     )
-    .run(date, savedAt, JSON.stringify(snapshot));
+    .run(date, savedAt, normalizedSubject, JSON.stringify(snapshot));
 
   if (insertResult.changes === 0) {
     return null;
@@ -114,6 +131,7 @@ export function createDailyQuizHistoryEntry(
   return {
     date,
     savedAt,
+    subject: normalizedSubject,
     questions: cloneQuestions(snapshot)
   };
 }
@@ -122,7 +140,7 @@ export function listDailyQuizHistoryEntries(): DailyQuizHistoryEntry[] {
   // Goal: Return ascending date history and silently skip corrupt rows.
   const database = getDatabase();
   const rows = database
-    .prepare('SELECT date, saved_at, questions_json FROM daily_quiz_history ORDER BY date ASC')
+    .prepare('SELECT date, saved_at, subject, questions_json FROM daily_quiz_history ORDER BY date ASC')
     .all() as HistoryRow[];
 
   return rows
@@ -134,7 +152,9 @@ export function findDailyQuizHistoryEntryByDate(date: string): DailyQuizHistoryE
   // Goal: Fetch exactly one day snapshot when available.
   const database = getDatabase();
   const row = database
-    .prepare('SELECT date, saved_at, questions_json FROM daily_quiz_history WHERE date = ? LIMIT 1')
+    .prepare(
+      'SELECT date, saved_at, subject, questions_json FROM daily_quiz_history WHERE date = ? LIMIT 1'
+    )
     .get(date) as HistoryRow | undefined;
 
   if (!row) {
@@ -151,7 +171,7 @@ export function findLatestDailyQuizHistoryBeforeDate(date: string): DailyQuizHis
   const row = database
     .prepare(
       `
-      SELECT date, saved_at, questions_json
+      SELECT date, saved_at, subject, questions_json
       FROM daily_quiz_history
       WHERE date < ?
       ORDER BY date DESC

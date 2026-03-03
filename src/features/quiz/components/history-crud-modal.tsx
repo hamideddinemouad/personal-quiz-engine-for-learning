@@ -26,14 +26,18 @@ interface HistoryByDateApiResponse {
 
 interface HistorySummaryRow {
   date: string;
+  subject: string | null;
   savedAt: string;
   questionCount: number;
 }
+
+const LEGACY_SUBJECT_PLACEHOLDER = 'No subject (legacy entry)';
 
 function toSummaryRows(entries: DailyQuizHistoryEntry[]): HistorySummaryRow[] {
   return [...entries]
     .map((entry) => ({
       date: entry.date,
+      subject: entry.subject ?? null,
       savedAt: entry.savedAt,
       questionCount: Array.isArray(entry.questions) ? entry.questions.length : 0
     }))
@@ -393,7 +397,9 @@ export default function HistoryCrudModal({ isOpen, onClose }: HistoryCrudModalPr
                 return (
                   <li className="history-row" key={row.date}>
                     <div className="history-row__meta">
-                      <p className="history-row__title">{row.date}</p>
+                      <p className="history-row__title">
+                        {row.date} • {row.subject || LEGACY_SUBJECT_PLACEHOLDER}
+                      </p>
                       <p className="muted-text">
                         Saved: {new Date(row.savedAt).toLocaleString()} • Questions: {row.questionCount}
                       </p>
@@ -448,13 +454,16 @@ export default function HistoryCrudModal({ isOpen, onClose }: HistoryCrudModalPr
           {selectedEntry ? (
             <div className="history-json">
               <p className="muted-text">
-                Date: {selectedEntry.date} • Saved: {new Date(selectedEntry.savedAt).toLocaleString()}
+                Date: {selectedEntry.date} • Subject:{' '}
+                {selectedEntry.subject || LEGACY_SUBJECT_PLACEHOLDER} • Saved:{' '}
+                {new Date(selectedEntry.savedAt).toLocaleString()}
               </p>
               <pre className="history-json__pre">
                 {JSON.stringify(
                   {
                     date: selectedEntry.date,
                     savedAt: selectedEntry.savedAt,
+                    subject: selectedEntry.subject,
                     questions: selectedEntry.questions
                   },
                   null,

@@ -28,8 +28,12 @@ This is a Next.js App Router rewrite of `v1` with the same quiz behavior, but wi
 `v1` saved daily snapshots in browser `localStorage`.
 
 This version writes them to SQLite (`data/quiz-history.sqlite`) with the same behavior:
-- On each page load, today’s quiz snapshot is created and saved
-- If today already exists, it is overwritten
+- On page load, app reads today’s quiz from DB only
+- If today is missing, user chooses either:
+  - `Load Latest Quiz` (copy latest past day into today)
+  - `Shuffle Mega Quiz` (build from past history and save as today)
+  - `Use JSON Quiz As Today` (paste JSON + optional subject, then save as today)
+- Each daily row also stores a `subject` label for quick reference
 - History is capped to 365 days
 
 ## Project structure
@@ -39,14 +43,14 @@ app/
   api/quiz/history/route.ts           # list all daily snapshots
   api/quiz/history/[date]/route.ts    # get one date snapshot
   api/quiz/mega/route.ts              # build mega quiz from selected dates
+  api/quiz/today/route.ts             # create/read today's quiz snapshot
   layout.tsx
-  page.tsx                            # creates/stores today's snapshot and renders quiz
+  page.tsx                            # renders quiz from today's DB snapshot
 
 src/
   constants/quiz-status.ts
   types/quiz.ts
   lib/
-    questions.ts                      # quiz bank
     quiz-transform.ts                 # shuffle + clone helpers
     quiz-status.ts                    # status and initial answer helpers
     date.ts                           # YYYY-MM-DD local key

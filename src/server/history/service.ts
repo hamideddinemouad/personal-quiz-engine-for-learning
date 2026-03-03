@@ -1,5 +1,4 @@
 import { toLocalDateKey } from '@/lib/date';
-import { questions as sourceQuestions } from '@/lib/questions';
 import { cloneQuestions, shuffleQuestionChoices } from '@/lib/quiz-transform';
 import { buildShuffledMegaQuizFromHistory } from '@/server/history/mega-quiz';
 import {
@@ -16,18 +15,18 @@ import type { DailyQuizHistoryEntry, QuizQuestion, StudyStreakStats } from '@/ty
 
 export interface TodayQuizSnapshotResult {
   questions: QuizQuestion[];
+  subject: string | null;
   saveError: string | null;
 }
 
-function areQuestionSnapshotsEquivalent(left: QuizQuestion[], right: QuizQuestion[]): boolean {
-  // Goal: Treat two snapshots as "similar" only when full serialized content matches.
-  // This avoids false positives because every day shares the same question set.
-  return JSON.stringify(left) === JSON.stringify(right);
+export interface TodayQuizStateResult extends TodayQuizSnapshotResult {
+  hasTodayQuiz: boolean;
 }
 
 export function createAndStoreTodayQuiz(
   questions: QuizQuestion[],
-  quizTransform?: (questions: QuizQuestion[]) => QuizQuestion[]
+  quizTransform?: (questions: QuizQuestion[]) => QuizQuestion[],
+  subject: string | null = null
 ): TodayQuizSnapshotResult {
   // Goal: Create an isolated daily snapshot and persist it as today's canonical quiz.
   const todayDateKey = toLocalDateKey();
@@ -35,26 +34,98 @@ export function createAndStoreTodayQuiz(
   const transformedQuestions =
     typeof quizTransform === 'function' ? quizTransform(baseQuestions) : baseQuestions;
   const questionsSnapshot = cloneQuestions(transformedQuestions);
-  const previousEntry = findLatestDailyQuizHistoryBeforeDate(todayDateKey);
 
-  if (previousEntry && areQuestionSnapshotsEquivalent(questionsSnapshot, previousEntry.questions)) {
-    return {
-      questions: questionsSnapshot,
-      saveError: `Today's snapshot was not saved because it matches ${previousEntry.date}.`
-    };
-  }
-
-  upsertDailyQuizHistoryEntry(todayDateKey, questionsSnapshot);
+  const savedEntry = upsertDailyQuizHistoryEntry(todayDateKey, questionsSnapshot, subject);
 
   return {
     questions: questionsSnapshot,
+    subject: savedEntry.subject,
     saveError: null
   };
 }
 
-export function getOrCreateTodayQuizSnapshot(): TodayQuizSnapshotResult {
-  // Goal: Match v1 behavior: every page load gets a freshly shuffled daily snapshot.
-  return createAndStoreTodayQuiz(sourceQuestions, shuffleQuestionChoices);
+export function getTodayQuizSnapshot(): TodayQuizStateResult {
+  // Goal: Read today's quiz from DB only without creating fallback snapshots.
+  const todayDateKey = toLocalDateKey();
+  const todayEntry = findDailyQuizHistoryEntryByDate(todayDateKey);
+
+  if (!todayEntry || todayEntry.questions.length === 0) {
+    return {
+      hasTodayQuiz: false,
+      questions: [],
+      subject: null,
+      saveError: null
+    };
+  }
+
+  return {
+    hasTodayQuiz: true,
+    questions: cloneQuestions(todayEntry.questions),
+    subject: todayEntry.subject,
+    saveError: null
+  };
+}
+
+export function createTodayQuizFromLatestHistory(subject: string | null = null): TodayQuizSnapshotResult {
+  // Goal: If today's row is missing, initialize it from the latest previous snapshot.
+  const todayDateKey = toLocalDateKey();
+  const todayEntry = findDailyQuizHistoryEntryByDate(todayDateKey);
+  if (todayEntry && todayEntry.questions.length > 0) {
+    return {
+      questions: cloneQuestions(todayEntry.questions),
+      subject: todayEntry.subject,
+      saveError: null
+    };
+  }
+
+  const sourceEntry = findLatestDailyQuizHistoryBeforeDate(todayDateKey);
+  if (!sourceEntry || sourceEntry.questions.length === 0) {
+    return {
+      questions: [],
+      subject: null,
+      saveError: 'No previous quiz history found. Create at least one day in history first.'
+    };
+  }
+
+  return createAndStoreTodayQuiz(
+    sourceEntry.questions,
+    shuffleQuestionChoices,
+    subject || sourceEntry.subject
+  );
+}
+
+export function createTodayQuizFromShuffledMegaQuiz(
+  subject: string | null = null
+): TodayQuizSnapshotResult {
+  // Goal: If today's row is missing, persist a mega quiz as today's canonical snapshot.
+  const todayDateKey = toLocalDateKey();
+  const todayEntry = findDailyQuizHistoryEntryByDate(todayDateKey);
+  if (todayEntry && todayEntry.questions.length > 0) {
+    return {
+      questions: cloneQuestions(todayEntry.questions),
+      subject: todayEntry.subject,
+      saveError: null
+    };
+  }
+
+  const questions = buildShuffledMegaQuizFromPast();
+  if (questions.length === 0) {
+    return {
+      questions: [],
+      subject: null,
+      saveError: 'No past quiz history found. Complete quizzes on previous days first.'
+    };
+  }
+
+  return createAndStoreTodayQuiz(questions, undefined, subject || 'Shuffled Mega Quiz');
+}
+
+export function createTodayQuizFromJson(
+  questions: QuizQuestion[],
+  subject: string | null = null
+): TodayQuizSnapshotResult {
+  // Goal: Persist a user-pasted JSON quiz as today's canonical quiz.
+  return createAndStoreTodayQuiz(questions, undefined, subject || 'JSON Quiz');
 }
 
 export function getDailyQuizHistory(): DailyQuizHistoryEntry[] {
@@ -82,7 +153,7 @@ export function createDailyQuizByCopy(
     return { kind: 'source_not_found' };
   }
 
-  const createdEntry = createDailyQuizHistoryEntry(date, sourceEntry.questions);
+  const createdEntry = createDailyQuizHistoryEntry(date, sourceEntry.questions, sourceEntry.subject);
   if (!createdEntry) {
     return { kind: 'date_conflict' };
   }

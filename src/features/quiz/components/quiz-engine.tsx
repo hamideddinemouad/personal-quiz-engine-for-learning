@@ -12,6 +12,7 @@ interface QuizEngineProps {
   initialStudyStreakDays: number;
   dailyMasteredGoal: number;
   initialDailySnapshotError: string | null;
+  quizSubject: string | null;
   isShufflingMegaQuiz: boolean;
   shuffleError: string | null;
   onShuffleMegaQuiz: () => Promise<void>;
@@ -22,6 +23,7 @@ export default function QuizEngine({
   initialStudyStreakDays,
   dailyMasteredGoal,
   initialDailySnapshotError,
+  quizSubject,
   isShufflingMegaQuiz,
   shuffleError,
   onShuffleMegaQuiz,
@@ -51,6 +53,7 @@ export default function QuizEngine({
         <SidebarNavigation
           dailyMasteredGoal={dailyMasteredGoal}
           dailySnapshotError={initialDailySnapshotError}
+          quizSubject={quizSubject}
           studyStreakDays={initialStudyStreakDays}
           isShufflingMegaQuiz={isShufflingMegaQuiz}
           onOpenHistoryCrud={() => setIsHistoryCrudOpen(true)}

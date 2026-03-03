@@ -19,9 +19,21 @@ const CREATE_DAILY_QUIZ_HISTORY_TABLE_SQL = `
 CREATE TABLE IF NOT EXISTS daily_quiz_history (
   date TEXT PRIMARY KEY,
   saved_at TEXT NOT NULL,
+  subject TEXT,
   questions_json TEXT NOT NULL
 );
 `;
+
+function ensureDailyQuizHistorySubjectColumn(database: SqliteDatabase): void {
+  const columns = database
+    .prepare('PRAGMA table_info(daily_quiz_history)')
+    .all() as Array<{ name: string }>;
+  const hasSubjectColumn = columns.some((column) => column.name === 'subject');
+
+  if (!hasSubjectColumn) {
+    database.exec('ALTER TABLE daily_quiz_history ADD COLUMN subject TEXT;');
+  }
+}
 
 function ensureDataDirectoryExists(): void {
   // Goal: Guarantee sqlite file creation does not fail on missing parent folder.
@@ -32,6 +44,7 @@ function initializeDatabase(database: SqliteDatabase): void {
   // Goal: Configure sqlite once and ensure required schema exists.
   database.pragma('journal_mode = WAL');
   database.exec(CREATE_DAILY_QUIZ_HISTORY_TABLE_SQL);
+  ensureDailyQuizHistorySubjectColumn(database);
 }
 
 export function getDatabase(): SqliteDatabase {

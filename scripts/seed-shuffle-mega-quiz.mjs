@@ -8,6 +8,7 @@ const CREATE_DAILY_QUIZ_HISTORY_TABLE_SQL = `
 CREATE TABLE IF NOT EXISTS daily_quiz_history (
   date TEXT PRIMARY KEY,
   saved_at TEXT NOT NULL,
+  subject TEXT,
   questions_json TEXT NOT NULL
 );
 `;
