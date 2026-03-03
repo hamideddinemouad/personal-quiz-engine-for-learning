@@ -87,7 +87,7 @@ const JSON_QUIZ_TEMPLATE = `{
   ]
 }`;
 
-const AI_GENERATOR_PROMPT_TEMPLATE = `You are converting raw study notes into quiz JSON files for a strict validator.
+const AI_GENERATOR_PROMPT_TEMPLATE = `You are converting raw study notes into quiz JSON for a strict validator.
 
 Task:
 - Convert the notes below into one JSON object with "subject" and "questions".
@@ -98,10 +98,10 @@ Hard output rules (must follow):
 - Do not include comments or explanations.
 - Use double quotes for all keys and string values.
 - Ensure the result can be parsed with JSON.parse (no trailing commas).
-- In each file, the top-level value must be an object with:
+- The top-level value must be one JSON object with:
   - "subject": non-empty string
-  - "questions": non-empty JSON array of questions
-- IDs restart per file and must be unique in order: q1, q2, q3, ...
+  - "questions": non-empty array of quiz questions
+- IDs must be unique in order: q1, q2, q3, ...
 
 Question schema (exact field names):
 {
@@ -130,10 +130,10 @@ Question schema (exact field names):
 }
 
 Non-negotiable validation constraints:
-- Each file top-level value must be an object.
+- Top-level must be an object.
 - "subject" must be a non-empty string.
 - "questions" must be a non-empty array.
-- IDs in each file must be unique in order: q1, q2, q3, ...
+- IDs in "questions" must be unique in order: q1, q2, q3, ...
 - Every question must have a non-empty "question" string.
 - Every question must set "requiresWhy": true.
 - Every question must include non-empty "whyQuestion".
@@ -145,7 +145,7 @@ Non-negotiable validation constraints:
 - "options" must contain exactly one correct answer.
 - "whyOptions" must contain exactly one correct answer.
 - Never output empty arrays for "options" or "whyOptions".
-- Include "hint" mustnt give back answer though
+- Include "hint" only when genuinely useful.
 
 Feedback quality constraints (important):
 - Feedback must be compact for UI: one sentence, about 8-20 words.
@@ -164,14 +164,14 @@ Before finalizing, silently self-check:
 2. Every question has whyQuestion + 4 whyOptions.
 3. Every options/whyOptions array has exactly 4 items.
 4. Exactly one isCorrect=true in each options and each whyOptions array.
-5. Every file JSON is valid and parseable.
+5. JSON is valid and parseable.
 
 JSON structure example:
 ${JSON_QUIZ_TEMPLATE}
 
 Raw notes:
-<PASTE YOUR NOTES HERE>`;
-const RAW_NOTES_PLACEHOLDER = '<PASTE YOUR NOTES HERE>';
+<your notes here>`;
+const RAW_NOTES_PLACEHOLDER = '<your notes here>';
 
 function extractJsonPayload(input: string): string {
   const trimmedInput = input.trim();
