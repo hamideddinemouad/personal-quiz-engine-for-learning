@@ -9,6 +9,7 @@ interface HistoryCrudModalProps {
   isOpen: boolean;
   onClose: () => void;
   onLoadQuizTemporarily: (questions: QuizQuestion[], subject: string | null) => void;
+  onTodayEntryDeleted?: () => void;
 }
 
 interface HistoryApiResponse {
@@ -66,7 +67,8 @@ function formatQuestionsJson(entry: DailyQuizHistoryEntry): string {
 export default function HistoryCrudModal({
   isOpen,
   onClose,
-  onLoadQuizTemporarily
+  onLoadQuizTemporarily,
+  onTodayEntryDeleted
 }: HistoryCrudModalProps): JSX.Element | null {
   const [rows, setRows] = useState<HistorySummaryRow[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -361,6 +363,7 @@ export default function HistoryCrudModal({
     }
 
     setActiveRowAction(`delete:${date}`);
+    let shouldReturnToDailySetup = false;
 
     try {
       const response = await fetch(`/api/quiz/history/${encodeURIComponent(date)}`, {
@@ -386,6 +389,8 @@ export default function HistoryCrudModal({
         setSelectedSubjectInput('');
         setSelectedQuestionsInput('');
       }
+
+      shouldReturnToDailySetup = date === toLocalDateKey();
     } catch {
       setModalFeedback({
         tone: 'error',
@@ -393,6 +398,11 @@ export default function HistoryCrudModal({
       });
     } finally {
       setActiveRowAction(null);
+    }
+
+    if (shouldReturnToDailySetup) {
+      onClose();
+      onTodayEntryDeleted?.();
     }
   };
 

@@ -18,6 +18,7 @@ interface QuizEngineProps {
   shuffleError: string | null;
   onShuffleMegaQuiz: () => Promise<void>;
   onLoadQuizTemporarily: (questions: QuizQuestion[], subject: string | null) => void;
+  onTodayEntryDeleted: () => void;
   choiceUi: ChoiceUiMode;
 }
 
@@ -30,6 +31,7 @@ export default function QuizEngine({
   shuffleError,
   onShuffleMegaQuiz,
   onLoadQuizTemporarily,
+  onTodayEntryDeleted,
   choiceUi
 }: QuizEngineProps): JSX.Element {
   // Goal: Compose quiz content + sidebar controls from shared context state.
@@ -69,6 +71,7 @@ export default function QuizEngine({
         isOpen={isHistoryCrudOpen}
         onClose={() => setIsHistoryCrudOpen(false)}
         onLoadQuizTemporarily={onLoadQuizTemporarily}
+        onTodayEntryDeleted={onTodayEntryDeleted}
       />
     </main>
   );

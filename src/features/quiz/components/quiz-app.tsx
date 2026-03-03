@@ -90,12 +90,11 @@ const JSON_QUIZ_TEMPLATE = `{
 const AI_GENERATOR_PROMPT_TEMPLATE = `You are converting raw study notes into quiz JSON files for a strict validator.
 
 Task:
-- Convert each note into its own standalone JSON file in the "notes" directory.
+- Convert the notes below into one JSON object with "subject" and "questions".
 
 Hard output rules (must follow):
-- Create one file per note at "notes/<note-slug>.json".
-- Each file must contain JSON only (no comments or extra text).
-- Do not use markdown code fences.
+- output must be JSON only (no comments or extra text).
+- output in code fences.
 - Do not include comments or explanations.
 - Use double quotes for all keys and string values.
 - Ensure the result can be parsed with JSON.parse (no trailing commas).
@@ -146,7 +145,7 @@ Non-negotiable validation constraints:
 - "options" must contain exactly one correct answer.
 - "whyOptions" must contain exactly one correct answer.
 - Never output empty arrays for "options" or "whyOptions".
-- Include "hint" only when genuinely useful.
+- Include "hint" mustnt give back answer though
 
 Feedback quality constraints (important):
 - Feedback must be compact for UI: one sentence, about 8-20 words.
@@ -377,6 +376,12 @@ export default function QuizApp({
     setQuizSessionVersion((current) => current + 1);
   };
 
+  const handleTodayEntryDeleted = (): void => {
+    setNeedsDailySetup(true);
+    setDailySnapshotError(null);
+    setShuffleError(null);
+  };
+
   const aiPromptWithNotes = buildAiPromptWithNotes(aiRawNotesInput);
 
   if (needsDailySetup) {
@@ -544,6 +549,7 @@ export default function QuizApp({
         isShufflingMegaQuiz={isShufflingMegaQuiz}
         onShuffleMegaQuiz={handleShuffleMegaQuiz}
         onLoadQuizTemporarily={handleLoadQuizTemporarily}
+        onTodayEntryDeleted={handleTodayEntryDeleted}
         shuffleError={shuffleError}
       />
     </QuizProvider>
