@@ -206,6 +206,7 @@ export default function QuizApp({
 }: QuizAppProps): JSX.Element {
   const buildSessionQuestions = (questions: QuizQuestion[]): QuizQuestion[] =>
     shuffleQuestionChoices(questions);
+  const isFlashMode = choiceUi === 'flashcards';
 
   // Goal: Keep the active quiz session replaceable in-place (daily -> mega quiz)
   // without a full page refresh.
@@ -449,7 +450,13 @@ export default function QuizApp({
               }}
               type="button"
             >
-              {activeDailySetupMode === 'load' ? 'Loading Quiz...' : 'Load Latest Quiz'}
+              {activeDailySetupMode === 'load'
+                ? isFlashMode
+                  ? 'Loading Flashcards...'
+                  : 'Loading Quiz...'
+                : isFlashMode
+                  ? 'Load Latest Flashcards'
+                  : 'Load Latest Quiz'}
             </button>
             <button
               className="button button--ghost"
@@ -460,8 +467,12 @@ export default function QuizApp({
               type="button"
             >
               {activeDailySetupMode === 'shuffle'
-                ? 'Shuffling Mega Quiz...'
-                : 'Shuffle Mega Quiz'}
+                ? isFlashMode
+                  ? 'Shuffling Mega Flashcards...'
+                  : 'Shuffling Mega Quiz...'
+                : isFlashMode
+                  ? 'Shuffle Mega Flashcards'
+                  : 'Shuffle Mega Quiz'}
             </button>
           </div>
           <label className="history-field daily-setup__field">
@@ -494,7 +505,13 @@ export default function QuizApp({
             }}
             type="button"
           >
-            {activeDailySetupMode === 'json' ? 'Saving JSON Quiz...' : 'Use JSON Quiz As Today'}
+            {activeDailySetupMode === 'json'
+              ? isFlashMode
+                ? 'Saving JSON Flashcards...'
+                : 'Saving JSON Quiz...'
+              : isFlashMode
+                ? 'Use JSON Flashcards As Today'
+                : 'Use JSON Quiz As Today'}
           </button>
           {dailySnapshotError ? <p className="feedback feedback--error">{dailySnapshotError}</p> : null}
         </section>

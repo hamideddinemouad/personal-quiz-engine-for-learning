@@ -3,6 +3,7 @@
 import { QUIZ_STATUS } from '@/constants/quiz-status';
 import { useQuizContext } from '@/features/quiz/context/quiz-context';
 import { formatStopwatch } from '@/features/quiz/lib/format-stopwatch';
+import type { ChoiceUiMode } from '@/features/quiz/types';
 import type { QuizStatus } from '@/types/quiz';
 import {
   ChevronLeftIcon,
@@ -16,6 +17,7 @@ import {
 } from './icons';
 
 interface SidebarNavigationProps {
+  choiceUi: ChoiceUiMode;
   dailyMasteredGoal: number;
   dailySnapshotError: string | null;
   quizSubject: string | null;
@@ -54,6 +56,7 @@ function statusLabel(status: QuizStatus): string {
 }
 
 export default function SidebarNavigation({
+  choiceUi,
   dailyMasteredGoal,
   dailySnapshotError,
   quizSubject,
@@ -66,6 +69,7 @@ export default function SidebarNavigation({
   onCreateGithubBackup,
   onOpenHistoryCrud
 }: SidebarNavigationProps): JSX.Element {
+  const isFlashMode = choiceUi === 'flashcards';
   const { questions, currentQuestionIndex, statusesById, elapsedSeconds, progress, goToQuestion } =
     useQuizContext();
   const normalizedDailyGoal = Math.max(dailyMasteredGoal, 1);
@@ -132,7 +136,8 @@ export default function SidebarNavigation({
           </p>
         ) : null}
       </div>
-      <div className="sidebar-mega-action">
+      <div className="sidebar-quiz-actions">
+        <p className="sidebar-action-label">{isFlashMode ? 'Flashcard actions' : 'Quiz actions'}</p>
         <button
           className="button button--primary sidebar-mega-button"
           disabled={isShufflingMegaQuiz}
@@ -143,14 +148,24 @@ export default function SidebarNavigation({
         >
           <span className="button-content">
             <ShuffleIcon className={`inline-icon ${isShufflingMegaQuiz ? 'spin-icon' : ''}`} />
-            {isShufflingMegaQuiz ? 'Building Mega Quiz...' : 'Shuffle Mega Quiz'}
+            {isShufflingMegaQuiz
+              ? isFlashMode
+                ? 'Building Mega Flashcards...'
+                : 'Building Mega Quiz...'
+              : isFlashMode
+                ? 'Shuffle Mega Flashcards'
+                : 'Shuffle Mega Quiz'}
           </span>
         </button>
         <button className="button button--ghost sidebar-mega-button" onClick={onOpenHistoryCrud} type="button">
           Manage History DB
         </button>
+        {shuffleError ? <p className="feedback feedback--error">{shuffleError}</p> : null}
+      </div>
+      <div className="sidebar-backup-action">
+        <p className="sidebar-action-label">Data safety</p>
         <button
-          className="button button--ghost sidebar-mega-button"
+          className="button button--ghost sidebar-mega-button sidebar-backup-button"
           disabled={isCreatingGithubBackup}
           onClick={() => {
             void onCreateGithubBackup();
@@ -172,7 +187,6 @@ export default function SidebarNavigation({
             {backupFeedback.text}
           </p>
         ) : null}
-        {shuffleError ? <p className="feedback feedback--error">{shuffleError}</p> : null}
       </div>
 
       <div aria-label="Question list" className="navigator-grid">

@@ -60,6 +60,7 @@ export default function QuizEngine({
           <QuestionCard choiceUi={choiceUi} key={currentQuestion.id} question={currentQuestion} />
         </section>
         <SidebarNavigation
+          choiceUi={choiceUi}
           dailyMasteredGoal={dailyMasteredGoal}
           dailySnapshotError={initialDailySnapshotError}
           quizSubject={quizSubject}

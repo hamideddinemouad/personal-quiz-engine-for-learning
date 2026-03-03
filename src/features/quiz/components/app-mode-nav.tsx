@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const NAV_ITEMS = [
-  { href: '/', label: 'Normal Quiz' },
+  { href: '/quiz', label: 'Normal Quiz' },
   { href: '/flash', label: 'Flashcards' }
 ] as const;
 
@@ -17,10 +17,7 @@ export default function AppModeNav(): JSX.Element {
       <h2 className="app-mode-nav__title">Learning View</h2>
       <div className="app-mode-nav__links">
         {NAV_ITEMS.map((item) => {
-          // Root path should only highlight on exact "/", while non-root paths
-          // should stay active for sub-routes (e.g. "/flash/something").
-          const isActive =
-            item.href === '/' ? pathname === item.href : pathname.startsWith(item.href);
+          const isActive = pathname.startsWith(item.href);
 
           return (
             <Link

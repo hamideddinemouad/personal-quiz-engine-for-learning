@@ -3,11 +3,14 @@
   --bg-end: #0b1220;
   --panel: rgba(15, 23, 42, 0.9);
   --panel-accent: rgba(56, 189, 248, 0.16);
+  --panel-accent-alt: rgba(16, 185, 129, 0.14);
   --border: #334155;
   --text: #e2e8f0;
   --muted: #94a3b8;
   --primary: #38bdf8;
+  --primary-strong: #0ea5e9;
   --success: #22c55e;
+  --success-strong: #10b981;
   --error: #fb7185;
   --font-body-stack: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-display-stack: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -103,7 +106,11 @@ body {
 
 .app-mode-link--active {
   border-color: var(--primary);
-  background: rgba(56, 189, 248, 0.16);
+  background: linear-gradient(
+    135deg,
+    rgba(56, 189, 248, 0.2),
+    rgba(14, 165, 233, 0.14)
+  );
   color: #bae6fd;
 }
 
@@ -384,9 +391,9 @@ body {
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: 1rem;
-  background: var(--panel);
+  background: linear-gradient(150deg, rgba(15, 23, 42, 0.94), rgba(9, 14, 27, 0.92));
   padding: 1rem;
-  box-shadow: 0 8px 20px rgba(2, 6, 23, 0.35);
+  box-shadow: 0 10px 24px rgba(2, 6, 23, 0.4);
 }
 
 .card-surface::before {
@@ -395,7 +402,7 @@ body {
   inset: 0 auto auto 0;
   width: 72%;
   height: 1px;
-  background: linear-gradient(90deg, var(--panel-accent), transparent);
+  background: linear-gradient(90deg, var(--panel-accent), var(--panel-accent-alt), transparent);
   pointer-events: none;
   z-index: 0;
 }
@@ -455,7 +462,7 @@ body {
   font-size: 0.72rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: #93c5fd;
   font-weight: 600;
   font-family: var(--font-display-stack);
 }
@@ -760,9 +767,9 @@ body {
 }
 
 .quiz-subject {
-  border: 1px solid rgba(71, 85, 105, 0.7);
+  border: 1px solid rgba(56, 189, 248, 0.4);
   border-radius: 0.62rem;
-  background: rgba(15, 23, 42, 0.42);
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.12), rgba(15, 23, 42, 0.45));
   padding: 0.4rem 0.5rem;
 }
 
@@ -772,7 +779,25 @@ body {
   gap: 0.5rem;
 }
 
-.sidebar-mega-action {
+.sidebar-quiz-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.sidebar-action-label {
+  margin: 0;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #7dd3fc;
+  font-weight: 700;
+}
+
+.sidebar-backup-action {
+  border-top: 1px solid rgba(71, 85, 105, 0.85);
+  margin-top: 0.25rem;
+  padding-top: 0.8rem;
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
@@ -782,7 +807,7 @@ body {
   border: 1px solid var(--border);
   border-radius: 0.75rem;
   padding: 0.6rem 0.7rem;
-  background: rgba(15, 23, 42, 0.35);
+  background: linear-gradient(140deg, rgba(30, 41, 59, 0.45), rgba(15, 23, 42, 0.34));
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
@@ -801,9 +826,9 @@ body {
 }
 
 .sidebar-progress-row--card {
-  border: 1px solid rgba(71, 85, 105, 0.7);
+  border: 1px solid rgba(56, 189, 248, 0.3);
   border-radius: 0.62rem;
-  background: rgba(15, 23, 42, 0.42);
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(15, 23, 42, 0.45));
   padding: 0.4rem 0.5rem;
   display: flex;
   flex-direction: column;
@@ -832,12 +857,12 @@ body {
   display: block;
   height: 100%;
   width: 0;
-  background: var(--primary);
+  background: linear-gradient(90deg, var(--primary), var(--primary-strong));
   transition: width 0.2s ease;
 }
 
 .goal-progress-fill--complete {
-  background: var(--success);
+  background: linear-gradient(90deg, var(--success), var(--success-strong));
 }
 
 .goal-celebration {
@@ -882,7 +907,11 @@ body {
 
 .navigator-item--active {
   border-color: var(--primary);
-  background: rgba(56, 189, 248, 0.16);
+  background: linear-gradient(
+    135deg,
+    rgba(56, 189, 248, 0.2),
+    rgba(15, 23, 42, 0.5)
+  );
   color: #bae6fd;
 }
 
@@ -940,7 +969,7 @@ body {
 
 .button--ghost {
   border-color: #475569;
-  background: rgba(15, 23, 42, 0.45);
+  background: rgba(15, 23, 42, 0.5);
   color: var(--text);
 }
 
@@ -950,12 +979,24 @@ body {
 }
 
 .button--primary {
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+  box-shadow: 0 8px 18px rgba(14, 165, 233, 0.26);
   color: #082f49;
 }
 
 .button--primary:hover:not(:disabled) {
-  background: #7dd3fc;
+  background: linear-gradient(135deg, #7dd3fc, #38bdf8);
+}
+
+.sidebar-backup-button {
+  border-color: rgba(16, 185, 129, 0.55);
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(15, 23, 42, 0.55));
+  color: #d1fae5;
+}
+
+.sidebar-backup-button:hover:not(:disabled) {
+  border-color: rgba(52, 211, 153, 0.8);
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.26), rgba(15, 23, 42, 0.62));
 }
 
 .inline-icon {
