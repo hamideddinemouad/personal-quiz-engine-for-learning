@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { QuizProvider } from '@/features/quiz/context/quiz-context';
 import type { ChoiceUiMode } from '@/features/quiz/types';
+import { shuffleQuestionChoices } from '@/lib/quiz-transform';
 import type { QuizQuestion } from '@/types/quiz';
 import QuizEngine from './quiz-engine';
 
@@ -37,59 +38,62 @@ interface BackupApiResponse {
 
 type DailySetupMode = 'load' | 'shuffle' | 'json';
 
-const JSON_QUIZ_TEMPLATE = `[
-  {
-    "id": "q1",
-    "question": "What is the correct logical order of SQL query execution?",
-    "hint": "Execution order differs from written syntax.",
-    "requiresWhy": true,
-    "options": [
-      {
-        "text": "FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY",
-        "isCorrect": true,
-        "feedback": "Correct: SQL builds and filters row sets before projection and final sorting."
-      },
-      {
-        "text": "SELECT -> FROM -> WHERE -> GROUP BY -> HAVING -> ORDER BY",
-        "isCorrect": false,
-        "feedback": "That is written syntax order, but execution starts from source row construction."
-      },
-      {
-        "text": "FROM -> WHERE -> SELECT -> ORDER BY -> GROUP BY -> HAVING",
-        "isCorrect": false,
-        "feedback": "Grouping and HAVING must occur before projection and after row filtering."
-      },
-      {
-        "text": "WHERE -> FROM -> GROUP BY -> SELECT -> HAVING -> ORDER BY",
-        "isCorrect": false,
-        "feedback": "WHERE cannot run first because rows do not exist before FROM/JOIN."
-      }
-    ],
-    "whyQuestion": "Why does SQL execute FROM/JOIN before SELECT?",
-    "whyOptions": [
-      {
-        "text": "Because SQL must construct the working row set before choosing output columns.",
-        "isCorrect": true,
-        "feedback": "Exactly: projection requires a formed dataset, so source resolution happens first."
-      },
-      {
-        "text": "Because SELECT is only for aliases and never controls returned columns.",
-        "isCorrect": false,
-        "feedback": "Incorrect: SELECT directly controls projection, but only after row-set creation."
-      },
-      {
-        "text": "Because ORDER BY always decides which rows are available to SELECT.",
-        "isCorrect": false,
-        "feedback": "ORDER BY only sorts final output and does not create eligible rows."
-      },
-      {
-        "text": "Because HAVING defines base tables before joins are evaluated.",
-        "isCorrect": false,
-        "feedback": "HAVING filters groups later; it does not participate in table resolution."
-      }
-    ]
-  }
-]`;
+const JSON_QUIZ_TEMPLATE = `{
+  "subject": "SQL Advanced Fundamentals",
+  "questions": [
+    {
+      "id": "q1",
+      "question": "What is the correct logical order of SQL query execution?",
+      "hint": "Execution order differs from written syntax.",
+      "requiresWhy": true,
+      "options": [
+        {
+          "text": "FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY",
+          "isCorrect": true,
+          "feedback": "Correct: SQL builds and filters row sets before projection and final sorting."
+        },
+        {
+          "text": "SELECT -> FROM -> WHERE -> GROUP BY -> HAVING -> ORDER BY",
+          "isCorrect": false,
+          "feedback": "That is written syntax order, but execution starts from source row construction."
+        },
+        {
+          "text": "FROM -> WHERE -> SELECT -> ORDER BY -> GROUP BY -> HAVING",
+          "isCorrect": false,
+          "feedback": "Grouping and HAVING must occur before projection and after row filtering."
+        },
+        {
+          "text": "WHERE -> FROM -> GROUP BY -> SELECT -> HAVING -> ORDER BY",
+          "isCorrect": false,
+          "feedback": "WHERE cannot run first because rows do not exist before FROM/JOIN."
+        }
+      ],
+      "whyQuestion": "Why does SQL execute FROM/JOIN before SELECT?",
+      "whyOptions": [
+        {
+          "text": "Because SQL must construct the working row set before choosing output columns.",
+          "isCorrect": true,
+          "feedback": "Exactly: projection requires a formed dataset, so source resolution happens first."
+        },
+        {
+          "text": "Because SELECT is only for aliases and never controls returned columns.",
+          "isCorrect": false,
+          "feedback": "Incorrect: SELECT directly controls projection, but only after row-set creation."
+        },
+        {
+          "text": "Because ORDER BY always decides which rows are available to SELECT.",
+          "isCorrect": false,
+          "feedback": "ORDER BY only sorts final output and does not create eligible rows."
+        },
+        {
+          "text": "Because HAVING defines base tables before joins are evaluated.",
+          "isCorrect": false,
+          "feedback": "HAVING filters groups later; it does not participate in table resolution."
+        }
+      ]
+    }
+  ]
+}`;
 
 const AI_GENERATOR_PROMPT_TEMPLATE = `You are converting raw study notes into quiz JSON files for a strict validator.
 
@@ -103,34 +107,41 @@ Hard output rules (must follow):
 - Do not include comments or explanations.
 - Use double quotes for all keys and string values.
 - Ensure the result can be parsed with JSON.parse (no trailing commas).
-- In each file, the top-level value must be one non-empty JSON array of questions.
+- In each file, the top-level value must be an object with:
+  - "subject": non-empty string
+  - "questions": non-empty JSON array of questions
 - IDs restart per file and must be unique in order: q1, q2, q3, ...
 
 Question schema (exact field names):
-[
-  {
-    "id": "q1",
-    "question": "string",
-    "hint": "string (optional)",
-    "requiresWhy": true,
-    "options": [
-      { "text": "string", "isCorrect": true, "feedback": "string" },
-      { "text": "string", "isCorrect": false, "feedback": "string" },
-      { "text": "string", "isCorrect": false, "feedback": "string" },
-      { "text": "string", "isCorrect": false, "feedback": "string" }
-    ],
-    "whyQuestion": "string",
-    "whyOptions": [
-      { "text": "string", "isCorrect": true, "feedback": "string" },
-      { "text": "string", "isCorrect": false, "feedback": "string" },
-      { "text": "string", "isCorrect": false, "feedback": "string" },
-      { "text": "string", "isCorrect": false, "feedback": "string" }
-    ]
-  }
-]
+{
+  "subject": "string",
+  "questions": [
+    {
+      "id": "q1",
+      "question": "string",
+      "hint": "string (optional)",
+      "requiresWhy": true,
+      "options": [
+        { "text": "string", "isCorrect": true, "feedback": "string" },
+        { "text": "string", "isCorrect": false, "feedback": "string" },
+        { "text": "string", "isCorrect": false, "feedback": "string" },
+        { "text": "string", "isCorrect": false, "feedback": "string" }
+      ],
+      "whyQuestion": "string",
+      "whyOptions": [
+        { "text": "string", "isCorrect": true, "feedback": "string" },
+        { "text": "string", "isCorrect": false, "feedback": "string" },
+        { "text": "string", "isCorrect": false, "feedback": "string" },
+        { "text": "string", "isCorrect": false, "feedback": "string" }
+      ]
+    }
+  ]
+}
 
 Non-negotiable validation constraints:
-- Each file top-level value must be a non-empty array.
+- Each file top-level value must be an object.
+- "subject" must be a non-empty string.
+- "questions" must be a non-empty array.
 - IDs in each file must be unique in order: q1, q2, q3, ...
 - Every question must have a non-empty "question" string.
 - Every question must set "requiresWhy": true.
@@ -158,16 +169,18 @@ Content quality constraints:
 - Do not output placeholders like "TBD", "...", or "<...>".
 
 Before finalizing, silently self-check:
-1. Every question has whyQuestion + 4 whyOptions.
-2. Every options/whyOptions array has exactly 4 items.
-3. Exactly one isCorrect=true in each options and each whyOptions array.
-4. Every file JSON is valid and parseable.
+1. Output shape is { subject, questions } with non-empty values.
+2. Every question has whyQuestion + 4 whyOptions.
+3. Every options/whyOptions array has exactly 4 items.
+4. Exactly one isCorrect=true in each options and each whyOptions array.
+5. Every file JSON is valid and parseable.
 
 JSON structure example:
 ${JSON_QUIZ_TEMPLATE}
 
 Raw notes:
 <PASTE YOUR NOTES HERE>`;
+const RAW_NOTES_PLACEHOLDER = '<PASTE YOUR NOTES HERE>';
 
 function extractJsonPayload(input: string): string {
   const trimmedInput = input.trim();
@@ -175,6 +188,11 @@ function extractJsonPayload(input: string): string {
 
   // Support direct pasting of AI output wrapped in ```json ... ```.
   return codeFenceMatch ? codeFenceMatch[1].trim() : trimmedInput;
+}
+
+function buildAiPromptWithNotes(rawNotes: string): string {
+  const normalizedNotes = rawNotes.trim() || RAW_NOTES_PLACEHOLDER;
+  return AI_GENERATOR_PROMPT_TEMPLATE.replace(RAW_NOTES_PLACEHOLDER, normalizedNotes);
 }
 
 export default function QuizApp({
@@ -186,9 +204,14 @@ export default function QuizApp({
   initialDailySnapshotError = null,
   choiceUi = 'standard'
 }: QuizAppProps): JSX.Element {
+  const buildSessionQuestions = (questions: QuizQuestion[]): QuizQuestion[] =>
+    shuffleQuestionChoices(questions);
+
   // Goal: Keep the active quiz session replaceable in-place (daily -> mega quiz)
   // without a full page refresh.
-  const [quizQuestions, setQuizQuestions] = useState<QuizQuestion[]>(initialQuestions);
+  const [quizQuestions, setQuizQuestions] = useState<QuizQuestion[]>(() =>
+    buildSessionQuestions(initialQuestions)
+  );
   // Goal: Force a fresh provider state when we swap to a new question set.
   // Incrementing this key remounts QuizProvider and resets answer/timer state.
   const [quizSessionVersion, setQuizSessionVersion] = useState(0);
@@ -196,7 +219,6 @@ export default function QuizApp({
     initialNeedsDailySetup || initialQuestions.length === 0
   );
   const [quizSubject, setQuizSubject] = useState<string | null>(initialQuizSubject);
-  const [dailySubjectInput, setDailySubjectInput] = useState(initialQuizSubject || '');
   const [jsonQuizInput, setJsonQuizInput] = useState('');
   const [activeDailySetupMode, setActiveDailySetupMode] = useState<DailySetupMode | null>(null);
   const [isPreparingDailyQuiz, setIsPreparingDailyQuiz] = useState(false);
@@ -204,6 +226,7 @@ export default function QuizApp({
     initialDailySnapshotError
   );
   const [isJsonTemplateModalOpen, setIsJsonTemplateModalOpen] = useState(false);
+  const [aiRawNotesInput, setAiRawNotesInput] = useState('');
   const [jsonTemplateFeedback, setJsonTemplateFeedback] = useState<string | null>(null);
   const [isShufflingMegaQuiz, setIsShufflingMegaQuiz] = useState(false);
   const [shuffleError, setShuffleError] = useState<string | null>(null);
@@ -239,7 +262,6 @@ export default function QuizApp({
       return;
     }
 
-    const normalizedSubject = dailySubjectInput.trim() || null;
     setIsPreparingDailyQuiz(true);
     setActiveDailySetupMode(mode);
     setDailySnapshotError(null);
@@ -252,7 +274,6 @@ export default function QuizApp({
         },
         body: JSON.stringify({
           mode,
-          subject: normalizedSubject,
           questions
         })
       });
@@ -269,8 +290,8 @@ export default function QuizApp({
         return;
       }
 
-      setQuizQuestions(payload.questions);
-      setQuizSubject(payload.subject ?? normalizedSubject);
+      setQuizQuestions(buildSessionQuestions(payload.questions));
+      setQuizSubject(payload.subject ?? null);
       setQuizSessionVersion((current) => current + 1);
       setNeedsDailySetup(false);
     } catch {
@@ -298,25 +319,12 @@ export default function QuizApp({
     await handleCreateTodayQuiz('json', parsedQuestions);
   };
 
-  const handleCopyJsonTemplate = async (): Promise<void> => {
-    try {
-      await navigator.clipboard.writeText(JSON_QUIZ_TEMPLATE);
-      setJsonTemplateFeedback('Template copied. Paste it into Quiz JSON.');
-    } catch {
-      setJsonTemplateFeedback('Copy failed. Select and copy the template manually.');
-    }
-  };
-
-  const handleInsertJsonTemplate = (): void => {
-    setJsonQuizInput(JSON_QUIZ_TEMPLATE);
-    setJsonTemplateFeedback('Template inserted into Quiz JSON.');
-    setIsJsonTemplateModalOpen(false);
-  };
-
   const handleCopyAiPromptTemplate = async (): Promise<void> => {
+    const fullPrompt = buildAiPromptWithNotes(aiRawNotesInput);
+
     try {
-      await navigator.clipboard.writeText(AI_GENERATOR_PROMPT_TEMPLATE);
-      setJsonTemplateFeedback('AI prompt copied. Paste it into your AI tool and add raw notes.');
+      await navigator.clipboard.writeText(fullPrompt);
+      setJsonTemplateFeedback('Full AI prompt copied with your raw notes section.');
     } catch {
       setJsonTemplateFeedback('Copy failed. Select and copy the AI prompt manually.');
     }
@@ -357,7 +365,7 @@ export default function QuizApp({
       }
 
       // Step 4: Swap questions and remount provider for a clean run.
-      setQuizQuestions(payload.questions);
+      setQuizQuestions(buildSessionQuestions(payload.questions));
       setQuizSubject('Shuffled Mega Quiz (session)');
       setQuizSessionVersion((current) => current + 1);
     } catch {
@@ -416,10 +424,12 @@ export default function QuizApp({
 
     setShuffleError(null);
     setDailySnapshotError(null);
-    setQuizQuestions(questions);
+    setQuizQuestions(buildSessionQuestions(questions));
     setQuizSubject(subject);
     setQuizSessionVersion((current) => current + 1);
   };
+
+  const aiPromptWithNotes = buildAiPromptWithNotes(aiRawNotesInput);
 
   if (needsDailySetup) {
     return (
@@ -430,16 +440,6 @@ export default function QuizApp({
           <p className="muted-text">
             Choose one option to create today&apos;s quiz from the database.
           </p>
-          <label className="history-field daily-setup__field">
-            <span className="history-field__label">Quiz Subject</span>
-            <input
-              className="history-input"
-              onChange={(event) => setDailySubjectInput(event.target.value)}
-              placeholder="e.g. TypeScript Generics"
-              type="text"
-              value={dailySubjectInput}
-            />
-          </label>
           <div className="daily-setup__actions">
             <button
               className="button button--primary"
@@ -482,9 +482,9 @@ export default function QuizApp({
               }}
               type="button"
             >
-              Open AI Prompt + JSON Template
+              Open AI Prompt Builder
             </button>
-            <p className="muted-text">Use this when you need a ready-to-paste quiz format.</p>
+            <p className="muted-text">Use this when you need a ready-to-copy AI prompt.</p>
           </div>
           <button
             className="button button--ghost"
@@ -519,7 +519,7 @@ export default function QuizApp({
                 <div>
                   <p className="section-label">Quick start</p>
                   <h2 className="quiz-title" id="json-template-modal-title">
-                    JSON Quiz Template
+                    AI Prompt Builder
                   </h2>
                 </div>
                 <button
@@ -534,9 +534,20 @@ export default function QuizApp({
               </header>
 
               <p className="muted-text">
-                Copy the AI prompt, paste it into your AI tool, then paste the generated JSON here.
+                Paste your notes once, then copy the full prompt.
               </p>
-              <pre className="json-template-modal__pre">{AI_GENERATOR_PROMPT_TEMPLATE}</pre>
+              <label className="history-field">
+                <span className="history-field__label">Raw notes</span>
+                <textarea
+                  className="history-input daily-setup__json"
+                  onChange={(event) => setAiRawNotesInput(event.target.value)}
+                  placeholder="Paste your study notes here"
+                  rows={8}
+                  spellCheck={false}
+                  value={aiRawNotesInput}
+                />
+              </label>
+              <pre className="json-template-modal__pre">{aiPromptWithNotes}</pre>
               <div className="json-template-modal__actions">
                 <button
                   className="button button--primary"
@@ -545,29 +556,7 @@ export default function QuizApp({
                   }}
                   type="button"
                 >
-                  Copy AI Prompt
-                </button>
-              </div>
-              <p className="muted-text">
-                Template output format used by the website:
-              </p>
-              <pre className="json-template-modal__pre">{JSON_QUIZ_TEMPLATE}</pre>
-              <div className="json-template-modal__actions">
-                <button
-                  className="button button--primary"
-                  onClick={() => {
-                    void handleCopyJsonTemplate();
-                  }}
-                  type="button"
-                >
-                  Copy Template
-                </button>
-                <button
-                  className="button button--ghost"
-                  onClick={handleInsertJsonTemplate}
-                  type="button"
-                >
-                  Insert Into Quiz JSON
+                  Copy Full Prompt
                 </button>
               </div>
               {jsonTemplateFeedback ? (

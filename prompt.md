@@ -3,47 +3,53 @@
 Copy this entire prompt into your AI tool, then replace the `Raw notes` section.
 
 ```text
-You are converting raw study notes into quiz JSON files for a strict validator.
+You are converting raw study notes into quiz JSON for a strict validator.
 
 Task:
-- Convert the 
+- Convert the notes below into one JSON object with "subject" and "questions".
 
 Hard output rules (must follow):
-- Create one file per note at "notes/<note-slug>.json".
-- Each file must contain JSON only (no comments or extra text).
+- output must be JSON only (no comments or extra text).
 - output in code fences.
 - Do not include comments or explanations.
 - Use double quotes for all keys and string values.
 - Ensure the result can be parsed with JSON.parse (no trailing commas).
-- In each file, the top-level value must be one non-empty JSON array of questions.
-- IDs restart per file and must be unique in order: q1, q2, q3, ...
+- The top-level value must be one JSON object with:
+  - "subject": non-empty string
+  - "questions": non-empty array of quiz questions
+- IDs must be unique in order: q1, q2, q3, ...
 
 Question schema (exact field names):
-[
-  {
-    "id": "q1",
-    "question": "string",
-    "hint": "string (optional)",
-    "requiresWhy": true,
-    "options": [
-      { "text": "string", "isCorrect": true, "feedback": "string" },
-      { "text": "string", "isCorrect": false, "feedback": "string" },
-      { "text": "string", "isCorrect": false, "feedback": "string" },
-      { "text": "string", "isCorrect": false, "feedback": "string" }
-    ],
-    "whyQuestion": "string",
-    "whyOptions": [
-      { "text": "string", "isCorrect": true, "feedback": "string" },
-      { "text": "string", "isCorrect": false, "feedback": "string" },
-      { "text": "string", "isCorrect": false, "feedback": "string" },
-      { "text": "string", "isCorrect": false, "feedback": "string" }
-    ]
-  }
-]
+{
+  "subject": "string",
+  "questions": [
+    {
+      "id": "q1",
+      "question": "string",
+      "hint": "string (optional)",
+      "requiresWhy": true,
+      "options": [
+        { "text": "string", "isCorrect": true, "feedback": "string" },
+        { "text": "string", "isCorrect": false, "feedback": "string" },
+        { "text": "string", "isCorrect": false, "feedback": "string" },
+        { "text": "string", "isCorrect": false, "feedback": "string" }
+      ],
+      "whyQuestion": "string",
+      "whyOptions": [
+        { "text": "string", "isCorrect": true, "feedback": "string" },
+        { "text": "string", "isCorrect": false, "feedback": "string" },
+        { "text": "string", "isCorrect": false, "feedback": "string" },
+        { "text": "string", "isCorrect": false, "feedback": "string" }
+      ]
+    }
+  ]
+}
 
 Non-negotiable validation constraints:
-- Each file top-level value must be a non-empty array.
-- IDs in each file must be unique in order: q1, q2, q3, ...
+- Top-level must be an object.
+- "subject" must be a non-empty string.
+- "questions" must be a non-empty array.
+- IDs in "questions" must be unique in order: q1, q2, q3, ...
 - Every question must have a non-empty "question" string.
 - Every question must set "requiresWhy": true.
 - Every question must include non-empty "whyQuestion".
@@ -70,75 +76,70 @@ Content quality constraints:
 - Do not output placeholders like "TBD", "...", or "<...>".
 
 Before finalizing, silently self-check:
-1. Every question has whyQuestion + 4 whyOptions.
-2. Every options/whyOptions array has exactly 4 items.
-3. Exactly one isCorrect=true in each options and each whyOptions array.
-4. Every file JSON is valid and parseable.
+1. Output shape is { subject, questions } with non-empty values.
+2. Every question has whyQuestion + 4 whyOptions.
+3. Every options/whyOptions array has exactly 4 items.
+4. Exactly one isCorrect=true in each options and each whyOptions array.
+5. JSON is valid and parseable.
 
 JSON structure example:
-[
-  {
-    "id": "q1",
-    "question": "What is the correct logical order of SQL query execution?",
-    "hint": "Execution order differs from written syntax.",
-    "requiresWhy": true,
-    "options": [
-      {
-        "text": "FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY",
-        "isCorrect": true,
-        "feedback": "Correct: SQL builds and filters row sets before projection and final sorting."
-      },
-      {
-        "text": "SELECT -> FROM -> WHERE -> GROUP BY -> HAVING -> ORDER BY",
-        "isCorrect": false,
-        "feedback": "That is written syntax order, but execution starts from source row construction."
-      },
-      {
-        "text": "FROM -> WHERE -> SELECT -> ORDER BY -> GROUP BY -> HAVING",
-        "isCorrect": false,
-        "feedback": "Grouping and HAVING must occur before projection and after row filtering."
-      },
-      {
-        "text": "WHERE -> FROM -> GROUP BY -> SELECT -> HAVING -> ORDER BY",
-        "isCorrect": false,
-        "feedback": "WHERE cannot run first because rows do not exist before FROM/JOIN."
-      }
-    ],
-    "whyQuestion": "Why does SQL execute FROM/JOIN before SELECT?",
-    "whyOptions": [
-      {
-        "text": "Because SQL must construct the working row set before choosing output columns.",
-        "isCorrect": true,
-        "feedback": "Exactly: projection requires a formed dataset, so source resolution happens first."
-      },
-      {
-        "text": "Because SELECT is only for aliases and never controls returned columns.",
-        "isCorrect": false,
-        "feedback": "Incorrect: SELECT directly controls projection, but only after row-set creation."
-      },
-      {
-        "text": "Because ORDER BY always decides which rows are available to SELECT.",
-        "isCorrect": false,
-        "feedback": "ORDER BY only sorts final output and does not create eligible rows."
-      },
-      {
-        "text": "Because HAVING defines base tables before joins are evaluated.",
-        "isCorrect": false,
-        "feedback": "HAVING filters groups later; it does not participate in table resolution."
-      }
-    ]
-  }
-]
+{
+  "subject": "SQL Advanced Fundamentals",
+  "questions": [
+    {
+      "id": "q1",
+      "question": "What is the correct logical order of SQL query execution?",
+      "hint": "Execution order differs from written syntax.",
+      "requiresWhy": true,
+      "options": [
+        {
+          "text": "FROM -> JOIN -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY",
+          "isCorrect": true,
+          "feedback": "Correct: SQL builds and filters row sets before projection and final sorting."
+        },
+        {
+          "text": "SELECT -> FROM -> WHERE -> GROUP BY -> HAVING -> ORDER BY",
+          "isCorrect": false,
+          "feedback": "That is written syntax order, but execution starts from source row construction."
+        },
+        {
+          "text": "FROM -> WHERE -> SELECT -> ORDER BY -> GROUP BY -> HAVING",
+          "isCorrect": false,
+          "feedback": "Grouping and HAVING must occur before projection and after row filtering."
+        },
+        {
+          "text": "WHERE -> FROM -> GROUP BY -> SELECT -> HAVING -> ORDER BY",
+          "isCorrect": false,
+          "feedback": "WHERE cannot run first because rows do not exist before FROM/JOIN."
+        }
+      ],
+      "whyQuestion": "Why does SQL execute FROM/JOIN before SELECT?",
+      "whyOptions": [
+        {
+          "text": "Because SQL must construct the working row set before choosing output columns.",
+          "isCorrect": true,
+          "feedback": "Exactly: projection requires a formed dataset, so source resolution happens first."
+        },
+        {
+          "text": "Because SELECT is only for aliases and never controls returned columns.",
+          "isCorrect": false,
+          "feedback": "Incorrect: SELECT directly controls projection, but only after row-set creation."
+        },
+        {
+          "text": "Because ORDER BY always decides which rows are available to SELECT.",
+          "isCorrect": false,
+          "feedback": "ORDER BY only sorts final output and does not create eligible rows."
+        },
+        {
+          "text": "Because HAVING defines base tables before joins are evaluated.",
+          "isCorrect": false,
+          "feedback": "HAVING filters groups later; it does not participate in table resolution."
+        }
+      ]
+    }
+  ]
+}
 
 Raw notes:
-monorepo is when your entire application codebase(backend frontend) is in one repo
-when u use quotes in a search you are saying use this exact term when you dont its more of a broad search
-to pass an emotion a little trick touch your heart and then touch the heart of the other person you want to pass the emotion to
-.push returns the new length of the array by default
-ts is a bit picky with access objects with dynamic properties basically it doesnt trust the properties you are accessing the objects with and requires you to narrrow the type agressivly sometimes even the if clause to check the nature of the property isnt enough  ts prefers “?” 
-
- acc[current.category]? (acc[current.category].push(current), acc) : (acc[current.category] = [current], acc) in this example acc[current.category]? check isnt enough acc[current.category]?.push(current), the ? needs to be added 
-
-this synta is correct when we have only one thing to do after if clause no need for {} : if (condition) doSomething();
-when ai gives you code in that rectangle ready to copy its called a code fence
+<your notes here>
 ```
