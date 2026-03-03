@@ -32,6 +32,7 @@ function normalizedOptionTexts(options: QuizQuestion['options'] | undefined): st
     return [];
   }
 
+  // We sort so "same options, different order" still hashes as the same question.
   return options
     .map((option) => normalizeForFingerprint(option.text))
     .filter(Boolean)
@@ -43,6 +44,7 @@ function normalizedWhyOptionTexts(options: QuizQuestion['whyOptions'] | undefine
     return [];
   }
 
+  // Why choices can also be shuffled in sessions, so order should not define uniqueness.
   return options
     .map((option) => normalizeForFingerprint(option.text))
     .filter(Boolean)
@@ -50,6 +52,7 @@ function normalizedWhyOptionTexts(options: QuizQuestion['whyOptions'] | undefine
 }
 
 function getQuestionFingerprint(question: QuizQuestion): string {
+  // Intentionally ignores `id` because the same logical question may be stored with different ids.
   const questionText = normalizeForFingerprint(question.question);
   const whyQuestionText = normalizeForFingerprint(question.whyQuestion);
   const optionTexts = normalizedOptionTexts(question.options).join('|');
@@ -85,6 +88,7 @@ export function buildShuffledMegaQuizFromHistory(
     entry.questions.forEach((question) => {
       const fingerprint = getQuestionFingerprint(question);
       if (!fingerprint || seenFingerprints.has(fingerprint)) {
+        // Keep first seen copy only; later duplicates are dropped from shuffle pool.
         return;
       }
 

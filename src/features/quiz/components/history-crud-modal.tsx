@@ -198,6 +198,7 @@ export default function HistoryCrudModal({ isOpen, onClose }: HistoryCrudModalPr
       };
 
       if (hasJsonInput) {
+        // Explicit JSON input wins over source-date copy to avoid accidental mixed create modes.
         let parsedQuestions: unknown;
         try {
           parsedQuestions = JSON.parse(createQuestionsInput);

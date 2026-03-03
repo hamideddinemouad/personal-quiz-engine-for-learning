@@ -35,11 +35,13 @@ export async function importNoteQuizzesIntoHistory(): Promise<ImportNoteQuizHist
   const created: ImportedNoteQuizEntry[] = [];
   const skippedSubjects: string[] = [];
   const cursorDate = new Date();
+  // Noon avoids edge cases around DST midnight shifts when decrementing dates repeatedly.
   cursorDate.setHours(12, 0, 0, 0);
 
   for (const noteSeed of NOTE_QUIZ_SEEDS) {
     const subjectKey = toSubjectKey(noteSeed.subject);
     if (existingSubjectKeys.has(subjectKey)) {
+      // Subject acts as the idempotency key: re-import will skip already-ingested note topics.
       skippedSubjects.push(noteSeed.subject);
       continue;
     }
@@ -61,6 +63,7 @@ export async function importNoteQuizzesIntoHistory(): Promise<ImportNoteQuizHist
       );
 
       if (!createdEntry) {
+        // Treat conflict as occupied and continue scanning backwards for the next free date.
         existingDates.add(targetDate);
         continue;
       }
