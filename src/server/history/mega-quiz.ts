@@ -51,7 +51,7 @@ function normalizedWhyOptionTexts(options: QuizQuestion['whyOptions'] | undefine
     .sort();
 }
 
-function getQuestionFingerprint(question: QuizQuestion): string {
+export function getQuestionFingerprint(question: QuizQuestion): string {
   // Intentionally ignores `id` because the same logical question may be stored with different ids.
   const questionText = normalizeForFingerprint(question.question);
   const whyQuestionText = normalizeForFingerprint(question.whyQuestion);

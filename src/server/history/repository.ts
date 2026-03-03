@@ -1,5 +1,6 @@
 import { cloneQuestions } from '@/lib/quiz-transform';
 import { getDbPool } from '@/server/db/client';
+import { getQuestionFingerprint } from '@/server/history/mega-quiz';
 import { logDebug, logError } from '@/server/logging';
 import type { DailyQuizHistoryEntry, QuizQuestion } from '@/types/quiz';
 
@@ -425,7 +426,8 @@ export async function buildMegaQuizFromDates(dates: string[]): Promise<QuizQuest
   }
 
   const uniqueDates = [...new Set(dates)];
-  const questions: QuizQuestion[] = [];
+  const seenFingerprints = new Set<string>();
+  const uniqueQuestions: QuizQuestion[] = [];
 
   for (const date of uniqueDates) {
     const entry = await findDailyQuizHistoryEntryByDate(date);
@@ -433,8 +435,18 @@ export async function buildMegaQuizFromDates(dates: string[]): Promise<QuizQuest
       continue;
     }
 
-    questions.push(...cloneQuestions(entry.questions));
+    cloneQuestions(entry.questions).forEach((question) => {
+      const fingerprint = getQuestionFingerprint(question);
+      // "First seen wins": keep the earliest copy by requested date order,
+      // even if later dates contain the same logical question with a different id.
+      if (!fingerprint || seenFingerprints.has(fingerprint)) {
+        return;
+      }
+
+      seenFingerprints.add(fingerprint);
+      uniqueQuestions.push(question);
+    });
   }
 
-  return questions;
+  return uniqueQuestions;
 }
