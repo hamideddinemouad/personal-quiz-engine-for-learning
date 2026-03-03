@@ -21,8 +21,11 @@ interface SidebarNavigationProps {
   quizSubject: string | null;
   studyStreakDays: number;
   isShufflingMegaQuiz: boolean;
+  isCreatingGithubBackup: boolean;
+  backupFeedback: { tone: 'success' | 'error' | 'neutral'; text: string } | null;
   shuffleError: string | null;
   onShuffleMegaQuiz: () => Promise<void>;
+  onCreateGithubBackup: () => Promise<void>;
   onOpenHistoryCrud: () => void;
 }
 
@@ -56,8 +59,11 @@ export default function SidebarNavigation({
   quizSubject,
   studyStreakDays,
   isShufflingMegaQuiz,
+  isCreatingGithubBackup,
+  backupFeedback,
   shuffleError,
   onShuffleMegaQuiz,
+  onCreateGithubBackup,
   onOpenHistoryCrud
 }: SidebarNavigationProps): JSX.Element {
   const { questions, currentQuestionIndex, statusesById, elapsedSeconds, progress, goToQuestion } =
@@ -143,6 +149,29 @@ export default function SidebarNavigation({
         <button className="button button--ghost sidebar-mega-button" onClick={onOpenHistoryCrud} type="button">
           Manage History DB
         </button>
+        <button
+          className="button button--ghost sidebar-mega-button"
+          disabled={isCreatingGithubBackup}
+          onClick={() => {
+            void onCreateGithubBackup();
+          }}
+          type="button"
+        >
+          {isCreatingGithubBackup ? 'Creating GitHub Backup...' : 'Create GitHub Backup'}
+        </button>
+        {backupFeedback ? (
+          <p
+            className={`feedback ${
+              backupFeedback.tone === 'success'
+                ? 'feedback--success'
+                : backupFeedback.tone === 'error'
+                  ? 'feedback--error'
+                  : 'feedback--neutral'
+            }`}
+          >
+            {backupFeedback.text}
+          </p>
+        ) : null}
         {shuffleError ? <p className="feedback feedback--error">{shuffleError}</p> : null}
       </div>
 

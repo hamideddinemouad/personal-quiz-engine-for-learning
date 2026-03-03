@@ -27,6 +27,14 @@ interface TodayQuizApiResponse {
   error?: string;
 }
 
+interface BackupApiResponse {
+  success?: boolean;
+  filePath?: string;
+  rowCount?: number;
+  commitSha?: string | null;
+  error?: string;
+}
+
 type DailySetupMode = 'load' | 'shuffle' | 'json';
 
 const JSON_QUIZ_TEMPLATE = `[
@@ -196,6 +204,11 @@ export default function QuizApp({
   const [jsonTemplateFeedback, setJsonTemplateFeedback] = useState<string | null>(null);
   const [isShufflingMegaQuiz, setIsShufflingMegaQuiz] = useState(false);
   const [shuffleError, setShuffleError] = useState<string | null>(null);
+  const [isCreatingGithubBackup, setIsCreatingGithubBackup] = useState(false);
+  const [backupFeedback, setBackupFeedback] = useState<{
+    tone: 'success' | 'error' | 'neutral';
+    text: string;
+  } | null>(null);
 
   useEffect(() => {
     if (!isJsonTemplateModalOpen) {
@@ -349,6 +362,46 @@ export default function QuizApp({
       setShuffleError('Network error while generating mega quiz.');
     } finally {
       setIsShufflingMegaQuiz(false);
+    }
+  };
+
+  const handleCreateGithubBackup = async (): Promise<void> => {
+    if (isCreatingGithubBackup) {
+      return;
+    }
+
+    setIsCreatingGithubBackup(true);
+    setBackupFeedback(null);
+
+    try {
+      const response = await fetch('/api/backup/github/manual', {
+        method: 'POST',
+        headers: {
+          'x-backup-ui-trigger': '1'
+        }
+      });
+
+      const payload = (await response.json()) as BackupApiResponse;
+      if (!response.ok || !payload.success) {
+        setBackupFeedback({
+          tone: 'error',
+          text: payload.error || 'Unable to create GitHub backup.'
+        });
+        return;
+      }
+
+      const shortCommit = payload.commitSha ? payload.commitSha.slice(0, 7) : 'n/a';
+      setBackupFeedback({
+        tone: 'success',
+        text: `Backup created: ${payload.rowCount ?? 0} rows (commit ${shortCommit}).`
+      });
+    } catch {
+      setBackupFeedback({
+        tone: 'error',
+        text: 'Network error while creating GitHub backup.'
+      });
+    } finally {
+      setIsCreatingGithubBackup(false);
     }
   };
 
@@ -520,7 +573,10 @@ export default function QuizApp({
         quizSubject={quizSubject}
         initialStudyStreakDays={initialStudyStreakDays}
         isShufflingMegaQuiz={isShufflingMegaQuiz}
+        isCreatingGithubBackup={isCreatingGithubBackup}
+        backupFeedback={backupFeedback}
         onShuffleMegaQuiz={handleShuffleMegaQuiz}
+        onCreateGithubBackup={handleCreateGithubBackup}
         shuffleError={shuffleError}
       />
     </QuizProvider>

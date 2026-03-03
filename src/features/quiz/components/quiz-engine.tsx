@@ -16,6 +16,9 @@ interface QuizEngineProps {
   isShufflingMegaQuiz: boolean;
   shuffleError: string | null;
   onShuffleMegaQuiz: () => Promise<void>;
+  isCreatingGithubBackup: boolean;
+  backupFeedback: { tone: 'success' | 'error' | 'neutral'; text: string } | null;
+  onCreateGithubBackup: () => Promise<void>;
   choiceUi: ChoiceUiMode;
 }
 
@@ -27,6 +30,9 @@ export default function QuizEngine({
   isShufflingMegaQuiz,
   shuffleError,
   onShuffleMegaQuiz,
+  isCreatingGithubBackup,
+  backupFeedback,
+  onCreateGithubBackup,
   choiceUi
 }: QuizEngineProps): JSX.Element {
   // Goal: Compose quiz content + sidebar controls from shared context state.
@@ -56,8 +62,11 @@ export default function QuizEngine({
           quizSubject={quizSubject}
           studyStreakDays={initialStudyStreakDays}
           isShufflingMegaQuiz={isShufflingMegaQuiz}
+          isCreatingGithubBackup={isCreatingGithubBackup}
+          backupFeedback={backupFeedback}
           onOpenHistoryCrud={() => setIsHistoryCrudOpen(true)}
           onShuffleMegaQuiz={onShuffleMegaQuiz}
+          onCreateGithubBackup={onCreateGithubBackup}
           shuffleError={shuffleError}
         />
       </div>
