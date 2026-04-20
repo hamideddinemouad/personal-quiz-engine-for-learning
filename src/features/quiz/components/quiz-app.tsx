@@ -157,6 +157,10 @@ Feedback quality constraints (important):
 
 Content quality constraints:
 - Keep wording clear and concise.
+- If a note is wrong, incomplete, or poorly formed, correct it before turning it into a question.
+- Stay close to the original concept, but make the final question and answer choices hard.
+- Treat each note as self-contained; do not bring in context from other notes.
+- Rephrase the note in fresh language so the quiz tests understanding, not memorization.
 - Use plausible distractors tied to common confusion from the notes.
 - Make options and whyOptions equally plausible: avoid obvious giveaways like one choice being much longer, more specific, or more polished than the others.
 - Do not output placeholders like "TBD", "...", or "<...>".
